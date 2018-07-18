@@ -4,8 +4,6 @@
 #include <Castle/Systems/System.hpp>
 
 namespace castle {
-	enum EntityGroup : unsigned;
-
 	class KinematicSystem : System {
 	public:
 		KinematicSystem(void);
