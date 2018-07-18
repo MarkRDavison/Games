@@ -5,7 +5,6 @@
 #include <bitset>
 #include <array>
 
-
 namespace ecs {
 	struct Component;
 
