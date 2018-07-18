@@ -54,7 +54,7 @@ namespace ecs {
 		Entity* e(new Entity(*this));
 
 		if (_helpfulName == "") {
-			e->name = std::to_string(unsigned(e));
+			e->name = std::to_string(intptr_t(e));
 		}
 		else {
 			e->name = _helpfulName;
