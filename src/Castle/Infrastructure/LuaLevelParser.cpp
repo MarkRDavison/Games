@@ -1,5 +1,4 @@
 #include <Castle/Infrastructure/LuaLevelParser.hpp>
-#include <SFML/System/Vector2.hpp>
 
 #define LUA_LEVEL_PARSER_SCOPE "castle::LuaLevelParser"
 
@@ -23,7 +22,7 @@ namespace castle {
 		level.levelCells.resize(level.width * level.height);
 
 
-		auto& tiles = state["level"]["tiles"];
+		sol::table tiles = state["level"]["tiles"];
 
 		for (unsigned y = 1; y <= level.height; ++y) {
 			for (unsigned x = 1; x <= level.width; ++x) {

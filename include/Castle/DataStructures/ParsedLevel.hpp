@@ -2,8 +2,8 @@
 #define INCLUDED_CASTLE_DATA_STRUCTURES_PARSED_LEVEL_HPP_
 
 #include <Castle/DataStructures/LevelCell.hpp>
+#include <Castle/DataStructures/ParsedEntity.hpp>
 #include <vector>
-#include "ParsedEntity.hpp"
 
 namespace castle {
 	
