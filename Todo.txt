@@ -1,0 +1,13 @@
+Todo
+
+Castle
+
+	-	When transitioning to another level swap the player to the new level, on collide callback needs access to the gamescene - Global/Singleton?
+	-	When systems update/handle event they may need custom parameters e.g. collision system and level
+
+
+Done
+
+Castle
+	-	Levels need to have an entity manager each
+	-	Systems need to act on an entity manager when updating/handling events, not via constructor

@@ -1,0 +1,13 @@
+#ifndef INCLUDED_PACMAN_INFRASTRUCTURE_DEFINITIONS_HPP_
+#define INCLUDED_PACMAN_INFRASTRUCTURE_DEFINITIONS_HPP_
+
+namespace pacman {
+	enum class GhostType {
+		Red,
+		Pink,
+		Yellow,
+		Blue
+	};
+}
+
+#endif // INCLUDED_PACMAN_INFRASTRUCTURE_DEFINITIONS_HPP_

@@ -1,0 +1,12 @@
+#ifndef INCLUDED_CASTLE_DATA_STRUCTURES_LEVEL_CELL_HPP_
+#define INCLUDED_CASTLE_DATA_STRUCTURES_LEVEL_CELL_HPP_
+
+namespace castle {
+	
+	struct LevelCell {
+		bool empty{true};
+	};
+
+}
+
+#endif // INCLUDED_CASTLE_DATA_STRUCTURES_LEVEL_CELL_HPP_
