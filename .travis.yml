@@ -1,0 +1,36 @@
+sudo: required
+dist: trusty
+language: cpp
+
+compiler:
+  - gcc
+
+install:
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
+  - bash scripts/install_sfml.sh
+  - bash scripts/install_lua.sh
+
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-5
+    - g++-5
+    - clang
+    - glew-utils
+    - libglew-dev
+    - libudev-dev
+    - libjpeg-dev
+    - libxrandr-dev
+    - libfreetype6-dev
+    - libopenal-dev
+    - libvorbis-dev
+    - libflac-dev
+
+script:
+  - mkdir build
+  - cd build
+  - cmake .. -DSFML_ROOT=/home/travis/build/MarkRDavison/Games/SFML/install -DSFML_STATIC_LIBRARIES=TRUE
+  - make
+  - make test
