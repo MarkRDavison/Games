@@ -4,8 +4,11 @@
 #include <Arkanoid/Components/PhysicsComponent.hpp>
 #include <Arkanoid/Components/PlayerPaddleControlComponent.hpp>
 #include <Arkanoid/Components/RectangleComponent.hpp>
+#include <Arkanoid/Components/PositionComponent.hpp>
 
 #include <Arkanoid/Infrastructure/Definitions.hpp>
+
+#include <cmath>
 
 namespace ark {
 
