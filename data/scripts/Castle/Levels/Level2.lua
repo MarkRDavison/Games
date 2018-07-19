@@ -18,5 +18,6 @@ level = {
 		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
 	},
 	entities = {
+		{ prototype = "level_transition", size = { x = 1.0, y = 2.0 }, coordinates = { x = 21,  y = 11 }, target_level = "Level 3", target_coordinates = { x = 1.0, y = 11.0 }, color = { r = 255, g = 125, b = 0 }, },
 	}
 }

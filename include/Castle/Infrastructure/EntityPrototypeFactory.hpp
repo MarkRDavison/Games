@@ -6,19 +6,20 @@
 #include <Infrastructure/TextureManager.hpp>
 
 namespace castle {
+	class LevelTransitionCoordinator;
 	class EntityPrototypeFactory {
 	public:
 		EntityPrototypeFactory(inf::TextureManager& _textureManager);
 		virtual ~EntityPrototypeFactory(void);
 
-		virtual void createEntityFromPrototype(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity);
+		virtual void createEntityFromPrototype(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity, LevelTransitionCoordinator& _levelTransitionCoordinator);
 
 		void createCoinEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) const;
 		void createLadderEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) const;
 		void createFlameEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) const;
 		void createMovingPlatformEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) const;
 		void createMovingPlayerEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) const;
-		void createLevelTransitionEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) const;
+		void createLevelTransitionEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity, LevelTransitionCoordinator& _levelTransitionCoordinator) const;
 	protected:
 		inf::TextureManager& m_TextureManager;
 	};

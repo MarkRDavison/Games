@@ -1,5 +1,6 @@
 #include <Castle/GameObjects/Level.hpp>
 #include <Castle/DataStructures/ParsedLevel.hpp>
+#include <Castle/Infrastructure/LevelTransitionCoordinator.hpp>
 
 #include <SFML/Graphics.hpp>
 
@@ -17,14 +18,14 @@ namespace castle {
 		
 	}
 
-	void Level::initialize(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory) {
+	void Level::initialize(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory, LevelTransitionCoordinator& _levelTransitionCoordinator) {
 		m_Width = _parsedLevel.width;
 		m_Height = _parsedLevel.height;
 		m_Name = _parsedLevel.name;
 
 		m_LevelCells = std::vector<LevelCell>(_parsedLevel.levelCells);
 		m_Graphics = sf::VertexArray(sf::Triangles, 3 * 2 * m_Width * m_Height);
-		initializeEntities(_parsedLevel, _entityPrototypeFactory);
+		initializeEntities(_parsedLevel, _entityPrototypeFactory, _levelTransitionCoordinator);
 		initializeGraphics();
 		m_Initialized = true;
 	}
@@ -52,9 +53,9 @@ namespace castle {
 		return m_LevelCells[_y * m_Width + _x];
 	}
 
-	void Level::initializeEntities(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory) {
+	void Level::initializeEntities(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory, LevelTransitionCoordinator& _levelTransitionCoordinator) {
 		for (const ParsedEntity& parsedEntity : _parsedLevel.entities) {
-			_entityPrototypeFactory.createEntityFromPrototype(m_EntityManager, parsedEntity);
+			_entityPrototypeFactory.createEntityFromPrototype(m_EntityManager, parsedEntity, _levelTransitionCoordinator);
 		}
 	}
 

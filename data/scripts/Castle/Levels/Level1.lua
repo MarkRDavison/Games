@@ -37,7 +37,7 @@ level = {
 		{ prototype = "flame", size = { x = 1.0, y = 1.0 },  coordinates = { x = 7,  y = 6 }, flip = { x = false, y = false } },
 		{ prototype = "flame", size = { x = 1.0, y = 1.0 },  coordinates = { x = 21, y = 8 }, flip = { x = false, y = false } },
 
-		{ prototype = "level_transition", size = { x = 1.0, y = 2.0 }, coordinates = { x = 21,  y = 11 }, target_level = "Level 2", target_coordinates = { x = 1.0, y = 6.0 }, color = { r = 255, g = 125, b = 0 }, },
+		{ prototype = "level_transition", size = { x = 1.0, y = 2.0 }, coordinates = { x = 21,  y = 11 }, target_level = "Level 2", target_coordinates = { x = 1.0, y = 11.0 }, color = { r = 255, g = 125, b = 0 }, },
 		
 		{ 
 		  prototype = "moving_platform", 

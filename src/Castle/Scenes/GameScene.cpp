@@ -7,7 +7,7 @@
 
 namespace castle {
 
-	GameScene::GameScene(inf::TextureManager& _textureManager, inf::InputManager& _inputManager, CastleConfigurationManager& _castleConfigurationManager, CollisionSystem& _collisionSystem, KinematicSystem& _kinematicSystem, PlayerControlSystem& _playerControlSystem, PlayerInteractionSystem& _playerInteractionSystem, WaypointSystem& _waypointSystem, EntityPrototypeFactory& _entityPrototypeFactory) :
+	GameScene::GameScene(inf::TextureManager& _textureManager, inf::InputManager& _inputManager, CastleConfigurationManager& _castleConfigurationManager, CollisionSystem& _collisionSystem, KinematicSystem& _kinematicSystem, PlayerControlSystem& _playerControlSystem, PlayerInteractionSystem& _playerInteractionSystem, WaypointSystem& _waypointSystem, EntityPrototypeFactory& _entityPrototypeFactory, LevelTransitionCoordinator& _levelTransitionCoordinator) :
 		inf::Scene("castle::GameScene"),
 		m_CastleConfigurationManager(_castleConfigurationManager),
 		m_InputManager(_inputManager),
@@ -18,7 +18,8 @@ namespace castle {
 		m_PlayerControlSystem(_playerControlSystem),
 		m_PlayerInteractionSystem(_playerInteractionSystem),
 		m_WaypointSystem(_waypointSystem),
-		m_EntityPrototypeFactory(_entityPrototypeFactory) {
+		m_EntityPrototypeFactory(_entityPrototypeFactory),
+		m_LevelTransitionCoordinator(_levelTransitionCoordinator) {
 
 	}
 	GameScene::~GameScene(void) {
@@ -26,6 +27,10 @@ namespace castle {
 	}
 
 	void GameScene::update(float _delta) {
+		if (m_LevelTransitionCoordinator.getLevelTransitioned()) {
+			m_LevelTransitionCoordinator.resetLevelTransitioned();
+			m_ActiveLevel = m_LevelTransitionCoordinator.getActiveLevel();
+		}
 		ecs::EntityManager& em = m_ActiveLevel->getEntityManager();
 		em.update(_delta);
 
@@ -84,38 +89,9 @@ namespace castle {
 		e.getComponent<CollisionComponent>().canBeMovedByOthers = true;
 		e.getComponent<CollisionComponent>().canMoveOthers = true;
 	}
-	void GameScene::addParsedLevel(const ParsedLevel& _parsedLevel) {
-		m_ParsedLevels.emplace_back(_parsedLevel);
-	}
 	void GameScene::setActiveLevel(const std::string& _levelName) {
-		const auto result = std::find_if(m_Levels.begin(), m_Levels.end(), [_levelName](const Level* _level) { return _level->getName() == _levelName; });
-		if (result != m_Levels.end()) {
-			Level *newLevel = *result;
-			if (m_ActiveLevel != nullptr) {
-				if (!ecs::EntityManager::swapEntityBetweenManagers(m_ActiveLevel->getEntityManager().getEntitiesByGroup(EntityGroup::GPlayer).front(), m_ActiveLevel->getEntityManager(), newLevel->getEntityManager())) {
-					std::cout << "Failed to swap entity to new level " << _levelName << " from level " << m_ActiveLevel->getName() << std::endl;
-					return;
-				}
-			}
-			m_ActiveLevel = newLevel;
+		if (m_LevelTransitionCoordinator.setActiveLevel(_levelName)) {
+			m_ActiveLevel = m_LevelTransitionCoordinator.getActiveLevel();
 		}
-
-		const auto parsedLevelResult = std::find_if(m_ParsedLevels.begin(), m_ParsedLevels.end(), [_levelName](const ParsedLevel& _parsedLevel) { return _parsedLevel.name == _levelName; });
-		if (parsedLevelResult != m_ParsedLevels.end()) {
-			Level *l = new Level();
-			l->initialize(*parsedLevelResult, m_EntityPrototypeFactory);
-			m_Levels.emplace_back(l);
-			if (m_ActiveLevel != nullptr) {
-				if (!ecs::EntityManager::swapEntityBetweenManagers(m_ActiveLevel->getEntityManager().getEntitiesByGroup(EntityGroup::GPlayer).front(), m_ActiveLevel->getEntityManager(), l->getEntityManager())) {
-					std::cout << "Failed to swap entity to new level " << _levelName << " from level " << m_ActiveLevel->getName() << std::endl;
-					return;
-				}
-			}
-			m_ActiveLevel = l;
-			std::cout << "Initialized new level and switched to it" << std::endl;
-			return;
-		}
-
-		std::cout << "Failed to set active level " << _levelName << ", it wasn't made or initialized" << std::endl;
 	}
 }

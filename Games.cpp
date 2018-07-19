@@ -19,12 +19,11 @@
 
 #include <Castle/Infrastructure/CastleConfigurationManager.hpp>
 #include <Castle/Infrastructure/AutoPlayerInputManager.hpp>
-#include <Castle/GameObjects/Level.hpp>
+#include <Castle/Infrastructure/LuaLevelParser.hpp>
+#include <Castle/Infrastructure/LevelTransitionCoordinator.hpp>
 #include <Castle/Scenes/GameScene.hpp>
 #include <Castle/Scenes/PlayerCollisionTestScene.hpp>
-#include <Castle/DataStructures/ParsedLevel.hpp>
 #include <Castle/Systems/PlayerControlSystem.hpp>
-#include <Castle/Infrastructure/LuaLevelParser.hpp>
 
 void runSnake(void) {
 	inf::FontManager fontManager;
@@ -112,12 +111,13 @@ void runCastle(void) {
 	castle::PlayerControlSystem playerControlSystem(castle::GPlayer, inputManager);
 	castle::PlayerInteractionSystem playerInteractionSystem;
 	castle::WaypointSystem waypointSystem;
+	castle::LevelTransitionCoordinator levelTransitionCoordinator(prototypeFactory);
 
-	castle::GameScene *gameScene = new castle::GameScene(textureManager, inputManager, configurationManager, collisionSystem, kinematicSystem, playerControlSystem, playerInteractionSystem, waypointSystem, prototypeFactory);
-	gameScene->addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level1.lua"));
-	gameScene->addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level2.lua"));
-	gameScene->addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level3.lua"));
-	gameScene->addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level4.lua"));
+	castle::GameScene *gameScene = new castle::GameScene(textureManager, inputManager, configurationManager, collisionSystem, kinematicSystem, playerControlSystem, playerInteractionSystem, waypointSystem, prototypeFactory, levelTransitionCoordinator);
+	levelTransitionCoordinator.addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level1.lua"));
+	levelTransitionCoordinator.addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level2.lua"));
+	levelTransitionCoordinator.addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level3.lua"));
+	levelTransitionCoordinator.addParsedLevel(parser.parseLevel("./data/scripts/Castle/Levels/level4.lua"));
 	gameScene->setActiveLevel("Level 1");
 	gameScene->addPlayer();
 

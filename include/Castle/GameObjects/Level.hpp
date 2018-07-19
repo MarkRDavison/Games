@@ -23,7 +23,7 @@ namespace castle {
 		Level(void);
 		~Level(void);
 
-		void initialize(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory);
+		void initialize(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory, LevelTransitionCoordinator& _levelTransitionCoordinator);
 
 		void update(float _delta);
 		bool handleEvent(const sf::Event& _event);
@@ -32,7 +32,7 @@ namespace castle {
 		const LevelCell& getCell(unsigned _x, unsigned _y) const;
 		LevelCell& getCell(unsigned _x, unsigned _y);
 		
-		void initializeEntities(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory);
+		void initializeEntities(const ParsedLevel& _parsedLevel, EntityPrototypeFactory& _entityPrototypeFactory, LevelTransitionCoordinator& _levelTransitionCoordinator);
 		void initializeGraphics();
 
 		ecs::EntityManager& getEntityManager(void) { return m_EntityManager; }

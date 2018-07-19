@@ -7,8 +7,10 @@
 #include <Castle/Components/HealthComponent.hpp>
 #include <Castle/Components/TimerComponent.hpp>
 #include <Castle/Components/WaypointComponent.hpp>
+#include <Castle/Infrastructure/LevelTransitionCoordinator.hpp>
 #include <Utility/Colour.hpp>
 #include <iostream>
+#include <Castle/Components/LevelTransitionComponent.hpp>
 
 namespace castle {
 
@@ -21,7 +23,7 @@ namespace castle {
 	}
 
 
-	void EntityPrototypeFactory::createEntityFromPrototype(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) {
+	void EntityPrototypeFactory::createEntityFromPrototype(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity, LevelTransitionCoordinator& _levelTransitionCoordinator) {
 		if (_parsedEntity.prototype == "coin") {
 			createCoinEntity(_entityManager, _parsedEntity);
 		}
@@ -38,7 +40,7 @@ namespace castle {
 			createMovingPlayerEntity(_entityManager, _parsedEntity);
 		}
 		else if (_parsedEntity.prototype == "level_transition") {
-			createLevelTransitionEntity(_entityManager, _parsedEntity);
+			createLevelTransitionEntity(_entityManager, _parsedEntity, _levelTransitionCoordinator);
 		}
 	}
 
@@ -138,18 +140,24 @@ namespace castle {
 		e.getComponent<CollisionComponent>().canBeMovedByOthers = true;
 		e.getComponent<CollisionComponent>().canMoveOthers = true;
 	}
-	void EntityPrototypeFactory::createLevelTransitionEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity) const {
+	void EntityPrototypeFactory::createLevelTransitionEntity(ecs::EntityManager& _entityManager, const ParsedEntity& _parsedEntity, LevelTransitionCoordinator& _levelTransitionCoordinator) const {
 		ecs::Entity& e = _entityManager.addEntity(_parsedEntity.name);
 		e.addGroup(EntityGroup::GCollideable);
+		e.addComponent<LevelTransitionComponent>(_levelTransitionCoordinator, _parsedEntity.entityTable["target_level"], sf::Vector2f(_parsedEntity.entityTable["target_coordinates"]["x"], _parsedEntity.entityTable["target_coordinates"]["y"]) + sf::Vector2f(0.5f, 1.0f));
 		e.addComponent<PositionComponent>(sf::Vector2f(_parsedEntity.coordinates) + sf::Vector2f(0.5f, 1.0f));
 		e.addComponent<RectangleComponent>(_parsedEntity.size, sf::Color(
 			_parsedEntity.entityTable["color"]["r"],
 			_parsedEntity.entityTable["color"]["g"],
 			_parsedEntity.entityTable["color"]["b"]
 		));
-		e.addComponent<CollisionComponent>(_parsedEntity.size).callback = [](CollisionComponent& _coinCollisionComponent, CollisionComponent& _otherCollisionComponent) {
+		e.addComponent<CollisionComponent>(_parsedEntity.size).callback = [](CollisionComponent& _levelTransitionCollisionComponent, CollisionComponent& _otherCollisionComponent) {
 			if (_otherCollisionComponent.entity->hasComponent<PlayerComponent>()) {
-				std::cout << "Move to another level" << std::endl; // TODO: How do we acces the game scene from this point? Message system?
+				LevelTransitionComponent& ltc = _levelTransitionCollisionComponent.entity->getComponent<LevelTransitionComponent>();
+				ltc.levelTransitionCoordinator.setActiveLevel(ltc.targetLevelName);
+
+				PositionComponent& pc = _otherCollisionComponent.entity->getComponent<PositionComponent>();
+				pc.previousPosition = ltc.targetCoordinates;
+				pc.position = ltc.targetCoordinates;
 			}
 		};
 	}

@@ -10,7 +10,7 @@ namespace ecs {
 	class EntityManager;
 	class Entity {
 	public:
-		Entity(EntityManager& _entityManager) :
+		Entity(EntityManager *_entityManager) :
 			m_EntityManager(_entityManager) {
 			
 		}
@@ -45,6 +45,7 @@ namespace ecs {
 
 		void addGroup(Group mGroup) noexcept;
 		void delGroup(Group mGroup) noexcept;
+		void updateEntityManager(EntityManager *_entityManager) noexcept;
 
 		template <typename T, typename... TArgs>
 		T& addComponent(TArgs&&... mArgs) {
@@ -72,7 +73,7 @@ namespace ecs {
 		}
 
 	private:
-		EntityManager & m_EntityManager;
+		EntityManager *m_EntityManager;
 		bool m_Alive{ true };
 
 		GroupBitset m_GroupBitset;

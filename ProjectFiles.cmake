@@ -122,6 +122,7 @@ SET(CASTLE_HEADER_FILES ${CASTLE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Castle/Components/HealthComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Castle/Components/CollisionComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Castle/Components/WaypointComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Castle/Components/LevelTransitionComponent.hpp
 
 	${CMAKE_SOURCE_DIR}/include/Castle/GameObjects/Level.hpp
 	
@@ -130,6 +131,7 @@ SET(CASTLE_HEADER_FILES ${CASTLE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Castle/Infrastructure/EntityGroups.hpp
 	${CMAKE_SOURCE_DIR}/include/Castle/Infrastructure/EntityPrototypeFactory.hpp
 	${CMAKE_SOURCE_DIR}/include/Castle/Infrastructure/LuaLevelParser.hpp
+	${CMAKE_SOURCE_DIR}/include/Castle/Infrastructure/LevelTransitionCoordinator.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Castle/DataStructures/LevelCell.hpp
 	${CMAKE_SOURCE_DIR}/include/Castle/DataStructures/ParsedEntity.hpp
@@ -152,6 +154,7 @@ SET(CASTLE_SOURCE_FILES ${CASTLE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Castle/Infrastructure/CastleConfigurationManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Castle/Infrastructure/EntityPrototypeFactory.cpp
 	${CMAKE_SOURCE_DIR}/src/Castle/Infrastructure/LuaLevelParser.cpp
+	${CMAKE_SOURCE_DIR}/src/Castle/Infrastructure/LevelTransitionCoordinator.cpp
 	
 	${CMAKE_SOURCE_DIR}/src/Castle/Scenes/GameScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Castle/Scenes/PlayerCollisionTestScene.cpp

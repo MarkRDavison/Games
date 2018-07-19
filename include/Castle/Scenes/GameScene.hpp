@@ -11,6 +11,7 @@
 
 #include <Castle/Infrastructure/CastleConfigurationManager.hpp>
 #include <Castle/Infrastructure/EntityPrototypeFactory.hpp>
+#include <Castle/Infrastructure/LevelTransitionCoordinator.hpp>
 
 #include <Infrastructure/InputManager.hpp>
 #include <Infrastructure/Scene.hpp>
@@ -19,7 +20,7 @@
 namespace castle {
 	class GameScene : public inf::Scene {
 	public:
-		GameScene(inf::TextureManager& _textureManager, inf::InputManager& _inputManager, CastleConfigurationManager& _castleConfigurationManager, CollisionSystem& _collisionSystem, KinematicSystem& _kinematicSystem, PlayerControlSystem& _playerControlSystem, PlayerInteractionSystem& _playerInteractionSystem, WaypointSystem& _waypointSystem, EntityPrototypeFactory& _entityPrototypeFactory);
+		GameScene(inf::TextureManager& _textureManager, inf::InputManager& _inputManager, CastleConfigurationManager& _castleConfigurationManager, CollisionSystem& _collisionSystem, KinematicSystem& _kinematicSystem, PlayerControlSystem& _playerControlSystem, PlayerInteractionSystem& _playerInteractionSystem, WaypointSystem& _waypointSystem, EntityPrototypeFactory& _entityPrototypeFactory, LevelTransitionCoordinator& _levelTransitionCoordinator);
 		~GameScene(void) override;
 
 		void update(float _delta) override;
@@ -28,7 +29,6 @@ namespace castle {
 
 		void initialize(Level *_level);
 		void addPlayer(void) const;
-		void addParsedLevel(const ParsedLevel& _parsedLevel);
 
 		void setActiveLevel(const std::string& _levelName);
 
@@ -45,6 +45,7 @@ namespace castle {
 		PlayerInteractionSystem& m_PlayerInteractionSystem;
 		WaypointSystem& m_WaypointSystem;
 		EntityPrototypeFactory& m_EntityPrototypeFactory;
+		LevelTransitionCoordinator& m_LevelTransitionCoordinator;
 	};
 }
 

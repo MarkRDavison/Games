@@ -9,6 +9,7 @@
 #include <Castle/GameObjects/Level.hpp>
 
 #include <EntityComponentSystem/Entity.hpp>
+#include <EntityComponentSystem/EntityManager.hpp>
 
 #include <Utility/Orientation.hpp>
 

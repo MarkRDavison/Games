@@ -51,7 +51,7 @@ namespace ecs {
 		return addEntity("");
 	}
 	Entity& EntityManager::addEntity(const std::string& _helpfulName) {
-		Entity* e(new Entity(*this));
+		Entity* e(new Entity(this));
 
 		if (_helpfulName == "") {
 			e->name = std::to_string(intptr_t(e));
@@ -72,6 +72,7 @@ namespace ecs {
 		}
 		_newManager.m_Entities.push_back(std::move(*it));
 		_currentManager.m_Entities.erase(it);
+		_entity->updateEntityManager(&_newManager);
 		return true;
 	}
 
