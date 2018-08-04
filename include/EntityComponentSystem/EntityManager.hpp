@@ -15,6 +15,9 @@ namespace ecs {
 		void applyActionToAllEntities(const std::function<void(Entity&)>& _function);
 
 		void refresh();
+		std::size_t getNumberOfEntities(void) const noexcept {
+			return m_Entities.size();
+		}
 
 		Entity& addEntity();
 		Entity& addEntity(const std::string& _helpfulName);

@@ -22,8 +22,13 @@
 #include <Castle/Infrastructure/LuaLevelParser.hpp>
 #include <Castle/Infrastructure/LevelTransitionCoordinator.hpp>
 #include <Castle/Scenes/GameScene.hpp>
+#include <Castle/Scenes/DebugOverlayScene.hpp>
 #include <Castle/Scenes/PlayerCollisionTestScene.hpp>
 #include <Castle/Systems/PlayerControlSystem.hpp>
+
+#include <Hurricane/Scenes/GameScene.hpp>
+#include <Hurricane/Infrastructure/HurricaneConfigurationManager.hpp>
+#include <Hurricane/Scenes/DebugOverlayGameScene.hpp>
 
 void runSnake(void) {
 	inf::FontManager fontManager;
@@ -75,8 +80,8 @@ void runPacman(void) {
 	pacman::PacmanConfigurationManager configurationManager = pacman::PacmanConfigurationManager(luaManager);
 	configurationManager.loadConfiguration("./data/scripts/Pacman/config.lua");
 	app.initialise(configurationManager.getResolution(), configurationManager.getTitle(), configurationManager.getGameViewScale());
-
-	pacman::GameScene *gameScene = new pacman::GameScene(textureManager, pacman::BoardFactory::createStandardBoard());
+	auto *b = pacman::BoardFactory::createStandardBoard();
+	pacman::GameScene *gameScene = new pacman::GameScene(textureManager, b);
 	gameScene->initialize();
 	sceneManager.pushScene(gameScene);
 
@@ -98,6 +103,8 @@ void runCastle(void) {
 	textureManager.loadTexture("./data/textures/Castle/spike.png", "spike");
 	textureManager.loadTexture("./data/textures/Castle/coin.png", "coin");
 	textureManager.loadTexture("./data/textures/Castle/flame.png", "flame");
+
+	fontManager.loadFont("./data/fonts/Castle/SourceCodePro-Regular.otf", "source_code_pro_regular");
 
 	inf::Application app(fontManager, sceneManager);
 	castle::CastleConfigurationManager configurationManager = castle::CastleConfigurationManager(luaManager);
@@ -122,6 +129,9 @@ void runCastle(void) {
 	gameScene->addPlayer();
 
 	sceneManager.pushScene(gameScene);
+
+	castle::DebugOverlayScene *overlayScene = new castle::DebugOverlayScene(fontManager);
+	sceneManager.pushScene(overlayScene);
 
 	app.start();
 }
@@ -159,11 +169,63 @@ void runCastleTestScene(void) {
 	app.start();
 }
 
+void runHurricane(void) {
+
+	inf::FontManager fontManager;
+	inf::SceneManager sceneManager;
+	inf::TextureManager textureManager;
+	inf::LuaManager luaManager;
+	inf::InputManager inputManager;
+
+	ecs::EntityManager entityManager;
+
+	inf::Application app(fontManager, sceneManager);
+
+	hur::HurricaneConfigurationManager configurationManager = hur::HurricaneConfigurationManager(luaManager);
+
+	configurationManager.loadConfiguration("./data/scripts/Hurricane/config.lua");
+
+	textureManager.loadTexture("./data/textures/Hurricane/Lasers/laserRed01.png", "laser_red");
+	textureManager.loadTexture("./data/textures/Hurricane/Lasers/laserGreen11.png", "laser_green");
+	textureManager.loadTexture("./data/textures/Hurricane/Lasers/laserBlue01.png", "laser_blue");
+	textureManager.loadTexture("./data/textures/Hurricane/playerShip1_blue.png", "player_ship");
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack1.png", "enemy_ship_black_1");
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack2.png", "enemy_ship_black_2");
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack3.png", "enemy_ship_black_3");
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack4.png", "enemy_ship_black_4");
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack5.png", "enemy_ship_black_5");
+
+	app.initialise(configurationManager.getResolution(), configurationManager.getTitle(), configurationManager.getGameViewScale());
+
+	hur::CollisionSystem collisionSystem;
+	hur::KinematicSystem kinematicSystem;
+	hur::PlayerControlSystem playerControlSystem(inputManager, textureManager);
+	hur::ProjectileControlSystem projectileControlSystem;
+
+	hur::GameScene *gameScene = new hur::GameScene(textureManager, collisionSystem, kinematicSystem, playerControlSystem, projectileControlSystem);
+	hur::DebugOverlayGameScene *debugOverlayGameScene = new hur::DebugOverlayGameScene(entityManager, fontManager);
+
+	gameScene->m_Level = new hur::Level(entityManager);
+	gameScene->addPlayer();
+	gameScene->addEnemy(0, { 4.0f, 5.0f });
+	gameScene->addEnemy(1, { 7.0f, 5.0f });
+	gameScene->addEnemy(2, { 10.0f, 5.0f });
+	gameScene->addEnemy(3, { 13.0f, 5.0f });
+	gameScene->addEnemy(4, { 16.0f, 5.0f });
+
+	sceneManager.pushScene(gameScene);
+	sceneManager.pushScene(debugOverlayGameScene);
+
+	app.start();
+}
+
 int main(int _argc, char **_argv) {
 	//runArkanoid();
 	//runSnake();
 	//runPacman();
 
 	//runCastleTestScene();
-	runCastle();
+	//runCastle();
+
+	runHurricane();
 }

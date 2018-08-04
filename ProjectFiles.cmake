@@ -20,6 +20,7 @@ SET(ENTITY_COMPONENT_SYSTEM_HEADER_FILES ${ENTITY_COMPONENT_SYSTEM_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/EntityComponentSystem/ECS.hpp
 	${CMAKE_SOURCE_DIR}/include/EntityComponentSystem/Entity.hpp
 	${CMAKE_SOURCE_DIR}/include/EntityComponentSystem/EntityManager.hpp
+	${CMAKE_SOURCE_DIR}/include/EntityComponentSystem/System.hpp
 )
 
 SET(ENTITY_COMPONENT_SYSTEM_SOURCE_FILES ${ENTITY_COMPONENT_SYSTEM_SOURCE_FILES}
@@ -138,6 +139,7 @@ SET(CASTLE_HEADER_FILES ${CASTLE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Castle/DataStructures/ParsedLevel.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Castle/Scenes/GameScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Castle/Scenes/DebugOverlayScene.hpp
 	${CMAKE_SOURCE_DIR}/include/Castle/Scenes/PlayerCollisionTestScene.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Castle/Systems/System.hpp
@@ -157,6 +159,7 @@ SET(CASTLE_SOURCE_FILES ${CASTLE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Castle/Infrastructure/LevelTransitionCoordinator.cpp
 	
 	${CMAKE_SOURCE_DIR}/src/Castle/Scenes/GameScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Castle/Scenes/DebugOverlayScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Castle/Scenes/PlayerCollisionTestScene.cpp
 	
 	${CMAKE_SOURCE_DIR}/src/Castle/Systems/CollisionSystem.cpp
@@ -164,6 +167,41 @@ SET(CASTLE_SOURCE_FILES ${CASTLE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Castle/Systems/PlayerControlSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Castle/Systems/PlayerInteractionSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Castle/Systems/WaypointSystem.cpp
+)
+
+# Hurricane
+SET(HURRICANE_HEADER_FILES ${HURRICANE_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/CollisionComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/MovementComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/PlayerComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/PositionComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/ProjectileComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/SpriteComponent.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Infrastructure/HurricaneConfigurationManager.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Objects/Level.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Scenes/DebugOverlayGameScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Scenes/GameScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/CollisionSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/KinematicSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/PlayerControlSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/ProjectileControlSystem.hpp
+)
+SET(HURRICANE_SOURCE_FILES ${HURRICANE_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/HurricaneConfigurationManager.cpp
+
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Objects/Level.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Scenes/DebugOverlayGameScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Scenes/GameScene.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/CollisionSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/KinematicSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/PlayerControlSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/ProjectileControlSystem.cpp
 )
 
 

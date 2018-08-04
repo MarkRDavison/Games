@@ -11,9 +11,6 @@ namespace castle {
 
 		}
 
-		float x() const noexcept { return position.x; }
-		float y() const noexcept { return position.y; }
-
 		sf::Vector2f position;
 		sf::Vector2f previousPosition;
 	};
