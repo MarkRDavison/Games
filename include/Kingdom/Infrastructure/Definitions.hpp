@@ -10,10 +10,10 @@ namespace kdm {
 
 		static constexpr float TileSize{ 1.0f };
 
-		static constexpr char *TerrainTextureName{ "terrain" };
-		static constexpr char *GearTextureName{ "gear" };
-		static constexpr char *UiLuaStateScope{ "UiLuaStateScope" };
-		static constexpr char *LevelParseLuaStateScope{ "LevelParseLuaStateScope" };
+		static constexpr const char *TerrainTextureName{ "terrain" };
+		static constexpr const char *GearTextureName{ "gear" };
+		static constexpr const char *UiLuaStateScope{ "UiLuaStateScope" };
+		static constexpr const char *LevelParseLuaStateScope{ "LevelParseLuaStateScope" };
 	};
 
 }

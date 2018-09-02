@@ -4,6 +4,7 @@
 #include <Kingdom/Services/IPathSurface.hpp>
 #include <Kingdom/Services/IPathfindingService.hpp>
 #include <Kingdom/DataStructures/Path.hpp>
+#include <limits>
 
 namespace kdm {
 
