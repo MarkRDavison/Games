@@ -270,6 +270,7 @@ SET(KINGDOM_HEADER_FILES ${KINGDOM_HEADER_FILES}
 SET(KINGDOM_SOURCE_FILES ${KINGDOM_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Kingdom/GameObjects/Level.cpp
 	
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Infrastructure/Definitions.cpp
 	${CMAKE_SOURCE_DIR}/src/Kingdom/Infrastructure/EntityFactory.cpp
 	${CMAKE_SOURCE_DIR}/src/Kingdom/Infrastructure/KingdomConfigurationManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Kingdom/Infrastructure/LuaLevelParser.cpp
