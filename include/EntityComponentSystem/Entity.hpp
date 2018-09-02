@@ -5,6 +5,7 @@
 #include <EntityComponentSystem/Component.hpp>
 #include <vector>
 #include <cassert>
+#include <typeinfo>
 
 namespace ecs {
 	class EntityManager;
