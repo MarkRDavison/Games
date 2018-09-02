@@ -13,7 +13,7 @@ namespace inf {
 	// TODO: Update to SFML 2.5 and use the clipboard!
 	class LuaConsole {
 	public:
-		static const constexpr unsigned PreviousCommandBufferMaxSize{ 10 };
+		static const constexpr unsigned PreviousCommandBufferMaxSize = 10;
 
 		LuaConsole(const std::string& _luaStateScope, LuaManager& _luaManager);
 

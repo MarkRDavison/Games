@@ -8,30 +8,30 @@ namespace hur {
 		Definitions(void) = delete;
 		~Definitions(void) = delete;
 
-		static constexpr char *BlueLaserTextureName{ "blue_laser" };
-		static constexpr char *BluePlayerShip{ "player_ship" };
+		static constexpr const char *BlueLaserTextureName{ "blue_laser" };
+		static constexpr const char *BluePlayerShip{ "player_ship" };
 
-		static constexpr char *EnemyShipBlack1{ "enemy_ship_black_1" };
-		static constexpr char *EnemyShipBlack2{ "enemy_ship_black_2" };
-		static constexpr char *EnemyShipBlack3{ "enemy_ship_black_3" };
-		static constexpr char *EnemyShipBlack4{ "enemy_ship_black_4" };
-		static constexpr char *EnemyShipBlack5{ "enemy_ship_black_5" };
+		static constexpr const char *EnemyShipBlack1{ "enemy_ship_black_1" };
+		static constexpr const char *EnemyShipBlack2{ "enemy_ship_black_2" };
+		static constexpr const char *EnemyShipBlack3{ "enemy_ship_black_3" };
+		static constexpr const char *EnemyShipBlack4{ "enemy_ship_black_4" };
+		static constexpr const char *EnemyShipBlack5{ "enemy_ship_black_5" };
 
-		static constexpr char *BoltBronze{ "bolt_bronze" };
-		static constexpr char *BoltSilver{ "bolt_silver" };
-		static constexpr char *BoltGold{ "bolt_gold" };
+		static constexpr const char *BoltBronze{ "bolt_bronze" };
+		static constexpr const char *BoltSilver{ "bolt_silver" };
+		static constexpr const char *BoltGold{ "bolt_gold" };
 
-		static constexpr char *PillBlue{ "pill_blue" };
-		static constexpr char *PillRed{ "pill_red" };
-		static constexpr char *PillYellow{ "pill_yellow" };
-		static constexpr char *PillGreen{ "pill_green" };
+		static constexpr const char *PillBlue{ "pill_blue" };
+		static constexpr const char *PillRed{ "pill_red" };
+		static constexpr const char *PillYellow{ "pill_yellow" };
+		static constexpr const char *PillGreen{ "pill_green" };
 
-		static constexpr char *TestDropTableName{ "TestDropTable" };
-		static constexpr char *BlackEnemyDropTable{ "BlackEnemyDropTable" };
+		static constexpr const char *TestDropTableName{ "TestDropTable" };
+		static constexpr const char *BlackEnemyDropTable{ "BlackEnemyDropTable" };
 
-		static constexpr char *StandardDamageType{ "Standard" };
-		static constexpr int PlayerTeam{ 1 };
-		static constexpr int EnemyTeam{ 2 };
+		static constexpr const char *StandardDamageType{ "Standard" };
+		static constexpr const int PlayerTeam{ 1 };
+		static constexpr const int EnemyTeam{ 2 };
 	};
 
 }
