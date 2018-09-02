@@ -8,7 +8,7 @@ namespace kdm {
 		Definitions(void) = delete;
 		~Definitions(void) = delete;
 
-		static constexpr float TileSize{ 1.0f };
+		static constexpr const float TileSize = 1.0f;
 
 		static constexpr const char *TerrainTextureName{ "terrain" };
 		static constexpr const char *GearTextureName{ "gear" };

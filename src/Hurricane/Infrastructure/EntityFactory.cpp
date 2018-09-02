@@ -8,8 +8,8 @@
 #include <Hurricane/Components/CollisionComponent.hpp>
 #include <Hurricane/Infrastructure/EntityGroups.hpp>
 #include <Hurricane/Components/DropComponent.hpp>
-#include <iostream>
 #include <Hurricane/Components/PickupComponent.hpp>
+#include <iostream>
 
 namespace hur {
 
