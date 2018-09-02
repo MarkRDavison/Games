@@ -4,7 +4,7 @@ PROJECT(Games)
 
 IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
 	MESSAGE(STATUS "Clang system/compiler detected")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 -stdlib=libc++")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++17 -stdlib=libc++")
 
 	SET(ALL_LIBS ${ALL_LIBS}
 		"-framework OpenGL"
@@ -12,7 +12,7 @@ IF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
 
 ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")
 	MESSAGE(STATUS "G++ system/compiler detected")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
 	MESSAGE(STATUS "Intel system/compiler detected")
@@ -20,7 +20,7 @@ ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL "Intel")
 ELSEIF (${CMAKE_CXX_COMPILER_ID} STREQUAL ${MSVC})
 	MESSAGE(STATUS "Microsoft system/compiler detected")
 	ADD_DEFINITIONS(-DNOMINMAX -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_DEPRECATE -DGAMES_WIN32)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++14")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /std:c++17")
 
 	SET(SFML_ROOT "C:/Libraries/SFML-2.4.2")
 	SET(LUA_ROOT "C:/Libraries/Lua5.3")
