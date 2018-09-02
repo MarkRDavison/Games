@@ -12,7 +12,7 @@ namespace hur {
 		sf::Vector2f size;
 		sf::Vector2f offset;
 		PositionComponent *position{nullptr};
-
+		
 		CollisionComponent(const sf::Vector2f& _size) :
 			CollisionComponent(_size, sf::Vector2f()) {
 			
@@ -25,6 +25,10 @@ namespace hur {
 
 		void init(void) override {
 			position = &entity->getComponent<PositionComponent>();
+		}
+
+		sf::FloatRect getBounds(void) const {
+			return sf::FloatRect(position->position + offset - sf::Vector2f(size.x / 2.0f, size.y), size);
 		}
 
 		/*void draw(sf::RenderTarget& _target, sf::RenderStates _states) const override {

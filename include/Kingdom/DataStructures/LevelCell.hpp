@@ -1,0 +1,12 @@
+#ifndef INCLUDED_KINGDOM_DATA_STRUCTURES_LEVEL_CELL_HPP_
+#define INCLUDED_KINGDOM_DATA_STRUCTURES_LEVEL_CELL_HPP_
+
+namespace kdm {
+
+	struct LevelCell {
+		bool empty{ true };
+	};
+
+}
+
+#endif // INCLUDED_KINGDOM_DATA_STRUCTURES_LEVEL_CELL_HPP_

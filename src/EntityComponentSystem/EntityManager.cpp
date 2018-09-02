@@ -64,6 +64,15 @@ namespace ecs {
 		m_NewEntities.emplace_back(std::move(uPtr));
 		return *e;
 	}
+	Entity& EntityManager::getEntity(const std::string& _helpfulName) {
+		const auto result = std::find_if(m_Entities.begin(), m_Entities.end(), [_helpfulName](const std::unique_ptr<Entity>& _entity) { return _entity->name == _helpfulName; });
+
+		if (result != m_Entities.end()) {
+			return*(*result);
+		}
+
+		throw std::runtime_error("Could not find entity '" + _helpfulName + "'");
+	}
 
 	bool EntityManager::swapEntityBetweenManagers(Entity* _entity, EntityManager& _currentManager, EntityManager& _newManager) {
 		const auto it = std::find_if(_currentManager.m_Entities.begin(), _currentManager.m_Entities.end(), [_entity](std::unique_ptr<Entity>& e) { return e.get() == _entity; });

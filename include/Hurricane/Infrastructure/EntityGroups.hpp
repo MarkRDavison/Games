@@ -10,7 +10,8 @@ namespace hurr {
 		GKinematic,
 		GCollideable,
 		GProjectile,
-		GEnemy
+		GEnemy,
+		GPickup
 	};
 
 }

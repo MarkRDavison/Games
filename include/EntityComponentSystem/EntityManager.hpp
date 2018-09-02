@@ -21,6 +21,7 @@ namespace ecs {
 
 		Entity& addEntity();
 		Entity& addEntity(const std::string& _helpfulName);
+		Entity& getEntity(const std::string& _helpfulName);
 
 		static bool swapEntityBetweenManagers(Entity *_entity, EntityManager& _currentManager, EntityManager& _newManager);
 

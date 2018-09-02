@@ -17,11 +17,12 @@ namespace hur {
 
 		void update(float _delta) override;
 		bool handleEvent(const sf::Event& _event) override;
-		void draw(sf::RenderTarget& _target, sf::RenderStates _states) const override;
+		void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const override;
 
 	private:
 		ecs::EntityManager& m_EntityManager;
 		sf::Text m_NumberOfEntitiesText;
+		sf::Text m_NumberOfEnemiesText;
 		sf::Text m_NumberOfProjectilesText;
 
 		const float updateRate{ 0.5f };

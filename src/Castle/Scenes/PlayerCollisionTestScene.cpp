@@ -67,7 +67,7 @@ namespace castle {
 		}
 		return false;
 	}
-	void PlayerCollisionTestScene::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
+	void PlayerCollisionTestScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
 		sf::RenderStates levelStates(_states);
 		levelStates.texture = &m_TextureManager.getTexture("terrain");
 		_target.draw(reinterpret_cast<const sf::Drawable&>(*m_Level), levelStates);

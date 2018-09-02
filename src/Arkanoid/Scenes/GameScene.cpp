@@ -53,7 +53,7 @@ namespace ark {
 	bool GameScene::handleEvent(const sf::Event& _event) {
 		return false;
 	}
-	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
+	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
 		m_EntityManager.draw(_target, _states);
 	}
 	

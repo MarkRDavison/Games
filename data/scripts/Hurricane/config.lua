@@ -4,5 +4,5 @@ config = {
 		y = 800
 	},
 	title = "Hurricane - Pre Alpha",
-	gameViewScale = 50.0
+	gameViewScale = 50.0	
 }

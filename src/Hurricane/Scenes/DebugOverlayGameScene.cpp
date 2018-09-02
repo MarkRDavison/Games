@@ -7,15 +7,22 @@ namespace hur {
 		inf::Scene("hur::DebugOverlayGameScene"),
 		m_EntityManager(_entityManager),
 		m_NumberOfEntitiesText("Entities: ~", _fontManager.getFont("DEBUG"), 16u),
+		m_NumberOfEnemiesText("Enemies: ~", _fontManager.getFont("DEBUG"), 16u),
 		m_NumberOfProjectilesText("Projectiles: ~", _fontManager.getFont("DEBUG"), 16u) {
 
 		m_NumberOfEntitiesText.setFillColor(sf::Color::White);
 		m_NumberOfEntitiesText.setOutlineColor(sf::Color::Black);
 		m_NumberOfEntitiesText.setOutlineThickness(2.0f);
 
+		m_NumberOfEnemiesText.setFillColor(sf::Color::White);
+		m_NumberOfEnemiesText.setOutlineColor(sf::Color::Black);
+		m_NumberOfEnemiesText.setOutlineThickness(2.0f);
+
 		m_NumberOfProjectilesText.setFillColor(sf::Color::White);
 		m_NumberOfProjectilesText.setOutlineColor(sf::Color::Black);
 		m_NumberOfProjectilesText.setOutlineThickness(2.0f);
+		
+		
 		
 	}
 	DebugOverlayGameScene::~DebugOverlayGameScene(void) {
@@ -27,13 +34,14 @@ namespace hur {
 		if (updateAccumulation >= updateRate) {
 			updateAccumulation -= updateRate;
 			m_NumberOfEntitiesText.setString("Entities: " + std::to_string(m_EntityManager.getNumberOfEntities()));
+			m_NumberOfEnemiesText.setString("Enemies: " + std::to_string(m_EntityManager.getEntitiesByGroup(hurr::EntityGroup::GEnemy).size()));
 			m_NumberOfProjectilesText.setString("Projectiles: " + std::to_string(m_EntityManager.getEntitiesByGroup(hurr::EntityGroup::GProjectile).size()));
 		}
 	}
 	bool DebugOverlayGameScene::handleEvent(const sf::Event& _event) {
 		return false;
 	}
-	void DebugOverlayGameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
+	void DebugOverlayGameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
 		const sf::View originalView = _target.getView();
 
 		_target.setView(_target.getDefaultView());
@@ -42,6 +50,9 @@ namespace hur {
 
 		states.transform.translate(0.0f, 16.0f);
 		_target.draw(m_NumberOfEntitiesText, states);
+
+		states.transform.translate(0.0f, 16.0f);
+		_target.draw(m_NumberOfEnemiesText, states);
 
 		states.transform.translate(0.0f, 16.0f);
 		_target.draw(m_NumberOfProjectilesText, states);

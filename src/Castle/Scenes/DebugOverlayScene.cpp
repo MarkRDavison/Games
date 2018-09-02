@@ -19,7 +19,7 @@ namespace castle {
 	bool DebugOverlayScene::handleEvent(const sf::Event& _event) {
 		return false;
 	}
-	void DebugOverlayScene::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
+	void DebugOverlayScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
 		auto& v = _target.getView();
 		_target.setView(_target.getDefaultView());
 

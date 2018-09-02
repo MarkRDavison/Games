@@ -12,14 +12,14 @@ namespace inf {
 		static const std::string DefaultStateScope;
 
 		LuaManager(void);
-		~LuaManager(void);
+		virtual ~LuaManager(void);
 
-		void runScriptFile(const std::string& _scriptPath);
-		void runScriptFile(const std::string& _scriptPath, const std::string& _scope);
-		void runScript(const std::string& _script);
-		void runScript(const std::string& _script, const std::string& _scope);
+		virtual void runScriptFile(const std::string& _scriptPath);
+		virtual void runScriptFile(const std::string& _scriptPath, const std::string& _scope);
+		virtual void runScript(const std::string& _script);
+		virtual void runScript(const std::string& _script, const std::string& _scope);
 
-		void createState(const std::string& _scope);
+		virtual void createState(const std::string& _scope);
 
 		sol::state& getState(const std::string& _scope);
 

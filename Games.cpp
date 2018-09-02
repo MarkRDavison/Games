@@ -29,6 +29,9 @@
 #include <Hurricane/Scenes/GameScene.hpp>
 #include <Hurricane/Infrastructure/HurricaneConfigurationManager.hpp>
 #include <Hurricane/Scenes/DebugOverlayGameScene.hpp>
+#include <Hurricane/Infrastructure/Definitions.hpp>
+#include <Hurricane/Infrastructure/LuaDataParser.hpp>
+#include <Hurricane/Systems/PickupControlSystem.hpp>
 
 void runSnake(void) {
 	inf::FontManager fontManager;
@@ -181,28 +184,39 @@ void runHurricane(void) {
 
 	inf::Application app(fontManager, sceneManager);
 
+	hur::LuaDataParser dataParser(luaManager);
 	hur::HurricaneConfigurationManager configurationManager = hur::HurricaneConfigurationManager(luaManager);
 
 	configurationManager.loadConfiguration("./data/scripts/Hurricane/config.lua");
+	dataParser.parseDropTables("./data/scripts/Hurricane/DropTables.lua");
 
 	textureManager.loadTexture("./data/textures/Hurricane/Lasers/laserRed01.png", "laser_red");
 	textureManager.loadTexture("./data/textures/Hurricane/Lasers/laserGreen11.png", "laser_green");
-	textureManager.loadTexture("./data/textures/Hurricane/Lasers/laserBlue01.png", "laser_blue");
-	textureManager.loadTexture("./data/textures/Hurricane/playerShip1_blue.png", "player_ship");
-	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack1.png", "enemy_ship_black_1");
-	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack2.png", "enemy_ship_black_2");
-	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack3.png", "enemy_ship_black_3");
-	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack4.png", "enemy_ship_black_4");
-	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack5.png", "enemy_ship_black_5");
+	textureManager.loadTexture("./data/textures/Hurricane/Lasers/laserBlue01.png", hur::Definitions::BlueLaserTextureName);
+	textureManager.loadTexture("./data/textures/Hurricane/playerShip1_blue.png", hur::Definitions::BluePlayerShip);
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack1.png", hur::Definitions::EnemyShipBlack1);
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack2.png", hur::Definitions::EnemyShipBlack2);
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack3.png", hur::Definitions::EnemyShipBlack3);
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack4.png", hur::Definitions::EnemyShipBlack4);
+	textureManager.loadTexture("./data/textures/Hurricane/Enemies/enemyBlack5.png", hur::Definitions::EnemyShipBlack5);
+	textureManager.loadTexture("./data/textures/Hurricane/Power-ups/bolt_gold.png", hur::Definitions::BoltGold);
+	textureManager.loadTexture("./data/textures/Hurricane/Power-ups/bolt_silver.png", hur::Definitions::BoltSilver);
+	textureManager.loadTexture("./data/textures/Hurricane/Power-ups/bolt_bronze.png", hur::Definitions::BoltBronze);
+	textureManager.loadTexture("./data/textures/Hurricane/Power-ups/pill_blue.png", hur::Definitions::PillBlue);
+	textureManager.loadTexture("./data/textures/Hurricane/Power-ups/pill_green.png", hur::Definitions::PillGreen);
+	textureManager.loadTexture("./data/textures/Hurricane/Power-ups/pill_red.png", hur::Definitions::PillRed);
+	textureManager.loadTexture("./data/textures/Hurricane/Power-ups/pill_yellow.png", hur::Definitions::PillYellow);
 
 	app.initialise(configurationManager.getResolution(), configurationManager.getTitle(), configurationManager.getGameViewScale());
 
-	hur::CollisionSystem collisionSystem;
+	hur::EntityFactory entityFactory(textureManager, dataParser);
+	hur::CollisionSystem collisionSystem(entityFactory);
 	hur::KinematicSystem kinematicSystem;
 	hur::PlayerControlSystem playerControlSystem(inputManager, textureManager);
 	hur::ProjectileControlSystem projectileControlSystem;
+	hur::PickupControlSystem pickupControlSystem;
 
-	hur::GameScene *gameScene = new hur::GameScene(textureManager, collisionSystem, kinematicSystem, playerControlSystem, projectileControlSystem);
+	hur::GameScene *gameScene = new hur::GameScene(textureManager, collisionSystem, kinematicSystem, playerControlSystem, projectileControlSystem, pickupControlSystem, entityFactory);
 	hur::DebugOverlayGameScene *debugOverlayGameScene = new hur::DebugOverlayGameScene(entityManager, fontManager);
 
 	gameScene->m_Level = new hur::Level(entityManager);

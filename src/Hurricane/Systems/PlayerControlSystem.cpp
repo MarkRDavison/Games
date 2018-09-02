@@ -4,6 +4,8 @@
 #include <Hurricane/Components/SpriteComponent.hpp>
 #include <Hurricane/Components/CollisionComponent.hpp>
 #include <Hurricane/Components/MovementComponent.hpp>
+#include <Hurricane/Components/DamageComponent.hpp>
+#include <Hurricane/Infrastructure/Definitions.hpp>
 #include <Hurricane/Infrastructure/EntityGroups.hpp>
 
 #include <EntityComponentSystem/Entity.hpp>
@@ -11,6 +13,7 @@
 #include <Utility/VectorMath.hpp>
 
 #include <SFML/Graphics/Rect.hpp>
+#include <Hurricane/Components/ProjectileComponent.hpp>
 
 namespace hur {
 
@@ -66,14 +69,16 @@ namespace hur {
 	}
 
 	void PlayerControlSystem::createLaser(ecs::Entity* _entity, ecs::EntityManager& _entityManager) const {
-		ecs::Entity& e = _entityManager.addEntity();
+		ecs::Entity& e = _entityManager.addEntity("Player Laser");
 		e.addGroup(hurr::EntityGroup::GProjectile);
 		e.addGroup(hurr::EntityGroup::GKinematic);
 		e.addGroup(hurr::EntityGroup::GCollideable);
 		e.addComponent<PositionComponent>(_entity->getComponent<PositionComponent>().position - sf::Vector2f(0.0f, _entity->getComponent<CollisionComponent>().size.y));
 		e.addComponent<MovementComponent>().velocity.y = -16.0f;
 		const sf::Vector2f size{ 9.0f, 54.0f };
-		e.addComponent<SpriteComponent>(m_TextureManager.getTexture("laser_blue"), sf::IntRect(0, 0, static_cast<int>(size.x), static_cast<int>(size.y)));
+		e.addComponent<SpriteComponent>(m_TextureManager.getTexture(Definitions::BlueLaserTextureName), sf::IntRect(0, 0, static_cast<int>(size.x), static_cast<int>(size.y)));
 		e.addComponent<CollisionComponent>(sf::Vector2f(size.x / 64.0f, size.y / 64.0f));
+		e.addComponent<DamageComponent>(Definitions::StandardDamageType, 1, Definitions::PlayerTeam);
+		e.addComponent<ProjectileComponent>(true);
 	}
 }

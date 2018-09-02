@@ -105,7 +105,7 @@ namespace inf {
 			}
 
 			// Render
-			render();
+			render(accumulator / delta);
 			fps++;
 		}
 
@@ -125,12 +125,12 @@ namespace inf {
 		}
 	}
 
-	void Application::render(void) {
+	void Application::render(float _alpha) {
 		m_Window.clear(sf::Color::Black);
 		
 		m_Window.setView(m_GameView);
 
-		m_SceneManager.draw(m_Window, sf::RenderStates::Default);
+		m_SceneManager.draw(m_Window, sf::RenderStates::Default, _alpha);
 
 		m_Window.setView(m_UiView);
 

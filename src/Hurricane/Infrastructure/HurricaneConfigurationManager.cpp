@@ -1,4 +1,5 @@
 #include <Hurricane/Infrastructure/HurricaneConfigurationManager.hpp>
+#include <Infrastructure/LuaManager.hpp>
 
 namespace hur {
 

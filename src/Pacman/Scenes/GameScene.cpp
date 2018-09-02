@@ -39,7 +39,7 @@ namespace pacman {
 		return false;
 	}
 
-	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
+	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
 		sf::RenderStates boardStates(_states);
 		boardStates.transform.translate(-0.5f, -0.5f);
 		//boardStates.texture = &m_TextureManager.getTexture("spritemap");

@@ -14,7 +14,7 @@ namespace inf {
 
 		virtual void update(float _delta) = 0;
 		virtual bool handleEvent(const sf::Event& _event) = 0;
-		virtual void draw(sf::RenderTarget& _target, sf::RenderStates _states) const = 0;
+		virtual void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const = 0;
 	};
 }
 

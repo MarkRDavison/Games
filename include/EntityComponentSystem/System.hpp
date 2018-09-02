@@ -1,7 +1,6 @@
 #ifndef INCLUDED_ENTITY_COMPONENT_SYSTEM_SYSTEM_HPP_
 #define INCLUDED_ENTITY_COMPONENT_SYSTEM_SYSTEM_HPP_
 
-#include <EntityComponentSystem/Entity.hpp>
 #include <EntityComponentSystem/EntityManager.hpp>
 #include <SFML/Window/Event.hpp>
 

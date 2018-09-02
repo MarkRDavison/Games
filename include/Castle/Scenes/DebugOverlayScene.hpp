@@ -13,7 +13,7 @@ namespace castle {
 
 		void update(float _delta) override;
 		bool handleEvent(const sf::Event& _event) override;
-		void draw(sf::RenderTarget& _target, sf::RenderStates _states) const override;
+		void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const override;
 
 	private:
 		inf::FontManager& m_FontManager;

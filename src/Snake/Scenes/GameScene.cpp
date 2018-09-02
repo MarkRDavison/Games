@@ -37,7 +37,7 @@ namespace snake {
 		}
 		return false;
 	}
-	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
+	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
 		_target.draw(m_BoardVertexArray, _states);
 		m_EntityManager.draw(_target, _states);
 	}

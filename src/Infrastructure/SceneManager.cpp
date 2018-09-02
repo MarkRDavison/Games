@@ -25,9 +25,9 @@ namespace inf {
 		return false;
 	}
 
-	void SceneManager::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
+	void SceneManager::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
 		for (const auto& scene : m_Scenes) {
-			scene->draw(_target, _states);
+			scene->draw(_target, _states, _alpha);
 		}
 	}
 

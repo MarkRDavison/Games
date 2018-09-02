@@ -7,10 +7,12 @@ namespace hur {
 
 	struct ProjectileComponent : ecs::Component {
 
-		void init(void) override {
+		bool destroyedOnCollision{ false };
 
+		ProjectileComponent(bool _destroyedOnCollision) :
+			destroyedOnCollision(_destroyedOnCollision) {
+			
 		}
-
 	};
 }
 

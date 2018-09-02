@@ -1,10 +1,9 @@
 #ifndef INCLUDED_TEST_CATCH_TO_STRING_HPP_
 #define INCLUDED_TEST_CATCH_TO_STRING_HPP_
 
+#include <Utility/Orientation.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
-#include <Expedition/Enumerations/Orientation.hpp>
-#include <Expedition/Enumerations/MovementStateEnum.hpp>
 
 
 namespace Catch {
@@ -22,33 +21,19 @@ namespace Catch {
 	};
 
 	template<>
-	struct StringMaker<expd::Orientation> {
-		static std::string convert(expd::Orientation const& _value) {
+	struct StringMaker<inf::Orientation> {
+		static std::string convert(inf::Orientation const& _value) {
 			switch (_value) {
-			case expd::Orientation::Up:
+			case inf::Orientation::Up:
 				return "Up";
-			case expd::Orientation::Right:
+			case inf::Orientation::Right:
 				return "Right";
-			case expd::Orientation::Down:
+			case inf::Orientation::Down:
 				return "Down";
-			case expd::Orientation::Left:
+			case inf::Orientation::Left:
 				return "v";
-			case expd::Orientation::None:
+			case inf::Orientation::None:
 				return "None";
-			default:
-				return "Not defined orientation";
-			}
-		}
-	};
-
-	template<>
-	struct StringMaker<expd::MovementStateEnum> {
-		static std::string convert(expd::MovementStateEnum const& _value) {
-			switch (_value) {
-			case expd::MovementStateEnum::Idle:
-				return "Idle";
-			case expd::MovementStateEnum::InMotion:
-				return "InMotion";
 			default:
 				return "Not defined orientation";
 			}

@@ -17,11 +17,13 @@ namespace inf {
 		void initialise(const sf::Vector2u& _resolution, const std::string& _title, float _scale);
 		void start(void);
 
+		sf::RenderTarget& getRenderTarget(void) noexcept { return m_Window; }
+
 	private:
 
 		void update(float _delta) const;
 		void handleEvent(const sf::Event& _event);
-		void render(void);
+		void render(float _alpha);
 
 	private:
 		bool m_Running;

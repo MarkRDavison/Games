@@ -72,6 +72,17 @@ namespace ecs {
 			return *reinterpret_cast<T*>(ptr);
 		}
 
+		template <typename T>
+		T& getComponentOfBaseType() const {
+			for (auto c : m_ComponentArray) {
+				T *btc = dynamic_cast<T*>(c);
+				if (btc != nullptr) {
+					return *reinterpret_cast<T*>(btc);
+				}
+			}
+			throw std::runtime_error("Cannot find component inheriting " + std::string(typeid(T).name()));
+		}
+
 	private:
 		EntityManager *m_EntityManager;
 		bool m_Alive{ true };

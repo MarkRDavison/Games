@@ -34,8 +34,10 @@ SET(INFRASTRUCURE_HEADER_FILES ${INFRASTRUCURE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/ConfigurationManager.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/FontManager.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/InputManager.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/LuaConsole.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/LuaManager.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Scene.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Scenes/LuaConsoleScene.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/SceneManager.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/TextureManager.hpp
 )
@@ -44,8 +46,10 @@ SET(INFRASTRUCTURE_SOURCE_FILES ${INFRASTRUCTURE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/ConfigurationManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/FontManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/InputManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/LuaConsole.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/LuaManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Scene.cpp
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Scenes/LuaConsoleScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/SceneManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/TextureManager.cpp
 )
@@ -172,14 +176,23 @@ SET(CASTLE_SOURCE_FILES ${CASTLE_SOURCE_FILES}
 # Hurricane
 SET(HURRICANE_HEADER_FILES ${HURRICANE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/CollisionComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/DamageComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/DropComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/HealthComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/MovementComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/PickupComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/PlayerComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/PositionComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/ProjectileComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Components/SpriteComponent.hpp
-
+	
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Infrastructure/Definitions.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Infrastructure/EntityFactory.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Infrastructure/EntityGroups.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Infrastructure/HurricaneConfigurationManager.hpp
-
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Infrastructure/LuaDataParser.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Objects/DropTable.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Objects/Level.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Scenes/DebugOverlayGameScene.hpp
@@ -187,11 +200,14 @@ SET(HURRICANE_HEADER_FILES ${HURRICANE_HEADER_FILES}
 	
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/CollisionSystem.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/KinematicSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/PickupControlSystem.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/PlayerControlSystem.hpp
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/ProjectileControlSystem.hpp
 )
 SET(HURRICANE_SOURCE_FILES ${HURRICANE_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/EntityFactory.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/HurricaneConfigurationManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/LuaDataParser.cpp
 
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Objects/Level.cpp
 	
@@ -200,13 +216,87 @@ SET(HURRICANE_SOURCE_FILES ${HURRICANE_SOURCE_FILES}
 	
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/CollisionSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/KinematicSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/PickupControlSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/PlayerControlSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/ProjectileControlSystem.cpp
 )
 
 
 SET(TEST_SOURCE_FILES ${TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/LuaConsoleTests.cpp
 )
 
 SET(TEST_HEADER_FILES ${TEST_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/InputManagerMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/LuaManagerMock.hpp
+)
+
+# Kingdom
+SET(KINGDOM_HEADER_FILES ${KINGDOM_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/MovementComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/PathfindingComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/PositionComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/RenderableComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/SpriteComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/WaypointComponent.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Kingdom/DataStructures/LevelCell.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/DataStructures/ParsedLevel.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/DataStructures/PathNode.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Exceptions/SurfaceNotFoundException.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Kingdom/GameObjects/Level.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Infrastructure/Definitions.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Infrastructure/EntityFactory.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Infrastructure/KingdomConfigurationManager.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Infrastructure/LuaLevelParser.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Scenes/GameScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/IPathfindingService.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/PathfindingService.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/IPathSurface.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/ISurfaceService.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/SurfaceService.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Systems/MovementSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Systems/PathfindingSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Systems/RenderSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Systems/WaypointSystem.hpp
+)
+
+SET(KINGDOM_SOURCE_FILES ${KINGDOM_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Kingdom/GameObjects/Level.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Infrastructure/EntityFactory.cpp
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Infrastructure/KingdomConfigurationManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Infrastructure/LuaLevelParser.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Scenes/GameScene.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Services/PathfindingService.cpp	
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Services/SurfaceService.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Systems/MovementSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Systems/PathfindingSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Systems/RenderSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Kingdom/Systems/WaypointSystem.cpp
+)
+
+SET(KINGDOM_TEST_HEADER_FILES ${KINGDOM_TEST_HEADER_FILES} 
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Kingdom/Services/PathfindingServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Kingdom/Services/PathSurfaceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Kingdom/Services/SurfaceServiceMock.hpp
+)
+SET(KINGDOM_TEST_SOURCE_FILES ${KINGDOM_TEST_SOURCE_FILES} 
+	${CMAKE_SOURCE_DIR}/test/src/Kingdom/GameObjects/LevelTests.cpp
+	
+	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Services/PathfindingServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Services/SurfaceServiceTests.cpp
+	
+	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Systems/MovementSystemTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Systems/PathfindingSystemTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Systems/WaypointSystemTests.cpp
 )

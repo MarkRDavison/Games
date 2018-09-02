@@ -12,7 +12,7 @@ namespace inf {
 
 		void update(float _delta);
 		bool handleEvent(const sf::Event& _event);
-		void draw(sf::RenderTarget& _target, sf::RenderStates _states) const ;
+		void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const ;
 
 		void pushScene(Scene *_scene);
 		Scene *popScene(void);
