@@ -10,4 +10,5 @@ namespace inf {
 	const sf::Color Colour::DarkGrey = sf::Color(95, 95, 95);
 	const sf::Color Colour::Orange = sf::Color(255, 105, 0);
 	const sf::Color Colour::HotPink = sf::Color(255, 105, 180);
+
 }
