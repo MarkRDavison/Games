@@ -2,6 +2,8 @@
 
 namespace inf {
 
+	const unsigned inf::LuaConsole::PreviousCommandBufferMaxSize = 10;
+
 	LuaConsole::LuaConsole(const std::string& _luaStateScope, LuaManager& _luaManager) :
 		m_LuaManager(_luaManager),
 		m_LuaStateScope(_luaStateScope) {
