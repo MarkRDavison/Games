@@ -2,9 +2,9 @@
 
 namespace kdm {
 	
-	const char *Definitions::TerrainTextureName = "terrain";
-	const char *Definitions::GearTextureName = "gear";
-	const char *Definitions::UiLuaStateScope = "UiLuaStateScope";
-	const char *Definitions::LevelParseLuaStateScope = "LevelParseLuaStateScope";
+	constexpr const char Definitions::TerrainTextureName[];
+	constexpr const char Definitions::GearTextureName[];
+	constexpr const char Definitions::UiLuaStateScope[];
+	constexpr const char Definitions::LevelParseLuaStateScope[];
 
 }

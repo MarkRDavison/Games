@@ -10,10 +10,10 @@ namespace kdm {
 
 		static constexpr const float TileSize = 1.0f;
 
-		static const char *TerrainTextureName;
-		static const char *GearTextureName;
-		static const char *UiLuaStateScope;
-		static const char *LevelParseLuaStateScope;
+		static constexpr const char TerrainTextureName[] = "terrain";
+		static constexpr const char GearTextureName[] = "gear";
+		static constexpr const char UiLuaStateScope[] = "UiLuaStateScope";
+		static constexpr const char LevelParseLuaStateScope[] = "LevelParseLuaStateScope";
 	};
 
 }

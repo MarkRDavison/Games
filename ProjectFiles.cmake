@@ -205,6 +205,7 @@ SET(HURRICANE_HEADER_FILES ${HURRICANE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Hurricane/Systems/ProjectileControlSystem.hpp
 )
 SET(HURRICANE_SOURCE_FILES ${HURRICANE_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/Definitions.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/EntityFactory.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/HurricaneConfigurationManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Infrastructure/LuaDataParser.cpp

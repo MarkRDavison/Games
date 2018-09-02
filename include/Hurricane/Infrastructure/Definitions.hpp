@@ -29,7 +29,7 @@ namespace hur {
 		static constexpr const char TestDropTableName[] = "TestDropTable";
 		static constexpr const char BlackEnemyDropTable[] = "BlackEnemyDropTable";
 
-		static constexpr const char *StandardDamageType{ "Standard" };
+		static constexpr const char StandardDamageType[] = "Standard";
 		static constexpr const int& PlayerTeam = 1;
 		static constexpr const int& EnemyTeam = 2;
 	};
