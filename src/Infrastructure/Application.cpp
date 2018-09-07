@@ -28,6 +28,7 @@ namespace inf {
 		srand(static_cast<unsigned int>(time(nullptr)));
 
 		m_Window.create(sf::VideoMode(_resolution.x, _resolution.y), _title, sf::Style::Close | sf::Style::Titlebar);
+		m_Window.setVisible(false);
 		m_Window.setVerticalSyncEnabled(false);
 		m_Window.setKeyRepeatEnabled(false);
 
@@ -50,6 +51,10 @@ namespace inf {
 			return;
 		}
 
+		m_Window.setVisible(true);
+		m_Window.setActive();
+		m_Window.requestFocus();
+		
 #ifdef _DEBUG
 #ifdef GAMES_WIN32
 		m_FPSText.setCharacterSize(16);

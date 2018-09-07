@@ -8,14 +8,9 @@
 #include <Kingdom/Infrastructure/Definitions.hpp>
 #include <Kingdom/Infrastructure/LuaLevelParser.hpp>
 #include <Kingdom/Scenes/GameScene.hpp>
-#include <Kingdom/Infrastructure/KingdomEntityGroups.hpp>
-#include <Kingdom/Components/PositionComponent.hpp>
-#include <Kingdom/Components/SpriteComponent.hpp>
-#include <Kingdom/Components/MovementComponent.hpp>
 #include <Kingdom/Components/WaypointComponent.hpp>
-#include <Kingdom/Components/PathfindingComponent.hpp>
-#include <Kingdom/Services/PathfindingService.hpp>
-#include <Kingdom/Services/SurfaceService.hpp>
+#include <Infrastructure/Services/PathfindingService.hpp>
+#include <Infrastructure/Services/SurfaceService.hpp>
 
 
 int main(int _argc, char **_argv) {
@@ -40,13 +35,21 @@ int main(int _argc, char **_argv) {
 
 	textureManager.loadTexture("./data/textures/Kingdom/terrain.png", kdm::Definitions::TerrainTextureName);
 	textureManager.loadTexture("./data/textures/Kingdom/gear.png", kdm::Definitions::GearTextureName);
+	textureManager.loadTexture("./data/textures/Kingdom/main_base.png", kdm::Definitions::MainBaseTextureName);
+	textureManager.loadTexture("./data/textures/Kingdom/temp_ore.png", kdm::Definitions::TempOreTextureName);
+	textureManager.loadTexture("./data/textures/Kingdom/worker.png", kdm::Definitions::WorkerTextureName);
 
 	ecs::EntityManager entityManager;
 
-	kdm::EntityFactory entityFactory(entityManager);
+	kdm::EntityFactory entityFactory(entityManager, textureManager, config);
+	entityFactory.spawnStartingBuilding({ 2, 4 });
+	entityFactory.spawnWorker({ 3,4 });
+	entityFactory.spawnTempOre({ 6, 5 });
+	entityFactory.spawnTempOre({ 1, 11 });
+	entityFactory.spawnTempOre({ 21, 8 });
 
-	const kdm::PathfindingService pathfindingService;
-	kdm::SurfaceService surfaceService;
+	const inf::PathfindingService pathfindingService;
+	inf::SurfaceService surfaceService;
 
 	kdm::RenderSystem renderSystem;
 	kdm::MovementSystem movementSystem;
@@ -68,19 +71,6 @@ int main(int _argc, char **_argv) {
 
 	sceneManager.pushScene(scene);
 	sceneManager.pushScene(consoleScene);
-
-	{
-		ecs::Entity& e = entityManager.addEntity("Gear");
-		e.addGroup(kdm::EntityGroup::GRenderable);
-		e.addGroup(kdm::EntityGroup::GMoveable);
-		e.addGroup(kdm::EntityGroup::GWaypoint);
-		e.addGroup(kdm::EntityGroup::GPathfindable);
-		e.addComponent<kdm::PositionComponent>(sf::Vector2f(4.5f, 4.5f));
-		e.addComponent<kdm::MovementComponent>().speed = 4.0f;
-		e.addComponent<kdm::WaypointComponent>();
-		e.addComponent<kdm::PathfindingComponent>();
-		e.addComponent<kdm::SpriteComponent>(textureManager.getTexture(kdm::Definitions::GearTextureName), sf::IntRect(0, 0, 64, 64), config.getGameViewScale()).visualOffset = {0.0f, 32.0f};
-	}
 
 	app.start();
 

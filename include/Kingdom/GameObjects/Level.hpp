@@ -4,11 +4,11 @@
 #include <SFML/Graphics.hpp>
 #include <Kingdom/DataStructures/LevelCell.hpp>
 #include <Kingdom/DataStructures/ParsedLevel.hpp>
-#include <Kingdom/Services/IPathSurface.hpp>
+#include <Infrastructure/Services/IPathSurface.hpp>
 
 namespace kdm {
 
-	class Level final : public sf::Drawable, public IPathSurface {
+	class Level final : public sf::Drawable, public inf::IPathSurface {
 	public:
 		Level(void);
 		~Level(void);

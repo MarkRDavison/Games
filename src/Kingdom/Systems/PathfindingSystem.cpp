@@ -6,7 +6,7 @@
 
 namespace kdm {
 
-	PathfindingSystem::PathfindingSystem(const IPathfindingService& _pathfindingService, const ISurfaceService& _surfaceService) :
+	PathfindingSystem::PathfindingSystem(const inf::IPathfindingService& _pathfindingService, const inf::ISurfaceService& _surfaceService) :
 		m_PathfindingService(_pathfindingService),
 		m_SurfaceService(_surfaceService) {
 		
@@ -30,7 +30,7 @@ namespace kdm {
 		}
 
 		pc.pathRequested = false;
-		const Path& p = m_PathfindingService.findPath(pc.start.x, pc.start.y, pc.end.x, pc.end.y, m_SurfaceService.getCurrentSurface());
+		const inf::Path& p = m_PathfindingService.findPath(pc.start.x, pc.start.y, pc.end.x, pc.end.y, m_SurfaceService.getCurrentSurface());
 
 		if (!p.isValid) {
 			pc.pathAttempedButFailed = true;
@@ -39,7 +39,7 @@ namespace kdm {
 
 		wc.waypoints.clear();
 		wc.currentWaypointIndex = 0;
-		for (const PathNode& node : p.nodes) {
+		for (const inf::PathNode& node : p.nodes) {
 			wc.waypoints.emplace_back(convertTileCoordToWaypointCoord(node.x, node.y));
 		}
 	}

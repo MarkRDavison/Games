@@ -2,8 +2,6 @@
 #include <Kingdom/Infrastructure/Definitions.hpp>
 #include <Infrastructure/Application.hpp>
 #include <Kingdom/Components/PathfindingComponent.hpp>
-#include <Kingdom/Components/PositionComponent.hpp>
-#include <Kingdom/Components/WaypointComponent.hpp>
 
 namespace kdm {
 
@@ -58,12 +56,6 @@ namespace kdm {
 			return true;
 		}
 
-		if (_event.type == sf::Event::MouseButtonPressed) {
-			if (handleMouseClicked(_event)) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {
@@ -74,24 +66,6 @@ namespace kdm {
 		}
 
 		m_RenderSystem.draw(m_EntityManager, _target, _states, _alpha);
-	}
-
-	bool GameScene::handleMouseClicked(const sf::Event& _event) const {
-		if (_event.mouseButton.button == sf::Mouse::Left) {
-			const sf::Vector2i screenCoords(_event.mouseButton.x, _event.mouseButton.y);
-			const sf::Vector2f worldCoords = m_ScreenToGameCoords(screenCoords);
-			const sf::Vector2i tileCoords(worldCoords);
-
-			ecs::Entity& e = m_EntityManager.getEntity("Gear");
-			PathfindingComponent& pc = e.getComponent<PathfindingComponent>();
-			WaypointComponent& wc = e.getComponent<WaypointComponent>();
-			if (!pc.pathRequested && wc.waypoints.empty()) {
-				pc.pathRequested = true;
-				pc.start = sf::Vector2u(e.getComponent<PositionComponent>().position);
-				pc.end = sf::Vector2u(tileCoords);
-			}
-		}
-		return false;
 	}
 
 }

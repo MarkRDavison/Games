@@ -37,9 +37,25 @@ SET(INFRASTRUCURE_HEADER_FILES ${INFRASTRUCURE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/LuaConsole.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/LuaManager.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Scene.hpp
-	${CMAKE_SOURCE_DIR}/include/Infrastructure/Scenes/LuaConsoleScene.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/SceneManager.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/SplashScreen.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/TextureManager.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/DataStructures/Path.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/DataStructures/PathNode.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Exceptions/SurfaceNotFoundException.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Gui/BasicButton.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Gui/UiElement.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Scenes/LuaConsoleScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/IPathfindingService.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/PathfindingService.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/IPathSurface.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/ISurfaceService.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/SurfaceService.hpp
 )
 SET(INFRASTRUCTURE_SOURCE_FILES ${INFRASTRUCTURE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Application.cpp
@@ -49,9 +65,18 @@ SET(INFRASTRUCTURE_SOURCE_FILES ${INFRASTRUCTURE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/LuaConsole.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/LuaManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Scene.cpp
-	${CMAKE_SOURCE_DIR}/src/Infrastructure/Scenes/LuaConsoleScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/SceneManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/SplashScreen.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/TextureManager.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Gui/BasicButton.cpp
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Gui/UiElement.cpp
+
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Scenes/LuaConsoleScene.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Services/PathfindingService.cpp	
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Services/SurfaceService.cpp
+
 )
 
 # Arkanoid
@@ -225,6 +250,9 @@ SET(HURRICANE_SOURCE_FILES ${HURRICANE_SOURCE_FILES}
 
 SET(TEST_SOURCE_FILES ${TEST_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/LuaConsoleTests.cpp
+	
+	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/PathfindingServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/SurfaceServiceTests.cpp
 )
 
 SET(TEST_HEADER_FILES ${TEST_HEADER_FILES}
@@ -234,6 +262,8 @@ SET(TEST_HEADER_FILES ${TEST_HEADER_FILES}
 
 # Kingdom
 SET(KINGDOM_HEADER_FILES ${KINGDOM_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/JobComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/JobPerformerComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/MovementComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/PathfindingComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Kingdom/Components/PositionComponent.hpp
@@ -243,9 +273,6 @@ SET(KINGDOM_HEADER_FILES ${KINGDOM_HEADER_FILES}
 
 	${CMAKE_SOURCE_DIR}/include/Kingdom/DataStructures/LevelCell.hpp
 	${CMAKE_SOURCE_DIR}/include/Kingdom/DataStructures/ParsedLevel.hpp
-	${CMAKE_SOURCE_DIR}/include/Kingdom/DataStructures/PathNode.hpp
-
-	${CMAKE_SOURCE_DIR}/include/Kingdom/Exceptions/SurfaceNotFoundException.hpp
 
 	${CMAKE_SOURCE_DIR}/include/Kingdom/GameObjects/Level.hpp
 	
@@ -255,12 +282,6 @@ SET(KINGDOM_HEADER_FILES ${KINGDOM_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Kingdom/Infrastructure/LuaLevelParser.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Kingdom/Scenes/GameScene.hpp
-	
-	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/IPathfindingService.hpp
-	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/PathfindingService.hpp
-	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/IPathSurface.hpp
-	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/ISurfaceService.hpp
-	${CMAKE_SOURCE_DIR}/include/Kingdom/Services/SurfaceService.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Kingdom/Systems/MovementSystem.hpp
 	${CMAKE_SOURCE_DIR}/include/Kingdom/Systems/PathfindingSystem.hpp
@@ -278,9 +299,6 @@ SET(KINGDOM_SOURCE_FILES ${KINGDOM_SOURCE_FILES}
 	
 	${CMAKE_SOURCE_DIR}/src/Kingdom/Scenes/GameScene.cpp
 	
-	${CMAKE_SOURCE_DIR}/src/Kingdom/Services/PathfindingService.cpp	
-	${CMAKE_SOURCE_DIR}/src/Kingdom/Services/SurfaceService.cpp
-	
 	${CMAKE_SOURCE_DIR}/src/Kingdom/Systems/MovementSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Kingdom/Systems/PathfindingSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Kingdom/Systems/RenderSystem.cpp
@@ -295,10 +313,41 @@ SET(KINGDOM_TEST_HEADER_FILES ${KINGDOM_TEST_HEADER_FILES}
 SET(KINGDOM_TEST_SOURCE_FILES ${KINGDOM_TEST_SOURCE_FILES} 
 	${CMAKE_SOURCE_DIR}/test/src/Kingdom/GameObjects/LevelTests.cpp
 	
-	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Services/PathfindingServiceTests.cpp
-	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Services/SurfaceServiceTests.cpp
-	
 	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Systems/MovementSystemTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Systems/PathfindingSystemTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Kingdom/Systems/WaypointSystemTests.cpp
+)
+
+# Intrusion
+SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES} 
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/LevelCell.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedLevel.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Intrusion/GameObjects/Level.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/EntityFactory.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/IntrusionConfigurationManager.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/IntrusionDefinitions.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/LuaLevelParser.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/GameScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/StartScene.hpp
+)
+
+SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Intrusion/GameObjects/Level.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/EntityFactory.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/IntrusionConfigurationManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/IntrusionDefinitions.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/LuaLevelParser.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/GameScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/StartScene.cpp
+)
+
+SET(INTRUSION_TEST_HEADER_FILES ${INTRUSION_TEST_HEADER_FILES}
+)
+
+SET(INTRUSION_TEST_SOURCE_FILES ${INTRUSION_TEST_SOURCE_FILES}
 )

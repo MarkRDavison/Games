@@ -7,7 +7,10 @@ namespace kdm {
 		GRenderable,
 		GMoveable,
 		GWaypoint,
-		GPathfindable
+		GPathfindable,
+		GJobPerformer,
+		GJobProvider,
+		GJob
 	};
 
 }

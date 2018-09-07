@@ -25,8 +25,6 @@ namespace kdm {
 		bool handleEvent(const sf::Event& _event) override;
 		void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const override;
 
-		bool handleMouseClicked(const sf::Event& _event) const;
-
 		std::function<sf::Vector2f(const sf::Vector2i&)>& m_ScreenToGameCoords;
 
 		Level *m_Level{nullptr};

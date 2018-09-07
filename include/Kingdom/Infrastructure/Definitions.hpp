@@ -12,6 +12,10 @@ namespace kdm {
 
 		static constexpr const char TerrainTextureName[] = "terrain";
 		static constexpr const char GearTextureName[] = "gear";
+		static constexpr const char MainBaseTextureName[] = "main_base";
+		static constexpr const char TempOreTextureName[] = "temp_ore";
+		static constexpr const char WorkerTextureName[] = "worker";
+
 		static constexpr const char UiLuaStateScope[] = "UiLuaStateScope";
 		static constexpr const char LevelParseLuaStateScope[] = "LevelParseLuaStateScope";
 	};

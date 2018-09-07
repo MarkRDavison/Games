@@ -3,19 +3,19 @@
 #include <Kingdom/Systems/PathfindingSystem.hpp>
 #include <Kingdom/Components/PathfindingComponent.hpp>
 #include <Kingdom/Components/WaypointComponent.hpp>
-#include <Mocks/Kingdom/Services/PathfindingServiceMock.hpp>
-#include <Mocks/Kingdom/Services/SurfaceServiceMock.hpp>
-#include <Mocks/Kingdom/Services/PathSurfaceMock.hpp>
+#include <Mocks/Infrastructure/Services/PathfindingServiceMock.hpp>
+#include <Mocks/Infrastructure/Services/SurfaceServiceMock.hpp>
+#include <Mocks/Infrastructure/Services/PathSurfaceMock.hpp>
 #include <Kingdom/Infrastructure/Definitions.hpp>
 
 namespace kdm {
 	namespace PathfindingSystemTests {
 		
 		TEST_CASE("Updating entity requesting pathfinding when a path cannot be found cancels the request and sets the failed flag", "[Kingdom][System][PathfindingSystem]") {
-			PathSurfaceMock pathSurfaceMock;
-			SurfaceServiceMock surfaceServiceMock;
+			inf::PathSurfaceMock pathSurfaceMock;
+			inf::SurfaceServiceMock surfaceServiceMock;
 			surfaceServiceMock.pathSurface = &pathSurfaceMock;
-			PathfindingServiceMock pathfindingServiceMock;
+			inf::PathfindingServiceMock pathfindingServiceMock;
 			pathfindingServiceMock.path.isValid = false;
 			PathfindingSystem system(pathfindingServiceMock, surfaceServiceMock);
 
@@ -36,23 +36,23 @@ namespace kdm {
 		}
 
 		TEST_CASE("Updating entity requesting pathfinding when a path can be found cancels the request and sets the waypoint components waypoints", "[Kingdom][System][PathfindingSystem]") {
-			PathNode start;
+			inf::PathNode start;
 			start.x = 0;
 			start.y = 0;
-			start.nodeType = PathNode::NodeType::Start;
-			PathNode middle;
+			start.nodeType = inf::PathNode::NodeType::Start;
+			inf::PathNode middle;
 			middle.x = 1;
 			middle.y = 0;
-			middle.nodeType = PathNode::NodeType::Standard;
-			PathNode end;
+			middle.nodeType = inf::PathNode::NodeType::Standard;
+			inf::PathNode end;
 			end.x = 2;
 			end.y = 0;
-			end.nodeType = PathNode::NodeType::End;
+			end.nodeType = inf::PathNode::NodeType::End;
 
-			PathSurfaceMock pathSurfaceMock;
-			SurfaceServiceMock surfaceServiceMock;
+			inf::PathSurfaceMock pathSurfaceMock;
+			inf::SurfaceServiceMock surfaceServiceMock;
 			surfaceServiceMock.pathSurface = &pathSurfaceMock;
-			PathfindingServiceMock pathfindingServiceMock;
+			inf::PathfindingServiceMock pathfindingServiceMock;
 			pathfindingServiceMock.path.isValid = true;
 			pathfindingServiceMock.path.nodes = { start, middle, end };
 			PathfindingSystem system(pathfindingServiceMock, surfaceServiceMock);
