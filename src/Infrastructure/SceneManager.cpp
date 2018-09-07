@@ -16,9 +16,8 @@ namespace inf {
 		}
 	}
 	bool SceneManager::handleEvent(const sf::Event& _event) {
-		// TODO: Make this traverse backwards?
-		for (auto& scene : m_Scenes) {
-			if (scene->handleEvent(_event)) {
+		for (unsigned i = m_Scenes.size(); i-- > 0; ){
+			if (m_Scenes[i]->handleEvent(_event)) {
 				return true;
 			}
 		}

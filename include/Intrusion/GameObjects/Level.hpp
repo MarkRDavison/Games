@@ -8,13 +8,13 @@
 #include <Intrusion/DataStructures/LevelCell.hpp>
 #include <Intrusion/DataStructures/ParsedLevel.hpp>
 #include <Intrusion/Infrastructure/EntityFactory.hpp>
+#include <Infrastructure/Services/IPathfindingService.hpp>
 
 namespace itr {
 
-
 	class Level final : public sf::Drawable, public inf::IPathSurface {
 	public:
-		Level(EntityFactory& _entityFactory);
+		Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService);
 		~Level(void);
 
 		void update(float _delta);
@@ -42,10 +42,15 @@ namespace itr {
 		unsigned m_Height{ 0u };
 		std::string m_Name;
 		std::vector<LevelCell> m_LevelCells;
+		inf::Path m_Path{};
+
+		ParsedLevel m_parsed_level_;
 
 		sf::VertexArray m_Graphics{ sf::Triangles };
+		sf::VertexArray m_PathGraphics{ sf::LineStrip };
 
 		EntityFactory& m_EntityFactory;
+		inf::IPathfindingService& m_PathfindingService;
 	};
 
 }

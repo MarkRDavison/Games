@@ -3,10 +3,12 @@
 
 namespace itr {
 
-	GameScene::GameScene(inf::TextureManager& _textureManager, ecs::EntityManager& _entityManager) :
+	GameScene::GameScene(inf::TextureManager& _textureManager, ecs::EntityManager& _entityManager, RenderSystem& _renderSystem, PathFollowingSystem& _pathFollowingSystem) :
 		inf::Scene("itr::GameScene"),
 		m_TextureManager(_textureManager),
-		m_EntityManager(_entityManager) {
+		m_EntityManager(_entityManager),
+		m_RenderSystem(_renderSystem),
+		m_PathFollowingSystem(_pathFollowingSystem) {
 		
 	}
 	GameScene::~GameScene(void) {
@@ -17,6 +19,8 @@ namespace itr {
 		if (m_Level != nullptr) {
 			m_Level->update(_delta);
 		}
+
+		m_PathFollowingSystem.update(_delta, m_EntityManager);
 	}
 	bool GameScene::handleEvent(const sf::Event& _event) {
 		if (m_Level != nullptr) {
@@ -24,6 +28,11 @@ namespace itr {
 				return true;
 			}
 		}
+		
+		if (m_PathFollowingSystem.handleEvent(_event, m_EntityManager)) {
+			return true;
+		}
+
 		return false;
 	}
 	void GameScene::draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const {

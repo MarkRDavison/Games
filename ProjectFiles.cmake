@@ -320,18 +320,30 @@ SET(KINGDOM_TEST_SOURCE_FILES ${KINGDOM_TEST_SOURCE_FILES}
 
 # Intrusion
 SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES} 
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/PositionComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/RenderableComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/SpriteComponent.hpp
+
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/LevelCell.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedEntity.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedLevel.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedWave.hpp
 
 	${CMAKE_SOURCE_DIR}/include/Intrusion/GameObjects/Level.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/EntityFactory.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/IntrusionConfigurationManager.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/IntrusionDefinitions.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/IntrusionEntityGroups.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/LuaEntityParser.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/LuaLevelParser.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/GameScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/GameUiScene.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/StartScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/PathFollowingSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/RenderSystem.hpp
 )
 
 SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
@@ -340,10 +352,15 @@ SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/EntityFactory.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/IntrusionConfigurationManager.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/IntrusionDefinitions.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/LuaEntityParser.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/LuaLevelParser.cpp
 	
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/GameScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/GameUiScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/StartScene.cpp
+
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/PathFollowingSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/RenderSystem.cpp
 )
 
 SET(INTRUSION_TEST_HEADER_FILES ${INTRUSION_TEST_HEADER_FILES}

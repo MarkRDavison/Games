@@ -29,7 +29,27 @@ namespace itr {
 				cell.empty = value == Definitions::Tile_Basic_Empty || value == Definitions::Tile_Basic_Start || value == Definitions::Tile_Basic_End;
 				cell.start = value == Definitions::Tile_Basic_Start;
 				cell.end = value == Definitions::Tile_Basic_End;
+
+				if (cell.start) {
+					level.start = { static_cast<int>(x - 1), static_cast<int>(y - 1) };
+				}
+				if (cell.end) {
+					level.end = { static_cast<int>(x - 1), static_cast<int>(y - 1) };
+				}
 			}
+		}
+
+		sol::table waves = state["level"]["waves"];
+		for (unsigned i = 1; i <= waves.size(); ++i) {
+			sol::table wave = waves[i];
+
+			WaveInstance instance{};
+			instance.time = wave["time"];
+			instance.amount = wave["amount"];
+			instance.interval = wave["interval"];
+			instance.entityPrototype = wave["entity_prototype"];
+
+			level.waves.push_back(instance);
 		}
 
 		return level;

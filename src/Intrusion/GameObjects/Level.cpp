@@ -5,8 +5,9 @@
 namespace itr {
 
 
-	Level::Level(EntityFactory& _entityFactory) :
-		m_EntityFactory(_entityFactory) {
+	Level::Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService) :
+		m_EntityFactory(_entityFactory),
+		m_PathfindingService(_pathfindingService) {
 
 	}
 	Level::~Level(void) {
@@ -21,6 +22,7 @@ namespace itr {
 	}
 	void Level::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
 		_target.draw(m_Graphics, _states);
+		_target.draw(m_PathGraphics, _states);
 	}
 
 	const LevelCell& Level::getCell(unsigned _x, unsigned _y) const {
@@ -37,12 +39,16 @@ namespace itr {
 	}
 
 	void Level::initialize(const ParsedLevel& _parsedLevel) {
+		m_parsed_level_ = _parsedLevel;
+
 		m_Width = _parsedLevel.width;
 		m_Height = _parsedLevel.height;
 		m_Name = _parsedLevel.name;
-		m_Initialized = true;
 
 		m_LevelCells = std::vector<LevelCell>(_parsedLevel.levelCells);
+		
+		m_Path = m_PathfindingService.findPath(_parsedLevel.start.x, _parsedLevel.start.y, _parsedLevel.end.x, _parsedLevel.end.y, *this);
+		m_Initialized = true;
 	}
 
 	void Level::initializeGraphics(void) {
@@ -55,10 +61,9 @@ namespace itr {
 					? (
 						cell.start 
 						? sf::Color::Magenta 
-						: (
-							cell.end 
+						: cell.end 
 							? sf::Color::Cyan 
-							: sf::Color::Green))
+							: sf::Color::Green)
 					: sf::Color::Red;
 
 				m_Graphics[(y * m_Width + x) * 6 + 0] = sf::Vertex(sf::Vector2f(Definitions::TileSize * static_cast<float>(x + 0), Definitions::TileSize * static_cast<float>(y + 0)), col, sf::Vector2f(0.0f, 0.0f));
@@ -69,6 +74,10 @@ namespace itr {
 				m_Graphics[(y * m_Width + x) * 6 + 4] = sf::Vertex(sf::Vector2f(Definitions::TileSize * static_cast<float>(x + 1), Definitions::TileSize * static_cast<float>(y + 1)), col, sf::Vector2f(32.0f, 32.0f));
 				m_Graphics[(y * m_Width + x) * 6 + 5] = sf::Vertex(sf::Vector2f(Definitions::TileSize * static_cast<float>(x + 0), Definitions::TileSize * static_cast<float>(y + 1)), col, sf::Vector2f(0.0f, 32.0f));
 			}
+		}
+
+		for (const inf::PathNode& node : m_Path.nodes) {
+			m_PathGraphics.append(sf::Vertex(sf::Vector2f(static_cast<float>(node.x) + 0.5f, static_cast<float>(node.y) + 0.5f) * Definitions::TileSize));
 		}
 	}
 
