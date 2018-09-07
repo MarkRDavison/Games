@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <thread>
 
 #include <Infrastructure/FontManager.hpp>
 #include <Infrastructure/InputManager.hpp>
