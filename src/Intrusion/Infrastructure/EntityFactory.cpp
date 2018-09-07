@@ -1,13 +1,38 @@
 #include <Intrusion/Infrastructure/EntityFactory.hpp>
+#include <Intrusion/Infrastructure/IntrusionEntityGroups.hpp>
+#include <Intrusion/Components/SpriteComponent.hpp>
 
 namespace itr {
 
-	EntityFactory::EntityFactory(ecs::EntityManager& _entityManager) :
-		m_EntityManager(_entityManager) {
+	EntityFactory::EntityFactory(inf::TextureManager& _textureManager, ecs::EntityManager& _entityManager, IntrusionConfigurationManager& _configurationManager, LuaEntityParser& _luaEntityParser) :
+		m_TextureManager(_textureManager),
+		m_EntityManager(_entityManager),
+		m_ConfigurationManager(_configurationManager),
+		m_LuaEntityParser(_luaEntityParser) {
 		
 	}
 	EntityFactory::~EntityFactory(void) {
 		
 	}
 
+	void EntityFactory::spawnWaveEntityFromPrototype(const sf::Vector2u& _tilePosition, const std::string& _prototype) {
+		if (!m_LuaEntityParser.entityHasBeenParsed(_prototype)) {
+			std::cout << "Cannot create entity '" << _prototype << "', it hasn't been parsed." << std::endl;
+			return;
+		}
+
+		const ParsedEntity& parsedEntity = m_LuaEntityParser.getEntity(_prototype);
+		const float scale = m_ConfigurationManager.getGameViewScale();
+		sf::Texture& texture = m_TextureManager.getTexture(parsedEntity.animationName);
+		const float offset = texture.getSize().y / 2.0f;
+
+		ecs::Entity& e = m_EntityManager.addEntity(_prototype);
+		e.addGroup(EntityGroup::GRenderable);
+		e.addGroup(EntityGroup::GPathFollower);
+		e.addComponent<PositionComponent>(sf::Vector2f(static_cast<float>(_tilePosition.x) + 0.5f, static_cast<float>(_tilePosition.y) + 0.5f) * Definitions::TileSize);
+		SpriteComponent& sc = e.addComponent<SpriteComponent>(texture, sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y), scale);
+		sc.flipHorizontal = false;
+		sc.flipVertical = false;
+		sc.visualOffset.y = offset;
+	}
 }

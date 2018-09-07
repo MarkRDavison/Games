@@ -32,7 +32,7 @@ struct ManagerPackage {
 		config(luaManager),
 		luaEntityParser(luaManager),
 		luaLevelParser(luaManager),
-		entityFactory(entityManager) {
+		entityFactory(textureManager, entityManager, config, luaEntityParser) {
 	}
 
 	inf::FontManager fontManager;

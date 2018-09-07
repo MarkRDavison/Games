@@ -6,7 +6,8 @@
 namespace itr {
 
 	enum EntityGroup : std::size_t {
-		GRenderable
+		GRenderable,
+		GPathFollower
 	};
 
 }

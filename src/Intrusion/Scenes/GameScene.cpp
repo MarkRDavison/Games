@@ -16,11 +16,15 @@ namespace itr {
 	}
 
 	void GameScene::update(float _delta) {
+		m_EntityManager.update(_delta);
+
 		if (m_Level != nullptr) {
 			m_Level->update(_delta);
 		}
 
 		m_PathFollowingSystem.update(_delta, m_EntityManager);
+
+		m_EntityManager.refresh();
 	}
 	bool GameScene::handleEvent(const sf::Event& _event) {
 		if (m_Level != nullptr) {
@@ -41,6 +45,8 @@ namespace itr {
 			_target.draw(*m_Level, _states);
 			_states.texture = nullptr;
 		}		
+
+		m_RenderSystem.draw(m_EntityManager, _target, _states, _alpha);
 	}
 
 }

@@ -1,6 +1,7 @@
 #include <Intrusion/GameObjects/Level.hpp>
 #include <Intrusion/Infrastructure/IntrusionDefinitions.hpp>
 #include <cassert>
+#include <iostream>
 
 namespace itr {
 
@@ -15,7 +16,23 @@ namespace itr {
 	}
 
 	void Level::update(float _delta) {
+		if (m_parsed_level_.waves.size() > 0) {
+			m_WaveTimer += _delta;
+			WaveInstance& wave = m_parsed_level_.waves.front();
+			if (wave.time + wave.interval <= m_WaveTimer) {
+				wave.amount -= 1;
+				m_WaveTimer -= wave.interval;
 
+				std::cout << "Spawning 1 " << wave.entityPrototype << std::endl;
+				m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_parsed_level_.start.x, m_parsed_level_.start.y), wave.entityPrototype);
+
+				if (wave.amount <= 0) {
+					m_WaveTimer -= wave.time;
+					m_parsed_level_.waves.erase(m_parsed_level_.waves.begin());
+					std::cout << " --- next wave ---" << std::endl;
+				}
+			}
+		}
 	}
 	bool Level::handleEvent(const sf::Event& _event) {
 		return false;
@@ -45,9 +62,9 @@ namespace itr {
 		m_Height = _parsedLevel.height;
 		m_Name = _parsedLevel.name;
 
-		m_LevelCells = std::vector<LevelCell>(_parsedLevel.levelCells);
+		m_LevelCells = std::vector<LevelCell>(m_parsed_level_.levelCells);
 		
-		m_Path = m_PathfindingService.findPath(_parsedLevel.start.x, _parsedLevel.start.y, _parsedLevel.end.x, _parsedLevel.end.y, *this);
+		m_Path = m_PathfindingService.findPath(m_parsed_level_.start.x, m_parsed_level_.start.y, m_parsed_level_.end.x, m_parsed_level_.end.y, *this);
 		m_Initialized = true;
 	}
 

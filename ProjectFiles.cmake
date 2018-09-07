@@ -320,6 +320,7 @@ SET(KINGDOM_TEST_SOURCE_FILES ${KINGDOM_TEST_SOURCE_FILES}
 
 # Intrusion
 SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES} 
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/PathFollowComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/PositionComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/RenderableComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/SpriteComponent.hpp
@@ -367,4 +368,5 @@ SET(INTRUSION_TEST_HEADER_FILES ${INTRUSION_TEST_HEADER_FILES}
 )
 
 SET(INTRUSION_TEST_SOURCE_FILES ${INTRUSION_TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/PathFollowingSystemTests.cpp
 )

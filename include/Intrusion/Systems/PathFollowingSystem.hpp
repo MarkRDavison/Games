@@ -6,7 +6,9 @@
 namespace itr {
 
 	class PathFollowingSystem : public ecs::System {
-
+	public:
+		void update(float _delta, ecs::EntityManager& _entityManager) override;
+		void updateEntity(float _delta, ecs::Entity* _entity, ecs::EntityManager& _entityManager) const;
 	};
 }
 

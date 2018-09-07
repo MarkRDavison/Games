@@ -45,6 +45,7 @@ namespace itr {
 		inf::Path m_Path{};
 
 		ParsedLevel m_parsed_level_;
+		float m_WaveTimer{ 0.0f };
 
 		sf::VertexArray m_Graphics{ sf::Triangles };
 		sf::VertexArray m_PathGraphics{ sf::LineStrip };
