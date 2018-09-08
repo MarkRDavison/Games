@@ -12,7 +12,7 @@ namespace itr {
 		std::string animationName{ Definitions::DefaultAnimationName };
 		int health{ Definitions::DefaultEntityHealth};
 		float speed{ Definitions::DefaultEntitySpeed };
-
+		float intervalRange{ Definitions::DefaultIntervalRange };
 	};
 
 }

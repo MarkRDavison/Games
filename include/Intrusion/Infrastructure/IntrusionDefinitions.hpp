@@ -25,6 +25,7 @@ namespace itr {
 		static constexpr const char DefaultEntityPrototypeName[] = "Default";
 		static constexpr const char DefaultAnimationName[] = "missing";
 		static constexpr const float DefaultEntitySpeed{ 1.0f };
+		static constexpr const float DefaultIntervalRange{ 0.1f };
 		static constexpr const int DefaultEntityHealth{ 10 };
 	};
 

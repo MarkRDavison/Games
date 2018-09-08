@@ -24,7 +24,7 @@ namespace itr {
 				m_WaveTimer -= wave.interval;
 
 				std::cout << "Spawning 1 " << wave.entityPrototype << std::endl;
-				m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_parsed_level_.start.x, m_parsed_level_.start.y), wave.entityPrototype);
+				m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_parsed_level_.start.x, m_parsed_level_.start.y), wave.entityPrototype, m_Path);
 
 				if (wave.amount <= 0) {
 					m_WaveTimer -= wave.time;

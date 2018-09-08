@@ -22,6 +22,8 @@ namespace itr {
 			m_Level->update(_delta);
 		}
 
+		m_RenderSystem.update(_delta, m_EntityManager);
+
 		m_PathFollowingSystem.update(_delta, m_EntityManager);
 
 		m_EntityManager.refresh();

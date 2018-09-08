@@ -2,6 +2,7 @@
 #include <Intrusion/Infrastructure/IntrusionEntityGroups.hpp>
 #include <Intrusion/Components/PathFollowComponent.hpp>
 #include <Intrusion/Components/PositionComponent.hpp>
+#include <Utility/VectorMath.hpp>
 
 namespace itr {
 
@@ -15,6 +16,25 @@ namespace itr {
 		PathFollowComponent& pfc = _entity->getComponent<PathFollowComponent>();
 		PositionComponent& pc = _entity->getComponent<PositionComponent>();
 
+		if (pfc.pathPoints.empty()) {
+			return;
+		}
+
+		const sf::Vector2f& target = pfc.pathPoints.front();
+
+		const float distanceToTarget = inf::VectorMath::distance(pc.position, target);
+		const float maxMovement = pfc.speed * _delta;
+
+		if (distanceToTarget <= maxMovement) {
+			pfc.pathPoints.pop();
+			pc.position = target;
+
+			const float remainingDelta = _delta - _delta * (distanceToTarget / maxMovement);
+
+			updateEntity(remainingDelta, _entity, _entityManager);
+		} else {
+			pc.position += inf::VectorMath::normalise(target - pc.position) * maxMovement;
+		}
 
 	}
 

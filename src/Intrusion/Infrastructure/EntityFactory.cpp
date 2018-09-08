@@ -1,6 +1,7 @@
 #include <Intrusion/Infrastructure/EntityFactory.hpp>
 #include <Intrusion/Infrastructure/IntrusionEntityGroups.hpp>
 #include <Intrusion/Components/SpriteComponent.hpp>
+#include <Intrusion/Components/PathFollowComponent.hpp>
 
 namespace itr {
 
@@ -15,7 +16,7 @@ namespace itr {
 		
 	}
 
-	void EntityFactory::spawnWaveEntityFromPrototype(const sf::Vector2u& _tilePosition, const std::string& _prototype) {
+	void EntityFactory::spawnWaveEntityFromPrototype(const sf::Vector2u& _tilePosition, const std::string& _prototype, inf::Path& _path) {
 		if (!m_LuaEntityParser.entityHasBeenParsed(_prototype)) {
 			std::cout << "Cannot create entity '" << _prototype << "', it hasn't been parsed." << std::endl;
 			return;
@@ -34,5 +35,11 @@ namespace itr {
 		sc.flipHorizontal = false;
 		sc.flipVertical = false;
 		sc.visualOffset.y = offset;
+		PathFollowComponent& pfc = e.addComponent<PathFollowComponent>();
+		pfc.speed = parsedEntity.speed;
+
+		for (const inf::PathNode& node : _path.nodes) {
+			pfc.pathPoints.push(sf::Vector2f(static_cast<float>(node.x) + 0.5f, static_cast<float>(node.y) + 0.5f) * Definitions::TileSize);
+		}
 	}
 }

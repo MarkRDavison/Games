@@ -9,6 +9,8 @@ namespace itr {
 	public:
 		RenderSystem(void);
 		~RenderSystem(void) override;
+
+		void update(float _delta, ecs::EntityManager& _entityManager) override;
 		void draw(ecs::EntityManager& _entityManager, sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const;
 	};
 

@@ -20,6 +20,8 @@ namespace itr {
 		entity.animationName = state["entity"]["animation_name"];
 		entity.health = state["entity"]["health"];
 		entity.speed = state["entity"]["speed"];
+		entity.intervalRange = state["entity"]["interval_range"];
+		
 
 		return entity;
 	}
