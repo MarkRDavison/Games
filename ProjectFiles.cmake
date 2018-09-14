@@ -320,6 +320,7 @@ SET(KINGDOM_TEST_SOURCE_FILES ${KINGDOM_TEST_SOURCE_FILES}
 
 # Intrusion
 SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES} 
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/CircleComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/PathFollowComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/PositionComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/RenderableComponent.hpp
@@ -328,9 +329,13 @@ SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/LevelCell.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedEntity.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedLevel.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedTower.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedWave.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ResourceBundle.hpp
 
 	${CMAKE_SOURCE_DIR}/include/Intrusion/GameObjects/Level.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/Interfaces/ITowerPlaceableSurface.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/EntityFactory.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/IntrusionConfigurationManager.hpp
@@ -343,6 +348,12 @@ SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/GameUiScene.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/StartScene.hpp
 	
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/ILevelResourceService.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/LevelResourceService.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/ITowerPlaceableSurfaceService.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/TowerPlaceableSurfaceService.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/ITowerSpawnerService.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/TowerSpawnerService.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/IWaveSpawnerService.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/WaveSpawnerService.hpp
 	
@@ -363,6 +374,9 @@ SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/GameUiScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/StartScene.cpp
 
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/LevelResourceService.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/TowerPlaceableSurfaceService.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/TowerSpawnerService.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/WaveSpawnerService.cpp
 
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/PathFollowingSystem.cpp
@@ -370,11 +384,19 @@ SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
 )
 
 SET(INTRUSION_TEST_HEADER_FILES ${INTRUSION_TEST_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Intrusion/Infrastructure/IntrusionConfigurationManagerMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Intrusion/Infrastructure/TowerPlaceableSurfaceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Intrusion/Infrastructure/TowerPlaceableSurfaceServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Intrusion/Services/LevelResourceServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Intrusion/Services/TowerSpawnerServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Intrusion/Services/WaveSpawnerServiceMock.hpp
 )
 
 SET(INTRUSION_TEST_SOURCE_FILES ${INTRUSION_TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Services/LevelResourceServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Services/TowerPlaceableSurfaceServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Services/TowerSpawnerServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Services/WaveSpawnerServiceTests.cpp
-
+	
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/PathFollowingSystemTests.cpp
 )

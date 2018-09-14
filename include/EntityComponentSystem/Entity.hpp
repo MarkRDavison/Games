@@ -75,8 +75,8 @@ namespace ecs {
 
 		template <typename T>
 		T& getComponentOfBaseType() const {
-			for (auto c : m_ComponentArray) {
-				T *btc = dynamic_cast<T*>(c);
+			for (const std::unique_ptr<Component>& c : m_Components) {
+				T *btc = dynamic_cast<T*>(c.get());
 				if (btc != nullptr) {
 					return *reinterpret_cast<T*>(btc);
 				}

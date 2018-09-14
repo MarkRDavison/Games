@@ -7,6 +7,7 @@
 namespace itr {
 	
 	struct RenderableComponent : ecs::Component {
+		sf::Color overlayColor{ sf::Color::White };
 		PositionComponent *position{ nullptr };
 
 		void init(void) override {

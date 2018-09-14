@@ -3,8 +3,14 @@
 #include <Intrusion/Components/PathFollowComponent.hpp>
 #include <Intrusion/Components/PositionComponent.hpp>
 #include <Utility/VectorMath.hpp>
+#include <Intrusion/Infrastructure/IntrusionDefinitions.hpp>
 
 namespace itr {
+
+	PathFollowingSystem::PathFollowingSystem(ILevelResourceService& _levelResourceService) :
+		m_LevelResourceService(_levelResourceService) {
+		
+	}
 
 	void PathFollowingSystem::update(float _delta, ecs::EntityManager& _entityManager) {
 		for (ecs::Entity *e : _entityManager.getEntitiesByGroup(EntityGroup::GPathFollower)) {
@@ -17,7 +23,9 @@ namespace itr {
 		PositionComponent& pc = _entity->getComponent<PositionComponent>();
 
 		if (pfc.pathPoints.empty()) {
-			_entity->destroy(); // TODO: Temporary, need to figure out points and stuff, another system, watches for reaching the end???
+			// TODO: Move the resources and amounts onto the path following component
+			m_LevelResourceService.updateResource(Definitions::LivesResourceName, -1);
+			_entity->destroy();
 			return;
 		}
 

@@ -18,6 +18,7 @@ namespace inf {
 		void start(void);
 
 		sf::RenderTarget& getRenderTarget(void) noexcept { return m_Window; }
+		const sf::Window& getWindow(void) noexcept { return m_Window; }
 
 	private:
 

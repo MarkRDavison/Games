@@ -3,6 +3,7 @@
 
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Window.hpp>
 #include <functional>
 
 namespace inf {
@@ -12,8 +13,10 @@ namespace inf {
 		virtual bool isKeyPressed(sf::Keyboard::Key _key);
 
 		virtual sf::Vector2i getWindowSize(void);
+		virtual sf::Vector2i getMousePosition(void);
 
 		std::function<sf::Vector2i(void)> m_GetWindowSizeCallback;
+		std::function<sf::Vector2i(void)> m_GetMousePositionCallback;
 	};
 }
 

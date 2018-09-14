@@ -10,12 +10,15 @@
 #include <Intrusion/Infrastructure/EntityFactory.hpp>
 #include <Infrastructure/Services/IPathfindingService.hpp>
 #include <Intrusion/Services/IWaveSpawnerService.hpp>
+#include <Intrusion/Services/ILevelResourceService.hpp>
+#include <Intrusion/Services/ITowerSpawnerService.hpp>
+#include <Intrusion/Infrastructure/Interfaces/ITowerPlaceableSurface.hpp>
 
 namespace itr {
 
-	class Level final : public sf::Drawable, public inf::IPathSurface {
+	class Level final : public sf::Drawable, public inf::IPathSurface, public ITowerPlaceableSurface {
 	public:
-		Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService, IWaveSpawnerService& _waveSpawnerService);
+		Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService, IWaveSpawnerService& _waveSpawnerService, ILevelResourceService& _levelResourceService, ITowerSpawnerService& _towerSpawnerService);
 		~Level(void);
 
 		void update(float _delta);
@@ -31,6 +34,7 @@ namespace itr {
 
 		unsigned getWidth(void) const noexcept override { return m_Width; }
 		unsigned getHeight(void) const noexcept override { return m_Height; }
+		bool canPlacePrototype(const sf::Vector2i& _coordinates, const ParsedTower& _prototype) const override;
 		bool canTraverse(const sf::Vector2u& _coordinates) const override;
 
 		std::string getSurfaceName(void) const override { return m_Name; }
@@ -54,6 +58,8 @@ namespace itr {
 		EntityFactory& m_EntityFactory;
 		inf::IPathfindingService& m_PathfindingService;
 		IWaveSpawnerService& m_WaveSpawnerService;
+		ILevelResourceService& m_LevelResourceService;
+		ITowerSpawnerService& m_TowerSpawnerService;
 	};
 
 }

@@ -8,11 +8,17 @@ namespace itr {
 		~Definitions(void) = delete;
 	public:
 		static constexpr const float TileSize = 1.0f;
+		static constexpr const float HalfTileSize = TileSize / 2.0f;
+		static constexpr const float DefaultTowerRange = 2.0f;
 
 		static constexpr const int Tile_Basic_Empty = 0;
 		static constexpr const int Tile_Basic_Full = 1;
 		static constexpr const int Tile_Basic_Start = 8;
 		static constexpr const int Tile_Basic_End = 7;
+
+		static constexpr const int DefaultResourceMaximum = -1;
+		static constexpr const int DefaultLivesResourceAmount = 10;
+		static constexpr const int DefaultGoldResourceAmount = 150;
 
 
 		static constexpr const char EntityParseLuaStateScope[] = "LuaEntityParseScope";
@@ -21,8 +27,14 @@ namespace itr {
 		static constexpr const char TerrainTextureName[] = "terrain";
 		static constexpr const char SpearIconTextureName[] = "spear_icon";
 		static constexpr const char MissingTextureName[] = "missing";
+		static constexpr const char StarTowerTextureName[] = "star_greyscale_tower";
 
-		static constexpr const char DefaultEntityPrototypeName[] = "Default";
+		static constexpr const char LivesResourceName[] = "lives";
+		static constexpr const char GoldResourceName[] = "gold";
+		static constexpr const char KillsResourceName[] = "kills";
+
+		static constexpr const char DefaultEntityPrototypeName[] = "Default_Entity";
+		static constexpr const char DefaultTowerPrototypeName[] = "Default_Tower";
 		static constexpr const char DefaultAnimationName[] = "missing";
 		static constexpr const float DefaultEntitySpeed{ 1.0f };
 		static constexpr const float DefaultIntervalRange{ 0.1f };

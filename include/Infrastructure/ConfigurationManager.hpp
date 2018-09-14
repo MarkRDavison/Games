@@ -25,9 +25,9 @@ namespace inf {
 		void reloadConfiguration(void);
 		virtual void loadCustomConfigurations(LuaManager& _luaManager) {}
 
-		sf::Vector2u getResolution(void) const;
-		std::string getTitle(void) const;
-		float getGameViewScale(void) const;
+		virtual sf::Vector2u getResolution(void) const;
+		virtual std::string getTitle(void) const;
+		virtual float getGameViewScale(void) const;
 
 	private:
 

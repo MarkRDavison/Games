@@ -4,7 +4,7 @@
 #include <Infrastructure/Services/ISurfaceService.hpp>
 
 namespace inf {
-	
+
 	class SurfaceService : public ISurfaceService {
 	public:
 		SurfaceService(void);
@@ -19,7 +19,7 @@ namespace inf {
 
 	private:
 		std::vector<IPathSurface *> m_Surfaces;
-		IPathSurface *m_CurrentSurface{nullptr};
+		IPathSurface *m_CurrentSurface{ nullptr };
 	};
 
 }

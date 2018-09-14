@@ -34,7 +34,7 @@ namespace itr {
 				return true;
 			}
 		}
-		
+
 		if (m_PathFollowingSystem.handleEvent(_event, m_EntityManager)) {
 			return true;
 		}

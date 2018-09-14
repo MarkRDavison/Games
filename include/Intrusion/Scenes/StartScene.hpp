@@ -19,8 +19,9 @@ namespace itr {
 		bool handleEvent(const sf::Event& _event) override;
 		void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const override;
 
-	private:
+	protected:
 		void updateUiPositions(void);
+
 	private:
 		inf::FontManager& m_FontManager;
 		inf::TextureManager& m_TextureManager;

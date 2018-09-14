@@ -23,8 +23,11 @@
 #include <Intrusion/Infrastructure/LuaEntityParser.hpp>
 #include <Intrusion/Services/WaveSpawnerService.hpp>
 #include <Intrusion/Systems/PathFollowingSystem.hpp>
+#include <Intrusion/Services/LevelResourceService.hpp>
+#include <Intrusion/Services/TowerSpawnerService.hpp>
+#include <Intrusion/Services/TowerPlaceableSurfaceService.hpp>
 
-#define ARTIFICIAL_WAIT 5
+#define ARTIFICIAL_WAIT 1
 
 struct ManagerPackage {
 
@@ -52,16 +55,29 @@ struct ManagerPackage {
 	itr::EntityFactory entityFactory;
 };
 
+struct ServicePackage {
+
+	ServicePackage(ManagerPackage& _managerPackage) :
+		towerSpawnerService(_managerPackage.inputManager, _managerPackage.config, towerPlaceableSurfaceService) {
+		
+	}
+
+	itr::LevelResourceService levelResourceService;
+	itr::WaveSpawnerService waveSpawnerService;
+	itr::TowerPlaceableSurfaceService towerPlaceableSurfaceService;
+	itr::TowerSpawnerService towerSpawnerService;
+};
+
 struct SystemPackage {
+	SystemPackage(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) :
+		pathFollowing(_servicePackage.levelResourceService) {
+
+	}
 	itr::RenderSystem render;
 	itr::PathFollowingSystem pathFollowing;
 };
 
-struct ServicePackage {
-	itr::WaveSpawnerService waveSpawnerService;
-};
-
-void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPackage, SystemPackage& _systemPackage, ServicePackage& _servicePackage) {
+void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPackage, ServicePackage& _servicePackage, SystemPackage& _systemPackage) {
 	{
 		_splashScreen.setLoadingState(0, "Loading configuration");
 		_managerPackage.luaManager.createState(itr::Definitions::EntityParseLuaStateScope);
@@ -80,6 +96,8 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
 		_splashScreen.setLoadingState(13, "Loading texture 'missing'");
 		_managerPackage.textureManager.loadTexture("./data/textures/Intrusion/missing.png", itr::Definitions::MissingTextureName);
+		_splashScreen.setLoadingState(14, "Loading texture 'star_greyscale_tower'");
+		_managerPackage.textureManager.loadTexture("./data/textures/Intrusion/star_greyscale_tower.png", itr::Definitions::StarTowerTextureName);
 		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
 	}
 	{
@@ -133,6 +151,9 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 		_managerPackage.inputManager.m_GetWindowSizeCallback = [&_managerPackage]() {
 			return sf::Vector2i(_managerPackage.app.getRenderTarget().getSize());
 		};
+		_managerPackage.inputManager.m_GetMousePositionCallback = [&_managerPackage]() {
+			return sf::Mouse::getPosition(_managerPackage.app.getWindow());
+		};
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
 	}
@@ -140,15 +161,17 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 		if (_managerPackage.config.m_SkipToLevel && _managerPackage.luaLevelParser.levelHasBeenParsed(_managerPackage.config.m_LevelToSkipTo)) {
 			_splashScreen.setLoadingState(90, "Skipping to level: " + _managerPackage.config.m_LevelToSkipTo);
 
-			itr::Level *level = new itr::Level(_managerPackage.entityFactory, _managerPackage.pathfindingService, _servicePackage.waveSpawnerService);
+			itr::Level *level = new itr::Level(_managerPackage.entityFactory, _managerPackage.pathfindingService, _servicePackage.waveSpawnerService, _servicePackage.levelResourceService, _servicePackage.towerSpawnerService);
 			level->initialize(_managerPackage.luaLevelParser.getLevel(_managerPackage.config.m_LevelToSkipTo));
 			level->initializeGraphics();
+
+			_servicePackage.towerPlaceableSurfaceService.setActiveSurface(level);
 
 			itr::GameScene *gameScene = new itr::GameScene(_managerPackage.textureManager, _managerPackage.entityManager, _systemPackage.render, _systemPackage.pathFollowing);
 			gameScene->m_Level = level;
 			_managerPackage.sceneManager.pushScene(gameScene);
 
-			itr::GameUiScene *gameUiScene = new itr::GameUiScene(_managerPackage.fontManager, _managerPackage.textureManager, _managerPackage.inputManager, _managerPackage.config);
+			itr::GameUiScene *gameUiScene = new itr::GameUiScene(_managerPackage.fontManager, _managerPackage.textureManager, _managerPackage.inputManager, _managerPackage.config, _servicePackage.levelResourceService);
 			_managerPackage.sceneManager.pushScene(gameUiScene);
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT * 10));
@@ -171,14 +194,14 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 
 int main(int _argc, char **_argv) {
 	ManagerPackage managerPackage;
-	SystemPackage systemPackage;
-	ServicePackage servicePackage;
+	ServicePackage servicePackage(managerPackage);
+	SystemPackage systemPackage(managerPackage, servicePackage);
 
 	inf::SplashScreen splashScreen("./data/textures/Intrusion/splash_screen.png", "./data/fonts/Intrusion/SourceCodePro-Regular.otf");
 	
 	std::thread splashScreenThread(&inf::SplashScreen::show, &splashScreen);
 
-	loadResources(splashScreen, managerPackage, systemPackage, servicePackage);
+	loadResources(splashScreen, managerPackage, servicePackage, systemPackage);
 
 	splashScreenThread.join();
 
