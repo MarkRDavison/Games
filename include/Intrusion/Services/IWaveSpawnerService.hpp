@@ -24,11 +24,13 @@ namespace itr {
 		virtual unsigned getMaximumNumberInProgressWaves(void) const = 0;
 		virtual void setMaximumNumberInProgressWaves(unsigned _maximum) = 0;
 		virtual void setNumberInProgressWaves(unsigned _number) = 0;
+		virtual void setParsedLevel(const ParsedLevel& _parsedLevel) = 0;
 
 		virtual bool isSpawningComplete(void) const = 0;
 
 		std::function<void(const WaveInstance&)> prototypeSpawned;
-		std::function<void(void)> wavesCompleted;
+		std::function<void(void)> allWavesCompleted;
+		std::function<void(void)> singleWaveSpawningCompleted;
 	};
 
 }

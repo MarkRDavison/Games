@@ -9,12 +9,13 @@
 #include <Intrusion/DataStructures/ParsedLevel.hpp>
 #include <Intrusion/Infrastructure/EntityFactory.hpp>
 #include <Infrastructure/Services/IPathfindingService.hpp>
+#include <Intrusion/Services/IWaveSpawnerService.hpp>
 
 namespace itr {
 
 	class Level final : public sf::Drawable, public inf::IPathSurface {
 	public:
-		Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService);
+		Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService, IWaveSpawnerService& _waveSpawnerService);
 		~Level(void);
 
 		void update(float _delta);
@@ -52,6 +53,7 @@ namespace itr {
 
 		EntityFactory& m_EntityFactory;
 		inf::IPathfindingService& m_PathfindingService;
+		IWaveSpawnerService& m_WaveSpawnerService;
 	};
 
 }

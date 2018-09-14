@@ -21,6 +21,7 @@
 #include <Intrusion/Scenes/GameUiScene.hpp>
 #include <Intrusion/Infrastructure/EntityFactory.hpp>
 #include <Intrusion/Infrastructure/LuaEntityParser.hpp>
+#include <Intrusion/Services/WaveSpawnerService.hpp>
 #include <Intrusion/Systems/PathFollowingSystem.hpp>
 
 #define ARTIFICIAL_WAIT 5
@@ -56,7 +57,11 @@ struct SystemPackage {
 	itr::PathFollowingSystem pathFollowing;
 };
 
-void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPackage, SystemPackage& _systemPackage) {
+struct ServicePackage {
+	itr::WaveSpawnerService waveSpawnerService;
+};
+
+void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPackage, SystemPackage& _systemPackage, ServicePackage& _servicePackage) {
 	{
 		_splashScreen.setLoadingState(0, "Loading configuration");
 		_managerPackage.luaManager.createState(itr::Definitions::EntityParseLuaStateScope);
@@ -135,7 +140,7 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 		if (_managerPackage.config.m_SkipToLevel && _managerPackage.luaLevelParser.levelHasBeenParsed(_managerPackage.config.m_LevelToSkipTo)) {
 			_splashScreen.setLoadingState(90, "Skipping to level: " + _managerPackage.config.m_LevelToSkipTo);
 
-			itr::Level *level = new itr::Level(_managerPackage.entityFactory, _managerPackage.pathfindingService);
+			itr::Level *level = new itr::Level(_managerPackage.entityFactory, _managerPackage.pathfindingService, _servicePackage.waveSpawnerService);
 			level->initialize(_managerPackage.luaLevelParser.getLevel(_managerPackage.config.m_LevelToSkipTo));
 			level->initializeGraphics();
 
@@ -167,12 +172,13 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 int main(int _argc, char **_argv) {
 	ManagerPackage managerPackage;
 	SystemPackage systemPackage;
+	ServicePackage servicePackage;
 
 	inf::SplashScreen splashScreen("./data/textures/Intrusion/splash_screen.png", "./data/fonts/Intrusion/SourceCodePro-Regular.otf");
 	
 	std::thread splashScreenThread(&inf::SplashScreen::show, &splashScreen);
 
-	loadResources(splashScreen, managerPackage, systemPackage);
+	loadResources(splashScreen, managerPackage, systemPackage, servicePackage);
 
 	splashScreenThread.join();
 

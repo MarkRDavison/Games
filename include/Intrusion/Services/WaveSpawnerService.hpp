@@ -10,7 +10,7 @@ namespace itr {
 
 		static const constexpr unsigned DefaultMaximumNumberInProgressWaves{ 1 };
 
-		WaveSpawnerService(ParsedLevel& _parsedLevel);
+		WaveSpawnerService(void);
 		~WaveSpawnerService(void) override;
 
 		void update(float _delta) override;
@@ -23,6 +23,7 @@ namespace itr {
 		unsigned getMaximumNumberInProgressWaves(void) const override;
 		void setMaximumNumberInProgressWaves(unsigned _maximum) override;
 		void setNumberInProgressWaves(unsigned _number) override;
+		void setParsedLevel(const ParsedLevel& _parsedLevel) override;
 
 		ParsedLevel getParsedLevel(void) const override;
 		bool isSpawningComplete(void) const override;
@@ -33,7 +34,7 @@ namespace itr {
 		bool isWaveIndexBetweenMinAndMax(unsigned _waveIndex) const;
 
 	private:
-		ParsedLevel& m_ParsedLevel;
+		ParsedLevel m_ParsedLevel;
 		unsigned m_CurrentMinimumWaveIndex;
 		unsigned m_CurrentMaximumWaveIndex;
 		unsigned m_MaximumNumberInProgressWaves;

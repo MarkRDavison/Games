@@ -43,6 +43,9 @@ namespace itr {
 		void setNumberInProgressWaves(unsigned _number) override {
 			numberInProgressWaves = _number;
 		}
+		void setParsedLevel(const ParsedLevel& _parsedLevel) override {
+			parsedLevel = _parsedLevel;
+		}
 
 		ParsedLevel getParsedLevel(void) const override {
 			return parsedLevel;

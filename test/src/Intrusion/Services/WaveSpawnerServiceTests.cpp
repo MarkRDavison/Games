@@ -7,11 +7,12 @@ namespace itr {
 
 		TEST_CASE("Updating spawner service with an empty parsed level notifies that the spawner service is complete", "[Intrusion][Service][WaveSpawnerService]") {
 			ParsedLevel parsedLevel{};
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			bool wavesCompletedInvoked = false;
 
-			service.wavesCompleted = [&]() {
+			service.allWavesCompleted = [&]() {
 				wavesCompletedInvoked = true;
 			};
 
@@ -23,11 +24,12 @@ namespace itr {
 		TEST_CASE("Updating spawner service with a single wave with no elapsed time does not notify that the spawner service is complete", "[Intrusion][Service][WaveSpawnerService]") {
 			ParsedLevel parsedLevel{};
 			parsedLevel.waves.emplace_back();
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			bool wavesCompletedInvoked = false;
 
-			service.wavesCompleted = [&]() {
+			service.allWavesCompleted = [&]() {
 				wavesCompletedInvoked = true;
 			};
 
@@ -44,7 +46,8 @@ namespace itr {
 			wave.time = 0.0f;
 			wave.interval = 0.0f;
 			parsedLevel.waves.push_back(wave);
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			bool waveInstanceSpawned = false;
 
@@ -65,7 +68,8 @@ namespace itr {
 			wave.time = 0.0f;
 			wave.interval = 0.0f;
 			parsedLevel.waves.push_back(wave);
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			service.update(0.0f);
 
@@ -85,7 +89,8 @@ namespace itr {
 				wave.interval = 0.0f;
 				parsedLevel.waves.push_back(wave);
 			}
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			int wavesSpawned = 0;
 			service.prototypeSpawned = [&](const WaveInstance& _waveInstance) {
@@ -110,7 +115,8 @@ namespace itr {
 			}
 
 			int wavesSpawned = 0;
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 			service.prototypeSpawned = [&](const WaveInstance& _waveInstance) {
 				wavesSpawned += 1;
 			};
@@ -162,7 +168,8 @@ namespace itr {
 			}
 
 			int wavesSpawned = 0;
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 			service.prototypeSpawned = [&](const WaveInstance& _waveInstance) {
 				wavesSpawned += 1;
 				if (_waveInstance.entityPrototype == prototypeWave1a) {
@@ -195,7 +202,8 @@ namespace itr {
 			wave.time = 2.0f;
 			wave.interval = 1.0f;
 			parsedLevel.waves.push_back(wave);
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			int waveInstanceSpawned = 0;
 
@@ -243,7 +251,8 @@ namespace itr {
 				wave.interval = 1.0f;
 				parsedLevel.waves.push_back(wave);
 			}
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			int waveInstanceSpawned = 0;
 
@@ -294,7 +303,8 @@ namespace itr {
 				wave.interval = 1.0f;
 				parsedLevel.waves.push_back(wave);
 			}
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			int waveInstanceSpawned = 0;
 
@@ -349,7 +359,8 @@ namespace itr {
 				wave.interval = 1.0f;
 				parsedLevel.waves.push_back(wave);
 			}
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			int waveInstanceSpawned = 0;
 
@@ -402,14 +413,16 @@ namespace itr {
 		TEST_CASE("Spawner service says spawning is still in progress when 1 wave instance is present", "[Intrusion][Service][WaveSpawnerService]") {
 			ParsedLevel parsedLevel{};
 			parsedLevel.waves.emplace_back();
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			REQUIRE_FALSE(service.isSpawningComplete());
 		}
 
 		TEST_CASE("Spawner service says waspawningve is complete 0 wave instances are present", "[Intrusion][Service][WaveSpawnerService]") {
 			ParsedLevel parsedLevel{};
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			REQUIRE(service.isSpawningComplete());
 		}
@@ -420,7 +433,8 @@ namespace itr {
 			WaveInstance wave{};
 			wave.amount = Number;
 			parsedLevel.waves.push_back(wave);
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			REQUIRE(Number == service.getEntitiesStillToBeSpawnedThisWaveIndex());
 		}
@@ -439,7 +453,8 @@ namespace itr {
 				wave.amount = Number2;
 				parsedLevel.waves.push_back(wave);
 			}
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			REQUIRE(Number1 + Number2 == service.getEntitiesStillToBeSpawnedThisWaveIndex());
 		}
@@ -460,7 +475,8 @@ namespace itr {
 				wave.waveIndex = 1;
 				parsedLevel.waves.push_back(wave);
 			}
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			REQUIRE(Number1 == service.getEntitiesStillToBeSpawnedThisWaveIndex());
 		}
@@ -481,7 +497,8 @@ namespace itr {
 				wave.waveIndex = 1;
 				parsedLevel.waves.push_back(wave);
 			}
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			REQUIRE(Number1 + Number2 == service.getEntitiesStillToBeSpawned());
 		}
@@ -498,7 +515,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			for (int i = 0; i < SequentialWaves; ++i) {
 
@@ -520,7 +538,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			for (int i = 0; i < ParallelWaves; ++i) {
 
@@ -544,7 +563,8 @@ namespace itr {
 				}
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			for (int i = 0; i < ParallelWaves * ParallelWaves; ++i) {
 
@@ -567,7 +587,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			service.setMaximumNumberInProgressWaves(NumberInProgressWaves);
 
@@ -590,7 +611,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			service.setMaximumNumberInProgressWaves(NumberInProgressWaves);
 
@@ -612,7 +634,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			service.setMaximumNumberInProgressWaves(NumberInProgressWaves);
 
@@ -652,7 +675,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			service.setMaximumNumberInProgressWaves(NumberInProgressWaves);
 			service.setNumberInProgressWaves(NumberInProgressWaves);
@@ -694,7 +718,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			service.setMaximumNumberInProgressWaves(NumberInProgressWaves + 1);
 			service.setNumberInProgressWaves(NumberInProgressWaves);
@@ -721,7 +746,8 @@ namespace itr {
 				parsedLevel.waves.push_back(wave);
 			}
 
-			WaveSpawnerService service(parsedLevel);
+			WaveSpawnerService service;
+			service.setParsedLevel(parsedLevel);
 
 			service.setMaximumNumberInProgressWaves(NumberInProgressWaves);
 			service.setNumberInProgressWaves(NumberInProgressWaves);

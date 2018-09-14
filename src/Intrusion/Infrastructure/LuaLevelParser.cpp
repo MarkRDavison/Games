@@ -48,6 +48,10 @@ namespace itr {
 			instance.amount = wave["amount"];
 			instance.interval = wave["interval"];
 			instance.entityPrototype = wave["entity_prototype"];
+			instance.waveIndex = wave["wave_index"];
+			if (instance.waveIndex == 0) {
+				instance.waveIndex = i - 1;
+			}
 
 			level.waves.push_back(instance);
 		}

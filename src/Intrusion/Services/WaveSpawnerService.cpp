@@ -3,8 +3,7 @@
 
 namespace itr {
 
-	WaveSpawnerService::WaveSpawnerService(ParsedLevel& _parsedLevel) :
-		m_ParsedLevel(_parsedLevel),
+	WaveSpawnerService::WaveSpawnerService(void) :
 		m_CurrentMinimumWaveIndex(0),
 		m_CurrentMaximumWaveIndex(0),
 		m_MaximumNumberInProgressWaves(DefaultMaximumNumberInProgressWaves),
@@ -19,8 +18,8 @@ namespace itr {
 	void WaveSpawnerService::update(float _delta) {
 		const std::size_t waves = m_ParsedLevel.waves.size();
 		if (waves == 0) {
-			if (wavesCompleted) {
-				wavesCompleted();
+			if (allWavesCompleted) {
+				allWavesCompleted();
 			}
 			return;
 		}
@@ -58,6 +57,9 @@ namespace itr {
 
 		if (m_ParsedLevel.waves.size() != waves) {
 			updateWaveIndex();
+			if (singleWaveSpawningCompleted) {
+				singleWaveSpawningCompleted();
+			}
 		}
 
 		if (updateEntitiesRemaining) {
@@ -109,6 +111,15 @@ namespace itr {
 				m_CurrentMaximumWaveIndex = maxWaveIndex;
 			}
 		}
+	}
+
+	void WaveSpawnerService::setParsedLevel(const ParsedLevel& _parsedLevel) {
+		m_ParsedLevel = ParsedLevel(_parsedLevel); 
+		m_CurrentMinimumWaveIndex = 0;
+		m_CurrentMaximumWaveIndex = 0;
+		m_EntitiesStillToBeSpawnedThisWaveIndex = 0;
+		m_EntitiesStillToBeSpawned = 0;
+		updateEntitiesStillToBeSpawned();
 	}
 
 	ParsedLevel WaveSpawnerService::getParsedLevel(void) const {

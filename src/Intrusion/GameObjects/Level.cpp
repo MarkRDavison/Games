@@ -6,9 +6,10 @@
 namespace itr {
 
 
-	Level::Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService) :
+	Level::Level(EntityFactory& _entityFactory, inf::IPathfindingService& _pathfindingService, IWaveSpawnerService& _waveSpawnerService) :
 		m_EntityFactory(_entityFactory),
-		m_PathfindingService(_pathfindingService) {
+		m_PathfindingService(_pathfindingService),
+		m_WaveSpawnerService(_waveSpawnerService) {
 
 	}
 	Level::~Level(void) {
@@ -16,23 +17,7 @@ namespace itr {
 	}
 
 	void Level::update(float _delta) {
-		if (m_ParsedLevel.waves.size() > 0) {
-			m_WaveTimer += _delta;
-			WaveInstance& wave = m_ParsedLevel.waves.front();
-			if (wave.time + wave.interval <= m_WaveTimer) {
-				wave.amount -= 1;
-				m_WaveTimer -= wave.interval;
-
-				std::cout << "Spawning 1 " << wave.entityPrototype << std::endl;
-				m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_ParsedLevel.start.x, m_ParsedLevel.start.y), wave.entityPrototype, m_Path);
-
-				if (wave.amount <= 0) {
-					m_WaveTimer -= wave.time;
-					m_ParsedLevel.waves.erase(m_ParsedLevel.waves.begin());
-					std::cout << " --- next wave ---" << std::endl;
-				}
-			}
-		}
+		m_WaveSpawnerService.update(_delta);
 	}
 	bool Level::handleEvent(const sf::Event& _event) {
 		return false;
@@ -65,6 +50,14 @@ namespace itr {
 		m_LevelCells = std::vector<LevelCell>(m_ParsedLevel.levelCells);
 		
 		m_Path = m_PathfindingService.findPath(m_ParsedLevel.start.x, m_ParsedLevel.start.y, m_ParsedLevel.end.x, m_ParsedLevel.end.y, *this);
+		m_WaveSpawnerService.setParsedLevel(m_ParsedLevel);
+		m_WaveSpawnerService.prototypeSpawned = [this](const WaveInstance& _waveInstance) {
+			std::cout << "Spawning " << _waveInstance.entityPrototype << std::endl;
+			m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_ParsedLevel.start.x, m_ParsedLevel.start.y), _waveInstance.entityPrototype, m_Path);
+		};
+		m_WaveSpawnerService.singleWaveSpawningCompleted = [](void) {
+			std::cout << "Wave completed" << std::endl;
+		};
 		m_Initialized = true;
 	}
 
