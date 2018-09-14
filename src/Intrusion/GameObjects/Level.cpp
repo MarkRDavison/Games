@@ -16,19 +16,19 @@ namespace itr {
 	}
 
 	void Level::update(float _delta) {
-		if (m_parsed_level_.waves.size() > 0) {
+		if (m_ParsedLevel.waves.size() > 0) {
 			m_WaveTimer += _delta;
-			WaveInstance& wave = m_parsed_level_.waves.front();
+			WaveInstance& wave = m_ParsedLevel.waves.front();
 			if (wave.time + wave.interval <= m_WaveTimer) {
 				wave.amount -= 1;
 				m_WaveTimer -= wave.interval;
 
 				std::cout << "Spawning 1 " << wave.entityPrototype << std::endl;
-				m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_parsed_level_.start.x, m_parsed_level_.start.y), wave.entityPrototype, m_Path);
+				m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_ParsedLevel.start.x, m_ParsedLevel.start.y), wave.entityPrototype, m_Path);
 
 				if (wave.amount <= 0) {
 					m_WaveTimer -= wave.time;
-					m_parsed_level_.waves.erase(m_parsed_level_.waves.begin());
+					m_ParsedLevel.waves.erase(m_ParsedLevel.waves.begin());
 					std::cout << " --- next wave ---" << std::endl;
 				}
 			}
@@ -56,15 +56,15 @@ namespace itr {
 	}
 
 	void Level::initialize(const ParsedLevel& _parsedLevel) {
-		m_parsed_level_ = _parsedLevel;
+		m_ParsedLevel = _parsedLevel;
 
 		m_Width = _parsedLevel.width;
 		m_Height = _parsedLevel.height;
 		m_Name = _parsedLevel.name;
 
-		m_LevelCells = std::vector<LevelCell>(m_parsed_level_.levelCells);
+		m_LevelCells = std::vector<LevelCell>(m_ParsedLevel.levelCells);
 		
-		m_Path = m_PathfindingService.findPath(m_parsed_level_.start.x, m_parsed_level_.start.y, m_parsed_level_.end.x, m_parsed_level_.end.y, *this);
+		m_Path = m_PathfindingService.findPath(m_ParsedLevel.start.x, m_ParsedLevel.start.y, m_ParsedLevel.end.x, m_ParsedLevel.end.y, *this);
 		m_Initialized = true;
 	}
 

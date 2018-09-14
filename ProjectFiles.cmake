@@ -343,6 +343,9 @@ SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/GameUiScene.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/StartScene.hpp
 	
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/IWaveSpawnerService.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/WaveSpawnerService.hpp
+	
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/PathFollowingSystem.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/RenderSystem.hpp
 )
@@ -360,13 +363,18 @@ SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/GameUiScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/StartScene.cpp
 
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/WaveSpawnerService.cpp
+
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/PathFollowingSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/RenderSystem.cpp
 )
 
 SET(INTRUSION_TEST_HEADER_FILES ${INTRUSION_TEST_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Intrusion/Services/WaveSpawnerServiceMock.hpp
 )
 
 SET(INTRUSION_TEST_SOURCE_FILES ${INTRUSION_TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Services/WaveSpawnerServiceTests.cpp
+
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/PathFollowingSystemTests.cpp
 )

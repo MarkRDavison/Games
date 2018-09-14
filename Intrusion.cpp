@@ -23,7 +23,7 @@
 #include <Intrusion/Infrastructure/LuaEntityParser.hpp>
 #include <Intrusion/Systems/PathFollowingSystem.hpp>
 
-#define ARTIFICIAL_WAIT 150
+#define ARTIFICIAL_WAIT 5
 
 struct ManagerPackage {
 

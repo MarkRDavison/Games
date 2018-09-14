@@ -17,6 +17,7 @@ namespace itr {
 		PositionComponent& pc = _entity->getComponent<PositionComponent>();
 
 		if (pfc.pathPoints.empty()) {
+			_entity->destroy(); // TODO: Temporary, need to figure out points and stuff, another system, watches for reaching the end???
 			return;
 		}
 
