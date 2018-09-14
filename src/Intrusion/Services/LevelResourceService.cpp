@@ -67,7 +67,7 @@ namespace itr {
 		return m_ResourceMap[_resourceName];
 	}
 
-	void LevelResourceService::revalidateResourceAgainstMaximum(LevelResourceService::LevelResource& _resource) {
+	void LevelResourceService::revalidateResourceAgainstMaximum(LevelResource& _resource) {
 		if (_resource.amount > _resource.max && _resource.max != Definitions::DefaultResourceMaximum) {
 			_resource.amount = _resource.max;
 		}
