@@ -26,7 +26,7 @@ namespace itr {
 
 	protected:
 		bool resourceExists(const std::string& _resourceName) const;
-		LevelResource&  LevelResourceService::getOrCreateResource(const std::string& _resourceName);
+		LevelResourceService::LevelResource&  LevelResourceService::getOrCreateResource(const std::string& _resourceName);
 		static void revalidateResourceAgainstMaximum(LevelResource& _resource);
 
 	private:
