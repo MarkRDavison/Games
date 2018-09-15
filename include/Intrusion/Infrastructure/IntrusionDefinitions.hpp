@@ -23,6 +23,7 @@ namespace itr {
 
 		static constexpr const char EntityParseLuaStateScope[] = "LuaEntityParseScope";
 		static constexpr const char LevelParseLuaStateScope[] = "LuaLevelParseScope";
+		static constexpr const char TowerParseLuaStateScope[] = "LuaTowerParseScope";
 
 		static constexpr const char TerrainTextureName[] = "terrain";
 		static constexpr const char SpearIconTextureName[] = "spear_icon";

@@ -6,11 +6,12 @@
 
 namespace itr {
 
-	EntityFactory::EntityFactory(inf::TextureManager& _textureManager, ecs::EntityManager& _entityManager, IntrusionConfigurationManager& _configurationManager, LuaEntityParser& _luaEntityParser) :
+	EntityFactory::EntityFactory(inf::TextureManager& _textureManager, ecs::EntityManager& _entityManager, IntrusionConfigurationManager& _configurationManager, LuaEntityParser& _luaEntityParser, LuaTowerParser& _luaTowerParser) :
 		m_TextureManager(_textureManager),
 		m_EntityManager(_entityManager),
 		m_ConfigurationManager(_configurationManager),
-		m_LuaEntityParser(_luaEntityParser) {
+		m_LuaEntityParser(_luaEntityParser),
+		m_LuaTowerParser(_luaTowerParser) {
 		
 	}
 	EntityFactory::~EntityFactory(void) {
@@ -58,5 +59,6 @@ namespace itr {
 		sc.flipHorizontal = false;
 		sc.flipVertical = false;
 		sc.visualOffset.y = offset;
+		sc.sprite.setColor(_prototype.color);
 	}
 }

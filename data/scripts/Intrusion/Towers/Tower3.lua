@@ -1,15 +1,15 @@
 tower = {
-	prototype_name = "RedTower",
+	prototype_name = "GreenTower",
 	animation_name = "star_greyscale_tower",
 	width = 1,
 	height = 1,
-	range = 1.5,
+	range = 2.5,
 	color = {
-		r = 255,
-		g = 0,
+		r = 0,
+		g = 255,
 		b = 0
 	},
 	cost = {
-		{ resource = "gold", amount = 50 }
+		{ resource = "gold", amount = 70 }
 	}
 }

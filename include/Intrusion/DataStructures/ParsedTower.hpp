@@ -4,6 +4,7 @@
 #include <string>
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics//Color.hpp>
 
 #include <Intrusion/DataStructures/ResourceBundle.hpp>
 #include <Intrusion/Infrastructure/IntrusionDefinitions.hpp>
@@ -15,6 +16,7 @@ namespace itr {
 		std::string animationName{ Definitions::DefaultAnimationName };
 		float range{ Definitions::DefaultTowerRange };
 		sf::Vector2u size{ 1,1 };
+		sf::Color color{ sf::Color::White };
 		ResourceBundle cost;
 	};
 

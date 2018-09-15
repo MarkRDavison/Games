@@ -4,6 +4,7 @@ namespace itr {
 
 	constexpr const char Definitions::EntityParseLuaStateScope[];
 	constexpr const char Definitions::LevelParseLuaStateScope[];
+	constexpr const char Definitions::TowerParseLuaStateScope[];
 
 	constexpr const char Definitions::TerrainTextureName[];
 	constexpr const char Definitions::SpearIconTextureName[];

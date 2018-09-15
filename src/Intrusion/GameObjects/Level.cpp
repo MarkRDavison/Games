@@ -23,6 +23,17 @@ namespace itr {
 		m_WaveSpawnerService.update(_delta);
 	}
 	bool Level::handleEvent(const sf::Event& _event) {
+		if (_event.type == sf::Event::KeyPressed) {
+			if (_event.key.code >= sf::Keyboard::Num1 &&
+				_event.key.code < sf::Keyboard::Num1 + m_EntityFactory.m_LuaTowerParser.getTowers().size()) {
+				unsigned index = static_cast<unsigned>(_event.key.code - sf::Keyboard::Num1);
+				const auto& towers = m_EntityFactory.m_LuaTowerParser.getTowers();
+				const ParsedTower& tower = towers.at(index);
+				if (m_TowerSpawnerService.beginGhostForPrototype(tower)) {
+					return true;
+				}
+			}
+		}
 		if (m_TowerSpawnerService.handleEvent(_event)) {
 			return true;
 		}

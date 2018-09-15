@@ -18,36 +18,10 @@ namespace itr {
 		
 	}
 	bool TowerSpawnerService::handleEvent(const sf::Event& _event) {
-		if (_event.type == sf::Event::KeyPressed) {
-			if (_event.key.code == sf::Keyboard::Num1) {
-				ParsedTower tower{};
-				tower.prototypeName = "Start tower 1!";
-				tower.animationName = Definitions::StarTowerTextureName;
-				if (beginGhostForPrototype(tower)) {
-					return true;
-				}
-			}
-			if (_event.key.code == sf::Keyboard::Num2) {
-				ParsedTower tower{};
-				tower.prototypeName = "Start tower 2!";
-				tower.animationName = Definitions::StarTowerTextureName;
-				if (beginGhostForPrototype(tower)) {
-					return true;
-				}
-			}
-			if (_event.key.code == sf::Keyboard::Num3) {
-				ParsedTower tower{};
-				tower.prototypeName = "Start tower 3!";
-				tower.animationName = Definitions::StarTowerTextureName;
-				if (beginGhostForPrototype(tower)) {
-					return true;
-				}
-			}
-			if (_event.key.code == sf::Keyboard::Escape) {
-				if (m_ShowingTowerGhost) {
-					reset();
-					return true;
-				}
+		if (_event.key.code == sf::Keyboard::Escape) {
+			if (m_ShowingTowerGhost) {
+				reset();
+				return true;
 			}
 		}
 		if (_event.type == sf::Event::MouseMoved) {

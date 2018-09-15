@@ -22,10 +22,11 @@
 #include <Intrusion/Infrastructure/EntityFactory.hpp>
 #include <Intrusion/Infrastructure/LuaEntityParser.hpp>
 #include <Intrusion/Services/WaveSpawnerService.hpp>
-#include <Intrusion/Systems/PathFollowingSystem.hpp>
 #include <Intrusion/Services/LevelResourceService.hpp>
 #include <Intrusion/Services/TowerSpawnerService.hpp>
 #include <Intrusion/Services/TowerPlaceableSurfaceService.hpp>
+#include <Intrusion/Systems/PathFollowingSystem.hpp>
+#include <Intrusion/Infrastructure/LuaTowerParser.hpp>
 
 #define ARTIFICIAL_WAIT 1
 
@@ -36,7 +37,8 @@ struct ManagerPackage {
 		config(luaManager),
 		luaEntityParser(luaManager),
 		luaLevelParser(luaManager),
-		entityFactory(textureManager, entityManager, config, luaEntityParser) {
+		luaTowerParser(luaManager),
+		entityFactory(textureManager, entityManager, config, luaEntityParser, luaTowerParser) {
 	}
 
 	inf::FontManager fontManager;
@@ -52,6 +54,7 @@ struct ManagerPackage {
 	itr::IntrusionConfigurationManager config;
 	itr::LuaEntityParser luaEntityParser;
 	itr::LuaLevelParser luaLevelParser;
+	itr::LuaTowerParser luaTowerParser;
 	itr::EntityFactory entityFactory;
 };
 
@@ -82,6 +85,7 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 		_splashScreen.setLoadingState(0, "Loading configuration");
 		_managerPackage.luaManager.createState(itr::Definitions::EntityParseLuaStateScope);
 		_managerPackage.luaManager.createState(itr::Definitions::LevelParseLuaStateScope);
+		_managerPackage.luaManager.createState(itr::Definitions::TowerParseLuaStateScope);
 		_managerPackage.config.loadConfiguration("./data/scripts/Intrusion/config.lua");
 		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
 	}
@@ -96,6 +100,7 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
 		_splashScreen.setLoadingState(13, "Loading texture 'missing'");
 		_managerPackage.textureManager.loadTexture("./data/textures/Intrusion/missing.png", itr::Definitions::MissingTextureName);
+		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
 		_splashScreen.setLoadingState(14, "Loading texture 'star_greyscale_tower'");
 		_managerPackage.textureManager.loadTexture("./data/textures/Intrusion/star_greyscale_tower.png", itr::Definitions::StarTowerTextureName);
 		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
@@ -130,6 +135,15 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 	}
 	{
 		_splashScreen.setLoadingState(60, "Loading tower prototypes");
+		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
+		_splashScreen.setLoadingState(51, "Loading Tower1");
+		_managerPackage.luaTowerParser.parseTower("./data/scripts/Intrusion/Towers/Tower1.lua");
+		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
+		_splashScreen.setLoadingState(52, "Loading Tower2");
+		_managerPackage.luaTowerParser.parseTower("./data/scripts/Intrusion/Towers/Tower2.lua");
+		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
+		_splashScreen.setLoadingState(53, "Loading Tower3");
+		_managerPackage.luaTowerParser.parseTower("./data/scripts/Intrusion/Towers/Tower3.lua");
 		std::this_thread::sleep_for(std::chrono::milliseconds(ARTIFICIAL_WAIT));
 	}
 	{

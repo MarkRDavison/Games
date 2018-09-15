@@ -345,6 +345,7 @@ SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/IntrusionEntityGroups.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/LuaEntityParser.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/LuaLevelParser.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Infrastructure/LuaTowerParser.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/GameScene.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Scenes/GameUiScene.hpp
@@ -371,6 +372,7 @@ SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/IntrusionDefinitions.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/LuaEntityParser.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/LuaLevelParser.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Infrastructure/LuaTowerParser.cpp
 	
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/GameScene.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Scenes/GameUiScene.cpp
