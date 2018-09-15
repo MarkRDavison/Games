@@ -14,16 +14,16 @@ namespace inf {
 		
 	}
 
-	bool BasicButton::handleEvent(const sf::Event& _event) {
+	bool BasicButton::handleEvent(const sf::Event& _event, bool& _handled) {
 		if (!m_Enabled) {
 			return false;
 		}
-		if (UiElement::handleEvent(_event)) {
+		if (UiElement::handleEvent(_event, _handled)) {
 			onVisualChanged();
 		}
-
-
-
+		if (_handled) {
+			return true;
+		}
 		return false;
 	}
 	void BasicButton::draw(sf::RenderTarget& _target, sf::RenderStates _states) const {
@@ -45,12 +45,14 @@ namespace inf {
 		m_Callback = _callback;
 	}
 
-	void BasicButton::onClick(sf::Mouse::Button _button, bool _pressed) const {
-		if (m_Callback) {
-			m_Callback(_pressed);
-		}
-		else {
-			std::cout << "'" << getName() << "' button has been pressed and has no other callback, pressed: " << _pressed << std::endl;
+	void BasicButton::onClickWithinBounds(sf::Mouse::Button _button, bool _pressed)  {
+		if (m_MouseContained) {
+			if (m_Callback) {
+				m_Callback(_pressed);
+			}
+			else {
+				std::cout << "'" << getName() << "' button has been pressed and has no other callback, pressed: " << _pressed << std::endl;
+			}
 		}
 	}
 
@@ -93,7 +95,7 @@ namespace inf {
 		sf::Color outlineColor;
 
 		if (m_Enabled) {
-			if (m_MousePressed) {
+			if (m_MousePressedWithinBounds) {
 				internalColor = m_InnerHovered;
 				outlineColor = m_OutlineHovered;
 			} else if (m_MouseContained) {

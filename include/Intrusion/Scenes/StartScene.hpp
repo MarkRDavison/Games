@@ -8,6 +8,7 @@
 #include <Infrastructure/Gui/BasicButton.hpp>
 
 #include <Intrusion/Infrastructure/IntrusionConfigurationManager.hpp>
+#include <Infrastructure/Gui/TextBox.hpp>
 
 namespace itr {
 	class StartScene : public inf::Scene {
@@ -32,6 +33,7 @@ namespace itr {
 
 		inf::BasicButton m_TestButton1;
 		inf::BasicButton m_TestButton2;
+		inf::TextBox m_TextBox1;
 	};
 }
 

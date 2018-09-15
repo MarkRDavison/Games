@@ -11,15 +11,19 @@ namespace inf {
 		virtual ~UiElement(void);
 
 		virtual void update(float _delta);
-		virtual bool handleEvent(const sf::Event& _event);
+		virtual bool handleEvent(const sf::Event& _event, bool& _handled);
 		void draw(sf::RenderTarget& _target, sf::RenderStates _states) const override = 0;
 
 		virtual sf::FloatRect getBounds(void) = 0;
 
 		bool getEnabled(void) const noexcept { return m_Enabled; }
 		void setEnabled(bool _enabled);
+		bool getFocused(void) const noexcept { return m_HasFocus; }
+		void setFocus(bool _focus);
 		virtual void onEnabledChanged(bool _enabled) {}
-		virtual void onClick(sf::Mouse::Button _button, bool _pressed) const {}
+		virtual void onHasFocusChanged(bool _hasFocus) {}
+		virtual void onClickWithinBounds(sf::Mouse::Button _button, bool _pressed) {}
+		virtual void onClickOutsideBounds(sf::Mouse::Button _button, bool _pressed) {}
 
 		std::string getName(void) const noexcept { return m_Name; }
 
@@ -30,9 +34,10 @@ namespace inf {
 	protected:
 		std::string m_Name;
 		bool m_Enabled{ true };
+		bool m_HasFocus{ false };
 
 		bool m_MouseContained{ false };
-		bool m_MousePressed{ false };
+		bool m_MousePressedWithinBounds{ false };
 
 		
 	};

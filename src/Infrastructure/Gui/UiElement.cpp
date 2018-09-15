@@ -1,4 +1,5 @@
 #include <Infrastructure/Gui/UiElement.hpp>
+#include <iostream>
 
 namespace inf {
 
@@ -13,7 +14,7 @@ namespace inf {
 	void UiElement::update(float _delta) {
 		
 	}
-	bool UiElement::handleEvent(const sf::Event& _event) {
+	bool UiElement::handleEvent(const sf::Event& _event, bool& _handled) {
 		if (_event.type == sf::Event::MouseButtonPressed ||
 			_event.type == sf::Event::MouseButtonReleased) {
 			if (handleMouseButtonPressed(_event)) {
@@ -31,6 +32,14 @@ namespace inf {
 	void UiElement::setEnabled(bool _enabled) {
 		m_Enabled = _enabled;
 		onEnabledChanged(m_Enabled);
+		if (!m_Enabled) {
+			setFocus(false);
+		}
+	}
+
+	void UiElement::setFocus(bool _focus) {
+		m_HasFocus = _focus;
+		onHasFocusChanged(m_HasFocus);
 	}
 
 	bool UiElement::handleMouseButtonPressed(const sf::Event& _event) {
@@ -47,12 +56,22 @@ namespace inf {
 			result = true;
 		}
 
-		if (m_MousePressed != sf::Mouse::isButtonPressed(_event.mouseButton.button)) {
+		if (m_MousePressedWithinBounds != sf::Mouse::isButtonPressed(_event.mouseButton.button)) {
 			if (contained) {
-				m_MousePressed = sf::Mouse::isButtonPressed(_event.mouseButton.button);
-				onClick(_event.mouseButton.button, m_MousePressed);
+				m_MousePressedWithinBounds = sf::Mouse::isButtonPressed(_event.mouseButton.button);
+				onClickWithinBounds(_event.mouseButton.button, m_MousePressedWithinBounds);
+			} else {
+				if (!sf::Mouse::isButtonPressed(_event.mouseButton.button)) {
+					m_MousePressedWithinBounds = false;
+					onClickOutsideBounds(_event.mouseButton.button, m_MousePressedWithinBounds);
+				}
 			}
 			result = true;
+		} else {
+			if (m_HasFocus) {
+				onClickOutsideBounds(_event.mouseButton.button, m_MousePressedWithinBounds);
+				result = true;
+			}
 		}
 
 		return result;
@@ -69,11 +88,6 @@ namespace inf {
 
 		if (m_MouseContained != contained) {
 			m_MouseContained = contained;
-			result = true;
-		}
-
-		if (!contained && m_MousePressed) {
-			m_MousePressed = false;
 			result = true;
 		}
 

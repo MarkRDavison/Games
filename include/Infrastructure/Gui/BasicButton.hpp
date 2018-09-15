@@ -23,14 +23,14 @@ namespace inf {
 		explicit BasicButton(const std::string& _name);
 		~BasicButton(void) override;
 
-		bool handleEvent(const sf::Event& _event) override;
+		bool handleEvent(const sf::Event& _event, bool& _handled) override;
 		void draw(sf::RenderTarget& _target, sf::RenderStates _states) const override;
 
 		sf::FloatRect getBounds(void) override;
 
 		void setSize(const sf::Vector2f& _size);
 		void setCallback(std::function<void(bool)> _callback);
-		void onClick(sf::Mouse::Button _button, bool _pressed) const override;
+		void onClickWithinBounds(sf::Mouse::Button _button, bool _pressed) override;
 
 		void onEnabledChanged(bool _enabled) override;
 

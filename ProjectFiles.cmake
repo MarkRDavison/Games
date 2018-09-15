@@ -47,6 +47,7 @@ SET(INFRASTRUCURE_HEADER_FILES ${INFRASTRUCURE_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Exceptions/SurfaceNotFoundException.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Gui/BasicButton.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Gui/TextBox.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Gui/UiElement.hpp
 
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Scenes/LuaConsoleScene.hpp
@@ -70,6 +71,7 @@ SET(INFRASTRUCTURE_SOURCE_FILES ${INFRASTRUCTURE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/TextureManager.cpp
 	
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Gui/BasicButton.cpp
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Gui/TextBox.cpp
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Gui/UiElement.cpp
 
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Scenes/LuaConsoleScene.cpp
