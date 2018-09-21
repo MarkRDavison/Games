@@ -4,6 +4,7 @@ tower = {
 	width = 1,
 	height = 1,
 	range = 2.0,
+	cooldown = 0.75,
 	color = {
 		r = 0,
 		g = 0,

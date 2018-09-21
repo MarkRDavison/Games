@@ -21,6 +21,7 @@ namespace itr {
 		tower.color.r = state["tower"]["color"]["r"];
 		tower.color.g = state["tower"]["color"]["g"];
 		tower.color.b = state["tower"]["color"]["b"];
+		tower.cooldown = state["tower"]["cooldown"];
 
 		sol::table resources = state["tower"]["cost"];
 

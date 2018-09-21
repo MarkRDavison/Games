@@ -102,7 +102,7 @@ namespace itr {
 		TowerTargetingComponent& ttc = e.addComponent<TowerTargetingComponent>();
 		ttc.range = _prototype.range;
 		TowerFiringComponent& tfc = e.addComponent<TowerFiringComponent>();
-		tfc.firingCooldown = 1.0f;
+		tfc.firingCooldown = _prototype.cooldown;
 		tfc.projectilePrototype.speed = 15.0f;
 		SpriteComponent& sc = e.addComponent<SpriteComponent>(texture, sf::IntRect(0, 0, texture.getSize().x, texture.getSize().y), scale);
 		sc.flipHorizontal = false;

@@ -10,6 +10,7 @@ namespace itr {
 		static constexpr const float TileSize = 1.0f;
 		static constexpr const float HalfTileSize = TileSize / 2.0f;
 		static constexpr const float DefaultTowerRange = 2.0f;
+		static constexpr const float DefaultTowerCooldown = 1.0f;
 
 		static constexpr const int Tile_Basic_Empty = 0;
 		static constexpr const int Tile_Basic_Full = 1;
