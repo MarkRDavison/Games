@@ -7,6 +7,7 @@ namespace itr {
 		bool empty{ true };
 		bool start{ false };
 		bool end{ false };
+		bool hasTower{ false };
 	};
 
 }

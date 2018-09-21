@@ -12,6 +12,8 @@ namespace itr {
 		virtual unsigned getHeight(void) const noexcept = 0;
 
 		virtual bool canPlacePrototype(const sf::Vector2i& _coordinates, const ParsedTower& _prototype) const = 0;
+		virtual void placePrototype(const sf::Vector2i& _coordinates, const ParsedTower& _prototype) = 0;
+		// TODO: Need to have method to say that coordinates/size/prototype has been placed/reserved
 	};
 
 }

@@ -61,7 +61,7 @@ struct ManagerPackage {
 struct ServicePackage {
 
 	ServicePackage(ManagerPackage& _managerPackage) :
-		towerSpawnerService(_managerPackage.inputManager, _managerPackage.config, towerPlaceableSurfaceService) {
+		towerSpawnerService(_managerPackage.inputManager, _managerPackage.config, levelResourceService, towerPlaceableSurfaceService) {
 		
 	}
 
@@ -73,11 +73,16 @@ struct ServicePackage {
 
 struct SystemPackage {
 	SystemPackage(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) :
-		pathFollowing(_servicePackage.levelResourceService) {
-
+		life(_servicePackage.levelResourceService) {
+		
 	}
+
 	itr::RenderSystem render;
 	itr::PathFollowingSystem pathFollowing;
+	itr::ProjectileControlSystem projectileControl;
+	itr::TowerFiringSystem towerFiring;
+	itr::TowerTargetingSystem towerTargeting;
+	itr::LifeSystem life;
 };
 
 void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPackage, ServicePackage& _servicePackage, SystemPackage& _systemPackage) {
@@ -181,7 +186,9 @@ void loadResources(inf::SplashScreen& _splashScreen, ManagerPackage& _managerPac
 
 			_servicePackage.towerPlaceableSurfaceService.setActiveSurface(level);
 
-			itr::GameScene *gameScene = new itr::GameScene(_managerPackage.textureManager, _managerPackage.entityManager, _systemPackage.render, _systemPackage.pathFollowing);
+			itr::GameScene *gameScene = new itr::GameScene(
+				_managerPackage.textureManager, _managerPackage.entityManager, _managerPackage.entityFactory, 
+				_systemPackage.render, _systemPackage.pathFollowing, _systemPackage.projectileControl, _systemPackage.towerFiring, _systemPackage.towerTargeting, _systemPackage.life);
 			gameScene->m_Level = level;
 			_managerPackage.sceneManager.pushScene(gameScene);
 

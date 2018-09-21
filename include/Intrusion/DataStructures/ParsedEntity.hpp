@@ -3,6 +3,7 @@
 
 #include <string>
 #include <Intrusion/Infrastructure/IntrusionDefinitions.hpp>
+#include "ResourceBundle.hpp"
 
 namespace itr {
 	
@@ -10,9 +11,10 @@ namespace itr {
 
 		std::string prototypeName{ Definitions::DefaultEntityPrototypeName };
 		std::string animationName{ Definitions::DefaultAnimationName };
-		int health{ Definitions::DefaultEntityHealth};
+		float health{ Definitions::DefaultEntityHealth};
 		float speed{ Definitions::DefaultEntitySpeed };
 		float intervalRange{ Definitions::DefaultIntervalRange };
+		ResourceBundle drops;
 	};
 
 }

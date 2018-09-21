@@ -249,8 +249,9 @@ SET(HURRICANE_SOURCE_FILES ${HURRICANE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/ProjectileControlSystem.cpp
 )
 
-
 SET(TEST_SOURCE_FILES ${TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/EntityComponentSystem/EntityManagerTests.cpp
+
 	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/LuaConsoleTests.cpp
 	
 	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/PathfindingServiceTests.cpp
@@ -323,14 +324,21 @@ SET(KINGDOM_TEST_SOURCE_FILES ${KINGDOM_TEST_SOURCE_FILES}
 # Intrusion
 SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES} 
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/CircleComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/LifeComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/PathFollowComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/PositionComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/ProjectileComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/RenderableComponent.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/SpriteComponent.hpp
-
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/TowerFiringComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/TowerTargetComponent.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Components/TowerTargetingComponent.hpp
+	
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/LevelCell.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/LifeBundle.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedEntity.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedLevel.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedProjectile.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedTower.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ParsedWave.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/DataStructures/ResourceBundle.hpp
@@ -360,8 +368,12 @@ SET(INTRUSION_HEADER_FILES ${INTRUSION_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/IWaveSpawnerService.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Services/WaveSpawnerService.hpp
 	
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/LifeSystem.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/PathFollowingSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/ProjectileControlSystem.hpp
 	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/RenderSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/TowerFiringSystem.hpp
+	${CMAKE_SOURCE_DIR}/include/Intrusion/Systems/TowerTargetingSystem.hpp
 )
 
 SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
@@ -382,9 +394,13 @@ SET(INTRUSION_SOURCE_FILES ${INTRUSION_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/TowerPlaceableSurfaceService.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/TowerSpawnerService.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Services/WaveSpawnerService.cpp
-
+	
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/LifeSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/PathFollowingSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/ProjectileControlSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/RenderSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/TowerFiringSystem.cpp
+	${CMAKE_SOURCE_DIR}/src/Intrusion/Systems/TowerTargetingSystem.cpp
 )
 
 SET(INTRUSION_TEST_HEADER_FILES ${INTRUSION_TEST_HEADER_FILES}
@@ -402,5 +418,9 @@ SET(INTRUSION_TEST_SOURCE_FILES ${INTRUSION_TEST_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Services/TowerSpawnerServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Services/WaveSpawnerServiceTests.cpp
 	
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/LifeSystemTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/PathFollowingSystemTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/ProjectileControlSystemTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/TowerFiringSystemTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/TowerTargetingSystemTests.cpp
 )

@@ -22,14 +22,15 @@ namespace ecs {
 		Entity& addEntity();
 		Entity& addEntity(const std::string& _helpfulName);
 		Entity& getEntity(const std::string& _helpfulName);
+		std::weak_ptr<Entity> getWeakEntityRef(Entity *_entity);
 
 		static bool swapEntityBetweenManagers(Entity *_entity, EntityManager& _currentManager, EntityManager& _newManager);
 
 		void draw(sf::RenderTarget& _target, sf::RenderStates _states) const;
 
 	private:
-		std::vector<std::unique_ptr<Entity>> m_Entities;
-		std::vector<std::unique_ptr<Entity>> m_NewEntities;
+		std::vector<std::shared_ptr<Entity>> m_Entities;
+		std::vector<std::shared_ptr<Entity>> m_NewEntities;
 		std::array<std::vector<Entity*>, maxGroups> m_GroupedEntities;
 	};
 }

@@ -2,6 +2,7 @@
 #include <Intrusion/Infrastructure/IntrusionDefinitions.hpp>
 #include <cassert>
 #include <iostream>
+#include <Intrusion/Components/PathFollowComponent.hpp>
 
 namespace itr {
 
@@ -26,7 +27,7 @@ namespace itr {
 		if (_event.type == sf::Event::KeyPressed) {
 			if (_event.key.code >= sf::Keyboard::Num1 &&
 				_event.key.code < sf::Keyboard::Num1 + m_EntityFactory.m_LuaTowerParser.getTowers().size()) {
-				unsigned index = static_cast<unsigned>(_event.key.code - sf::Keyboard::Num1);
+				const unsigned index = static_cast<unsigned>(_event.key.code - sf::Keyboard::Num1);
 				const auto& towers = m_EntityFactory.m_LuaTowerParser.getTowers();
 				const ParsedTower& tower = towers.at(index);
 				if (m_TowerSpawnerService.beginGhostForPrototype(tower)) {
@@ -72,7 +73,10 @@ namespace itr {
 		m_WaveSpawnerService.setParsedLevel(m_ParsedLevel);
 		m_WaveSpawnerService.prototypeSpawned = [this](const WaveInstance& _waveInstance) {
 			std::cout << "Spawning entity: " << _waveInstance.entityPrototype << std::endl;
-			m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_ParsedLevel.start.x, m_ParsedLevel.start.y), _waveInstance.entityPrototype, m_Path);
+			ecs::Entity& e = m_EntityFactory.spawnWaveEntityFromPrototype(sf::Vector2u(m_ParsedLevel.start.x, m_ParsedLevel.start.y), _waveInstance.entityPrototype, m_Path);
+			e.getComponent<PathFollowComponent>().pathCompleted = [&](ecs::Entity *_e) {
+				m_LevelResourceService.updateResource(Definitions::LivesResourceName, -1);
+			};
 		};
 		m_WaveSpawnerService.singleWaveSpawningCompleted = [](void) {
 			std::cout << "Wave completed" << std::endl;
@@ -123,7 +127,11 @@ namespace itr {
 	}
 
 	bool Level::canPlacePrototype(const sf::Vector2i& _coordinates, const ParsedTower& _prototype) const {
-		return !canTraverse(sf::Vector2u(_coordinates));
+		return !canTraverse(sf::Vector2u(_coordinates)) && !getCell(_coordinates.x, _coordinates.y).hasTower;
+	}
+
+	void Level::placePrototype(const sf::Vector2i& _coordinates, const ParsedTower& _prototype) {
+		getCell(_coordinates.x, _coordinates.y).hasTower = true;
 	}
 
 	bool Level::canTraverse(const sf::Vector2u& _coordinates) const {

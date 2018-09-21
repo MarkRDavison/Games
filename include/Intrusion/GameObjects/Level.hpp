@@ -35,6 +35,7 @@ namespace itr {
 		unsigned getWidth(void) const noexcept override { return m_Width; }
 		unsigned getHeight(void) const noexcept override { return m_Height; }
 		bool canPlacePrototype(const sf::Vector2i& _coordinates, const ParsedTower& _prototype) const override;
+		void placePrototype(const sf::Vector2i& _coordinates, const ParsedTower& _prototype) override;
 		bool canTraverse(const sf::Vector2u& _coordinates) const override;
 
 		std::string getSurfaceName(void) const override { return m_Name; }

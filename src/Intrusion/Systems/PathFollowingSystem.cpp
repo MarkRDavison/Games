@@ -1,16 +1,14 @@
 #include <Intrusion/Systems/PathFollowingSystem.hpp>
 #include <Intrusion/Infrastructure/IntrusionEntityGroups.hpp>
+#include <Intrusion/Infrastructure/IntrusionDefinitions.hpp>
 #include <Intrusion/Components/PathFollowComponent.hpp>
 #include <Intrusion/Components/PositionComponent.hpp>
 #include <Utility/VectorMath.hpp>
-#include <Intrusion/Infrastructure/IntrusionDefinitions.hpp>
 
 namespace itr {
 
-	PathFollowingSystem::PathFollowingSystem(ILevelResourceService& _levelResourceService) :
-		m_LevelResourceService(_levelResourceService) {
-		
-	}
+	PathFollowingSystem::PathFollowingSystem(void) {}
+	PathFollowingSystem::~PathFollowingSystem(void) {}
 
 	void PathFollowingSystem::update(float _delta, ecs::EntityManager& _entityManager) {
 		for (ecs::Entity *e : _entityManager.getEntitiesByGroup(EntityGroup::GPathFollower)) {
@@ -23,8 +21,9 @@ namespace itr {
 		PositionComponent& pc = _entity->getComponent<PositionComponent>();
 
 		if (pfc.pathPoints.empty()) {
-			// TODO: Move the resources and amounts onto the path following component
-			m_LevelResourceService.updateResource(Definitions::LivesResourceName, -1);
+			if (pfc.pathCompleted) {
+				pfc.pathCompleted(_entity);
+			}
 			_entity->destroy();
 			return;
 		}

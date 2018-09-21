@@ -45,7 +45,7 @@ namespace inf {
 	bool UiElement::handleMouseButtonPressed(const sf::Event& _event) {
 		const sf::FloatRect& bounds = getBounds();
 
-		const sf::Vector2f& mousePosition = sf::Vector2f(_event.mouseButton.x, _event.mouseButton.y);
+		const sf::Vector2f& mousePosition = sf::Vector2f(static_cast<float>(_event.mouseButton.x), static_cast<float>(_event.mouseButton.y));
 
 		const bool contained = bounds.contains(mousePosition);
 
@@ -80,7 +80,7 @@ namespace inf {
 	bool UiElement::handleMouseMoved(const sf::Event& _event) {
 		const sf::FloatRect& bounds = getBounds();
 
-		const sf::Vector2f& mousePosition = sf::Vector2f(_event.mouseMove.x, _event.mouseMove.y);
+		const sf::Vector2f& mousePosition = sf::Vector2f(static_cast<float>(_event.mouseMove.x), static_cast<float>(_event.mouseMove.y));
 
 		const bool contained = bounds.contains(mousePosition);
 

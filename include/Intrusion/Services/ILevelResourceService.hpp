@@ -17,6 +17,8 @@ namespace itr {
 		virtual void setResourceMaximum(const std::string& _resourceName, int _maximum) = 0;
 		virtual int getResource(const std::string& _resourceName) = 0;
 		virtual bool canAfford(const ResourceBundle& _resourceBundle) = 0;
+		virtual void payResourceBundle(const ResourceBundle& _resourceBundle) = 0;
+		virtual void receiveResourceBundle(const ResourceBundle& _resourceBundle) = 0;
 
 		std::function<void(std::string)> resourceChanged;
 	};

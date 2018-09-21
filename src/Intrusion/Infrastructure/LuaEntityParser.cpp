@@ -21,7 +21,17 @@ namespace itr {
 		entity.health = state["entity"]["health"];
 		entity.speed = state["entity"]["speed"];
 		entity.intervalRange = state["entity"]["interval_range"];
-		
+
+		sol::table resources = state["entity"]["drops"];
+
+		for (unsigned i = 1; i <= resources.size(); ++i) {
+			ResourceBundle::Resource resource{};
+
+			resource.name = resources[i]["resource"];
+			resource.amount = resources[i]["amount"];
+
+			entity.drops.resources.push_back(resource);
+		}
 
 		return entity;
 	}

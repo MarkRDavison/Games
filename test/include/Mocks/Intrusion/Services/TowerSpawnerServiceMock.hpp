@@ -36,6 +36,13 @@ namespace itr {
 				resetCallback();
 			}
 		}
+		bool attemptPlacingGhost(const sf::Vector2i& _eventCoordinates) override {
+			if (attempPlacingGhostCallback) {
+				return attempPlacingGhostCallback(_eventCoordinates);
+			}
+
+			return false;
+		}
 
 		bool showingTowerGhost{ false };
 		bool validLocationForTowerGhost{ false };
@@ -43,6 +50,7 @@ namespace itr {
 		ParsedTower ghostPrototype;
 
 		std::function<void(void)> resetCallback;
+		std::function<bool(const sf::Vector2i&)> attempPlacingGhostCallback;
 	};
 
 }

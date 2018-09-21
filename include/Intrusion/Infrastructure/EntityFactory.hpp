@@ -10,6 +10,7 @@
 #include <Intrusion/Infrastructure/LuaEntityParser.hpp>
 #include <Intrusion/Infrastructure/LuaTowerParser.hpp>
 #include <Intrusion/DataStructures/ParsedTower.hpp>
+#include <Intrusion/DataStructures/ParsedProjectile.hpp>
 
 namespace itr {
 	class EntityFactory {
@@ -17,7 +18,8 @@ namespace itr {
 		EntityFactory(inf::TextureManager& _textureManager, ecs::EntityManager& _entityManager, IntrusionConfigurationManager& _configurationManager, LuaEntityParser& _luaEntityParser, LuaTowerParser& _luaTowerParser);
 		~EntityFactory(void);
 
-		void spawnWaveEntityFromPrototype(const sf::Vector2u& _tilePosition, const std::string& _prototype, inf::Path& _path);
+		ecs::Entity& spawnWaveEntityFromPrototype(const sf::Vector2u& _tilePosition, const std::string& _prototype, inf::Path& _path);
+		ecs::Entity& spawnProjectileFromPrototype(const ParsedProjectile& _prototype, ecs::Entity *_source, ecs::Entity *_target);
 		void spawnTowerEntityFromPrototype(const sf::Vector2u& _tilePosition, const ParsedTower& _prototype);
 
 	private:

@@ -3,7 +3,6 @@
 #include <Intrusion/Systems/PathFollowingSystem.hpp>
 #include <Intrusion/Components/PositionComponent.hpp>
 #include <Intrusion/Components/PathFollowComponent.hpp>
-#include <Mocks/Intrusion/Services/LevelResourceServiceMock.hpp>
 
 namespace itr {
 	namespace PathFollowingSystemTests {
@@ -14,8 +13,7 @@ namespace itr {
 			e.addComponent<PositionComponent>();
 			e.addComponent<PathFollowComponent>();
 
-			LevelResourceServiceMock levelResourceServiceMock{};
-			PathFollowingSystem system(levelResourceServiceMock);
+			PathFollowingSystem system;
 
 			REQUIRE_NOTHROW(system.updateEntity(1.0f, &e, em));
 		}
@@ -30,8 +28,7 @@ namespace itr {
 			pfc.speed = 1.0f;
 			pfc.pathPoints.push(end);
 
-			LevelResourceServiceMock levelResourceServiceMock{};
-			PathFollowingSystem system(levelResourceServiceMock);
+			PathFollowingSystem system;
 
 			REQUIRE_NOTHROW(system.updateEntity(1.0f, &e, em));
 
@@ -49,8 +46,7 @@ namespace itr {
 			pfc.pathPoints.push(start + sf::Vector2f(1.0f, 0.0f));
 			pfc.pathPoints.push(start + sf::Vector2f(2.0f, 0.0f));
 
-			LevelResourceServiceMock levelResourceServiceMock{};
-			PathFollowingSystem system(levelResourceServiceMock);
+			PathFollowingSystem system;
 
 			REQUIRE_NOTHROW(system.updateEntity(1.0f, &e, em));
 
@@ -69,8 +65,7 @@ namespace itr {
 			pfc.speed = 1.0f;
 			pfc.pathPoints.push(start + sf::Vector2f(pfc.speed * delta * 2.0f, 0.0f));
 
-			LevelResourceServiceMock levelResourceServiceMock{};
-			PathFollowingSystem system(levelResourceServiceMock);
+			PathFollowingSystem system;
 
 			REQUIRE_NOTHROW(system.updateEntity(1.0f, &e, em));
 
@@ -90,8 +85,7 @@ namespace itr {
 			pfc.pathPoints.push(start + sf::Vector2f(1.0f, 0.0f));
 			pfc.pathPoints.push(start + sf::Vector2f(2.0f, 0.0f));
 
-			LevelResourceServiceMock levelResourceServiceMock{};
-			PathFollowingSystem system(levelResourceServiceMock);
+			PathFollowingSystem system;
 
 			REQUIRE_NOTHROW(system.updateEntity(1.0f, &e, em));
 
@@ -111,8 +105,7 @@ namespace itr {
 			pfc.pathPoints.push(start + sf::Vector2f(1.0f, 0.0f));
 			pfc.pathPoints.push(start + sf::Vector2f(1.0f, 1.0f));
 
-			LevelResourceServiceMock levelResourceServiceMock{};
-			PathFollowingSystem system(levelResourceServiceMock);
+			PathFollowingSystem system;
 
 			REQUIRE_NOTHROW(system.updateEntity(1.0f, &e, em));
 
@@ -120,8 +113,9 @@ namespace itr {
 			REQUIRE(start + sf::Vector2f(1.0f, 0.5f) == pc.position);
 		}
 
-		TEST_CASE("An entity reaching the end notifies the level resource service", "[Intrusion][System][PathFollowingSystem]") {
+		TEST_CASE("An entity reaching the end invokes the callback", "[Intrusion][System][PathFollowingSystem]") {
 			const sf::Vector2f end{ 5.0f, 5.0f };
+			bool callbackInvoked{ false };
 
 			ecs::EntityManager em;
 			ecs::Entity& e = em.addEntity();
@@ -129,16 +123,15 @@ namespace itr {
 			PathFollowComponent& pfc = e.addComponent<PathFollowComponent>();
 			pfc.speed = 1.0f;
 			pfc.pathPoints.push(end);
-
-			bool updateResourceInvoked{ false };
-			LevelResourceServiceMock levelResourceServiceMock{};
-			levelResourceServiceMock.updateResourceCallback = [&](const std::string& _resourceName, int _amount) {
-				updateResourceInvoked = true;
+			pfc.pathCompleted = [&](ecs::Entity *_entity) {
+				REQUIRE(&e == _entity);
+				callbackInvoked = true;
 			};
-			PathFollowingSystem system(levelResourceServiceMock);
+
+			PathFollowingSystem system;
 			
 			REQUIRE_NOTHROW(system.updateEntity(1.0f, &e, em));
-			REQUIRE(updateResourceInvoked);
+			REQUIRE(callbackInvoked);
 		}
 	}
 }

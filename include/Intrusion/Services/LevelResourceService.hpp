@@ -23,6 +23,8 @@ namespace itr {
 		void setResourceMaximum(const std::string& _resourceName, int _maximum) override;
 		int getResource(const std::string& _resourceName) override; 
 		bool canAfford(const ResourceBundle& _resourceBundle) override;
+		void payResourceBundle(const ResourceBundle& _resourceBundle) override;
+		void receiveResourceBundle(const ResourceBundle& _resourceBundle) override;
 
 	protected:
 		bool resourceExists(const std::string& _resourceName) const;

@@ -184,5 +184,65 @@ namespace itr {
 
 			REQUIRE(service.canAfford(bundle));
 		}
+
+		TEST_CASE("Paying a resource bundle reduces all relevant resources", "[Intrusion][Service][LevelResourceService]") {
+			const int StartingAmount = 50;
+			const int Gold1PayAmount = 12;
+			const int Gold2PayAmount = 22;
+			LevelResourceService service{};
+
+			const std::string Gold2ResourceName = "Gold2";
+			service.setResource(Definitions::GoldResourceName, StartingAmount);
+			service.setResource(Gold2ResourceName, StartingAmount);
+
+			ResourceBundle bundle{};
+			{
+				ResourceBundle::Resource resource{};
+				resource.name = Definitions::GoldResourceName;
+				resource.amount = Gold1PayAmount;
+				bundle.resources.push_back(resource);
+			}
+			{
+				ResourceBundle::Resource resource{};
+				resource.name = Gold2ResourceName;
+				resource.amount = Gold2PayAmount;
+				bundle.resources.push_back(resource);
+			}
+
+			service.payResourceBundle(bundle);
+
+			REQUIRE(StartingAmount - Gold1PayAmount == service.getResource(Definitions::GoldResourceName));
+			REQUIRE(StartingAmount - Gold2PayAmount == service.getResource(Gold2ResourceName));
+		}
+
+		TEST_CASE("Receiving a resource bundle increases all relevant resources", "[Intrusion][Service][LevelResourceService]") {
+			const int StartingAmount = 50;
+			const int Gold1PayAmount = 12;
+			const int Gold2PayAmount = 22;
+			LevelResourceService service{};
+
+			const std::string Gold2ResourceName = "Gold2";
+			service.setResource(Definitions::GoldResourceName, StartingAmount);
+			service.setResource(Gold2ResourceName, StartingAmount);
+
+			ResourceBundle bundle{};
+			{
+				ResourceBundle::Resource resource{};
+				resource.name = Definitions::GoldResourceName;
+				resource.amount = Gold1PayAmount;
+				bundle.resources.push_back(resource);
+			}
+			{
+				ResourceBundle::Resource resource{};
+				resource.name = Gold2ResourceName;
+				resource.amount = Gold2PayAmount;
+				bundle.resources.push_back(resource);
+			}
+
+			service.receiveResourceBundle(bundle);
+
+			REQUIRE(StartingAmount + Gold1PayAmount == service.getResource(Definitions::GoldResourceName));
+			REQUIRE(StartingAmount + Gold2PayAmount == service.getResource(Gold2ResourceName));
+		}
 	}
 }

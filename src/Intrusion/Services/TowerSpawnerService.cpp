@@ -1,12 +1,14 @@
 #include <Intrusion/Services/TowerSpawnerService.hpp>
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 namespace itr {
 
-	TowerSpawnerService::TowerSpawnerService(inf::InputManager& _inputManager, IntrusionConfigurationManager& _config, ITowerPlaceableSurfaceService& _towerPlaceableSurfaceService) :
+	TowerSpawnerService::TowerSpawnerService(inf::InputManager& _inputManager, IntrusionConfigurationManager& _config, ILevelResourceService& _levelResourceService, ITowerPlaceableSurfaceService& _towerPlaceableSurfaceService) :
 		m_InputManager(_inputManager),
 		m_Config(_config),
+		m_LevelResourceService(_levelResourceService),
 		m_TowerPlaceableSurfaceService(_towerPlaceableSurfaceService) {
 		
 	}
@@ -30,7 +32,7 @@ namespace itr {
 			}
 		}
 		if (_event.type == sf::Event::MouseButtonPressed) {
-			if (_event.mouseButton.button == sf::Mouse::Left) {
+			if (_event.mouseButton.button == sf::Mouse::Left && m_ShowingTowerGhost) {
 				if (attemptPlacingGhost({ _event.mouseButton.x, _event.mouseButton.y })) {
 					reset();
 					return true;
@@ -76,7 +78,7 @@ namespace itr {
 	}
 
 	void TowerSpawnerService::updateGhostLocationValid(const ITowerPlaceableSurface* surface) {
-		m_ValidLocationForTowerGhost = surface->canPlacePrototype(m_GhostTowerTileCoords, {});
+		m_ValidLocationForTowerGhost = surface->canPlacePrototype(m_GhostTowerTileCoords, getGhostPrototype());
 	}
 
 	void TowerSpawnerService::updateGhostPosition(const sf::Vector2i& _eventCoordinates) {
@@ -107,8 +109,19 @@ namespace itr {
 			return false;
 		}
 
+		if (!m_LevelResourceService.canAfford(m_CurrentPrototype.cost)) {
+			return false;
+		}
+
+		m_LevelResourceService.payResourceBundle(m_CurrentPrototype.cost);
+
 		if (prototypeSpawned) {
 			prototypeSpawned(m_CurrentPrototype, m_GhostTowerTileCoords);
+		}
+
+		ITowerPlaceableSurface *surface = m_TowerPlaceableSurfaceService.getActiveSurface();
+		if (surface != nullptr) {
+			surface->placePrototype(m_GhostTowerTileCoords, m_CurrentPrototype);
 		}
 
 		return true;

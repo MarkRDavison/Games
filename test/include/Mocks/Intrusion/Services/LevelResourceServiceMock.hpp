@@ -37,12 +37,24 @@ namespace itr {
 
 			return false;
 		}
+		void payResourceBundle(const ResourceBundle& _resourceBundle) override {
+			if (payResourceBundleCallback) {
+				payResourceBundleCallback(_resourceBundle);
+			}
+		}
+		void receiveResourceBundle(const ResourceBundle& _resourceBundle) override {
+			if (receiveResourceBundleCallback) {
+				receiveResourceBundleCallback(_resourceBundle);
+			}
+		}
 
 		std::function<void(const std::string&, int)> updateResourceCallback;
 		std::function<void(const std::string&, int)> setResourceCallback;
 		std::function<void(const std::string&, int)> setResourceMaximumCallback;
 		std::function<int(const std::string&)> getResourceCallback;
 		std::function<bool(const ResourceBundle&)> canAffordCallback;
+		std::function<void(const ResourceBundle&)> payResourceBundleCallback;
+		std::function<void(const ResourceBundle&)> receiveResourceBundleCallback;
 	};
 }
 

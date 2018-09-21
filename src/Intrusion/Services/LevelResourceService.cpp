@@ -54,6 +54,26 @@ namespace itr {
 		return true;
 	}
 
+	void LevelResourceService::payResourceBundle(const ResourceBundle& _resourceBundle) {
+		for (const ResourceBundle::Resource& _res : _resourceBundle.resources) {
+			if (_res.amount == 0) {
+				continue;
+			}
+
+			updateResource(_res.name, -_res.amount);
+		}
+	}
+
+	void LevelResourceService::receiveResourceBundle(const ResourceBundle& _resourceBundle) {
+		for (const ResourceBundle::Resource& _res : _resourceBundle.resources) {
+			if (_res.amount == 0) {
+				continue;
+			}
+
+			updateResource(_res.name, _res.amount);
+		}
+	}
+
 	bool LevelResourceService::resourceExists(const std::string& _resourceName) const {
 		return m_ResourceMap.find(_resourceName) != m_ResourceMap.end();
 	}

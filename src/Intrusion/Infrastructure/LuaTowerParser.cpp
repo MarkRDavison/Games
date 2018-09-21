@@ -3,9 +3,7 @@
 namespace itr {
 
 	LuaTowerParser::LuaTowerParser(inf::LuaManager& _luaManager) :
-		m_LuaManager(_luaManager) {
-		
-	}
+		m_LuaManager(_luaManager) { }
 
 	ParsedTower LuaTowerParser::parseTower(const std::string& _scriptName) {
 		m_ParsedTowers.push_back(ParsedTower());
@@ -29,8 +27,8 @@ namespace itr {
 		for (unsigned i = 1; i <= resources.size(); ++i) {
 			ResourceBundle::Resource resource{};
 
-			resource.name = resources["resource"];
-			resource.amount = resources["amount"];
+			resource.name = resources[i]["resource"];
+			resource.amount = resources[i]["amount"];
 
 			tower.cost.resources.push_back(resource);
 		}
@@ -40,13 +38,17 @@ namespace itr {
 	}
 
 	bool LuaTowerParser::towerHasBeenParsed(const std::string& _name) const {
-		const auto result = std::find_if(m_ParsedTowers.begin(), m_ParsedTowers.end(), [_name](const ParsedTower& _tower) { return _tower.prototypeName == _name; });
+		const auto result = std::find_if(m_ParsedTowers.begin(), m_ParsedTowers.end(),
+		                                 [_name](const ParsedTower& _tower) { return _tower.prototypeName == _name; });
 		return result != m_ParsedTowers.end();
 	}
+
 	ParsedTower LuaTowerParser::getTower(const std::string& _name) const {
-		const auto result = std::find_if(m_ParsedTowers.begin(), m_ParsedTowers.end(), [_name](const ParsedTower& _tower) { return _tower.prototypeName == _name; });
+		const auto result = std::find_if(m_ParsedTowers.begin(), m_ParsedTowers.end(),
+		                                 [_name](const ParsedTower& _tower) { return _tower.prototypeName == _name; });
 		return *result;
 	}
+
 	std::vector<ParsedTower> LuaTowerParser::getTowers(void) const {
 		return m_ParsedTowers;
 	}

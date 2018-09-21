@@ -18,7 +18,7 @@ namespace itr {
 
 		static constexpr const int DefaultResourceMaximum = -1;
 		static constexpr const int DefaultLivesResourceAmount = 10;
-		static constexpr const int DefaultGoldResourceAmount = 150;
+		static constexpr const int DefaultGoldResourceAmount = 250;
 
 
 		static constexpr const char EntityParseLuaStateScope[] = "LuaEntityParseScope";
@@ -39,7 +39,7 @@ namespace itr {
 		static constexpr const char DefaultAnimationName[] = "missing";
 		static constexpr const float DefaultEntitySpeed{ 1.0f };
 		static constexpr const float DefaultIntervalRange{ 0.1f };
-		static constexpr const int DefaultEntityHealth{ 10 };
+		static constexpr const float DefaultEntityHealth{ 10.0f };
 	};
 
 }

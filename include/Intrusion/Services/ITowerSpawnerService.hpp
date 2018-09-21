@@ -4,7 +4,6 @@
 #include <functional>
 
 #include <Intrusion/DataStructures/ParsedTower.hpp>
-#include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 namespace itr {
@@ -17,7 +16,8 @@ namespace itr {
 		virtual bool handleEvent(const sf::Event& _event) = 0;
 		virtual void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const = 0;
 
-		virtual bool beginGhostForPrototype(const ParsedTower& _prototype) = 0;
+		virtual bool beginGhostForPrototype(const ParsedTower& _prototype) = 0; 
+		virtual bool attemptPlacingGhost(const sf::Vector2i& _eventCoordinates) = 0;
 		virtual bool getShowingTowerGhost(void) const = 0;
 		virtual bool getValidLocationForTowerGhost(void) const = 0;
 		virtual sf::Vector2i getGhostCoordinates(void) const = 0;
