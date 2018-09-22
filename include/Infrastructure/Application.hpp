@@ -16,6 +16,7 @@ namespace inf {
 
 		void initialise(const sf::Vector2u& _resolution, const std::string& _title, float _scale);
 		void start(void);
+		void stop(void);
 
 		sf::RenderTarget& getRenderTarget(void) noexcept { return m_Window; }
 		const sf::Window& getWindow(void) noexcept { return m_Window; }

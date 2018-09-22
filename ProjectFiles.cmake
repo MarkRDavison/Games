@@ -4,6 +4,8 @@ SET(UTILITY_HEADER_FILES ${UTILITY_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Utility/Colour.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/Orientation.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/PhysicsDebug.hpp
+	${CMAKE_SOURCE_DIR}/include/Utility/Signal.hpp
+	${CMAKE_SOURCE_DIR}/include/Utility/TextHelpers.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/VectorMath.hpp
 )
 SET(UTILITY_SOURCE_FILES ${UTILITY_SOURCE_FILES}
@@ -423,4 +425,45 @@ SET(INTRUSION_TEST_SOURCE_FILES ${INTRUSION_TEST_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/ProjectileControlSystemTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/TowerFiringSystemTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Intrusion/Systems/TowerTargetingSystemTests.cpp
+)
+
+# Minesweeper
+SET(MINESWEEPER_HEADER_FILES ${MINESWEEPER_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/DataStructures/BoardInteractionEvent.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/DataStructures/BoardInteractionState.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/DataStructures/Cell.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Infrastructure/ConfigurationManager.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Infrastructure/Definitions.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/GameObjects/GameBoard.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Scenes/ExitScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Scenes/GameScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Scenes/TitleScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/Interfaces/IBoardInitializationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/Interfaces/IBoardInteractionService.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/Interfaces/IBoardStatusService.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/Interfaces/ISceneChangeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/BoardInitializationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/BoardInteractionService.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/BoardStatusService.hpp
+	${CMAKE_SOURCE_DIR}/include/Minesweeper/Services/SceneChangeService.hpp
+)
+
+SET(MINESWEEPER_SOURCE_FILES ${MINESWEEPER_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Infrastructure/ConfigurationManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Infrastructure/Definitions.cpp
+
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/GameObjects/GameBoard.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Scenes/ExitScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Scenes/GameScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Scenes/TitleScene.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Services/BoardInitializationService.cpp
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Services/BoardInteractionService.cpp
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Services/BoardStatusService.cpp
+	${CMAKE_SOURCE_DIR}/src/Minesweeper/Services/SceneChangeService.cpp
 )

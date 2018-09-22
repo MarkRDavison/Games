@@ -117,6 +117,10 @@ namespace inf {
 		m_Window.close();
 	}
 
+	void Application::stop(void) {
+		m_Running = false;
+	}
+
 	void Application::update(float _delta) const {
 		m_SceneManager.update(_delta);
 	}

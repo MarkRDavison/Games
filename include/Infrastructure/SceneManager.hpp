@@ -13,12 +13,17 @@ namespace inf {
 		void update(float _delta);
 		bool handleEvent(const sf::Event& _event);
 		void draw(sf::RenderTarget& _target, sf::RenderStates _states, float _alpha) const ;
+		
+		void refresh(void);
 
 		void pushScene(Scene *_scene);
+		void removeScene(Scene *_scene);
 		Scene *popScene(void);
 
 	private:
 		std::vector<Scene *> m_Scenes;
+		std::vector<Scene *> m_NewlyAddedScenes;
+		std::vector<Scene *> m_NewlyRemovedScenes;
 	};
 }
 

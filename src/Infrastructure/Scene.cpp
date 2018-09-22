@@ -8,4 +8,17 @@ namespace inf {
 	Scene::~Scene() {
 	}
 
+	void Scene::remove(void) {
+		m_ToRemove = true;
+	}
+	bool Scene::getNeedsRemoval(void) const {
+		return m_ToRemove;
+	}
+	void Scene::setDeleteOnRemove(bool _deleteOnRemove) {
+		m_DeleteOnRemove = _deleteOnRemove;
+	}
+	bool Scene::getDeleteOnRemove(void) const {
+		return m_DeleteOnRemove;
+	}
+
 }
