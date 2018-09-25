@@ -45,6 +45,7 @@ SET(INFRASTRUCURE_HEADER_FILES ${INFRASTRUCURE_HEADER_FILES}
 
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/DataStructures/Path.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/DataStructures/PathNode.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/DataStructures/ResourceBundle.hpp
 
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Exceptions/SurfaceNotFoundException.hpp
 	
@@ -54,6 +55,9 @@ SET(INFRASTRUCURE_HEADER_FILES ${INFRASTRUCURE_HEADER_FILES}
 
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Scenes/LuaConsoleScene.hpp
 	
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/Interfaces/IResourceService.hpp
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/ResourceService.hpp
+
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/IPathfindingService.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/PathfindingService.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Services/IPathSurface.hpp
@@ -79,8 +83,26 @@ SET(INFRASTRUCTURE_SOURCE_FILES ${INFRASTRUCTURE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Scenes/LuaConsoleScene.cpp
 	
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Services/PathfindingService.cpp	
+	${CMAKE_SOURCE_DIR}/src/Infrastructure/Services/ResourceService.cpp	
 	${CMAKE_SOURCE_DIR}/src/Infrastructure/Services/SurfaceService.cpp
 
+)
+
+SET(TEST_SOURCE_FILES ${TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/EntityComponentSystem/EntityManagerTests.cpp
+
+	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/LuaConsoleTests.cpp
+	
+	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/PathfindingServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/ResourceServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/SurfaceServiceTests.cpp
+)
+
+SET(TEST_HEADER_FILES ${TEST_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/InputManagerMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/LuaManagerMock.hpp
+
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/Services/ResourceServiceMock.hpp
 )
 
 # Arkanoid
@@ -249,20 +271,6 @@ SET(HURRICANE_SOURCE_FILES ${HURRICANE_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/PickupControlSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/PlayerControlSystem.cpp
 	${CMAKE_SOURCE_DIR}/src/Hurricane/Systems/ProjectileControlSystem.cpp
-)
-
-SET(TEST_SOURCE_FILES ${TEST_SOURCE_FILES}
-	${CMAKE_SOURCE_DIR}/test/src/EntityComponentSystem/EntityManagerTests.cpp
-
-	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/LuaConsoleTests.cpp
-	
-	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/PathfindingServiceTests.cpp
-	${CMAKE_SOURCE_DIR}/test/src/Infrastructure/Services/SurfaceServiceTests.cpp
-)
-
-SET(TEST_HEADER_FILES ${TEST_HEADER_FILES}
-	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/InputManagerMock.hpp
-	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/LuaManagerMock.hpp
 )
 
 # Kingdom
@@ -466,4 +474,40 @@ SET(MINESWEEPER_SOURCE_FILES ${MINESWEEPER_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Minesweeper/Services/BoardInteractionService.cpp
 	${CMAKE_SOURCE_DIR}/src/Minesweeper/Services/BoardStatusService.cpp
 	${CMAKE_SOURCE_DIR}/src/Minesweeper/Services/SceneChangeService.cpp
+)
+
+# Pollution
+SET(POLLUTION_HEADER_FILES ${POLLUTION_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Pollution/DataStructures/WorldData.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Pollution/GameObjects/WorldObject.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Pollution/Infrastructure/ConfigurationManager.hpp
+	${CMAKE_SOURCE_DIR}/include/Pollution/Infrastructure/Definitions.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Pollution/Scenes/GameScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Pollution/Services/Interfaces/IWorldInteractionService.hpp
+	${CMAKE_SOURCE_DIR}/include/Pollution/Services/Interfaces/IWorldUpdateService.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Pollution/Services/WorldInteractionService.hpp
+	${CMAKE_SOURCE_DIR}/include/Pollution/Services/WorldUpdateService.hpp
+)
+
+SET(POLLUTION_SOURCE_FILES ${POLLUTION_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Pollution/GameObjects/WorldObject.cpp
+
+	${CMAKE_SOURCE_DIR}/src/Pollution/Infrastructure/ConfigurationManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Pollution/Infrastructure/Definitions.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Pollution/Scenes/GameScene.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Pollution/Services/WorldInteractionService.cpp
+	${CMAKE_SOURCE_DIR}/src/Pollution/Services/WorldUpdateService.cpp
+)
+
+SET(POLLUTION_TEST_HEADER_FILES ${POLLUTION_TEST_HEADER_FILES}
+)
+
+SET(POLLUTION_TEST_SOURCE_FILES ${POLLUTION_TEST_SOURCE_FILES}
 )

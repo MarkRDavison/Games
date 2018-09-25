@@ -12,6 +12,11 @@ namespace inf {
 
 		static const constexpr float Pi = 3.14159265f;
 
+		enum class AngleType {
+			Radians,
+			Degrees
+		};
+
 		////////////////////////////////////////////////////////////
 		///
 		///	\brief  Returns the distance between two sf::Vector2's
@@ -150,9 +155,9 @@ namespace inf {
 		////////////////////////////////////////////////////////////
 		float dot(const sf::Vector3f& _left, const sf::Vector3f& _right);
 
-		float toAngle(const sf::Vector2f& _vec);
+		float toAngle(const sf::Vector2f& _vec, AngleType _type);
 
-		sf::Vector2f toDirection(float _angle);
+		sf::Vector2f toDirection(float _angle, AngleType _type);
 	}
 }
 

@@ -1,5 +1,9 @@
 Todo
 
+Infrastructure
+
+	-	Investigate minesweeper scene change service as an infrastructure candidate
+
 Castle
 
 	-	When transitioning to another level swap the player to the new level, on collide callback needs access to the gamescene - Global/Singleton?
@@ -11,3 +15,13 @@ Kingdom
 	-	Jobs
 	-	Resources
 	-	Buildings
+
+Minesweeper
+
+	-	Options for default small, medium, large and custom
+	-	High scores
+	-	Ui for timer and mines remaining
+	-	Ui for restarting (rather than F5)
+	-	Better exit screen
+	-	Better start screen
+	-	Better art

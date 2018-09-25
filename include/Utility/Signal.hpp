@@ -94,6 +94,7 @@ namespace inf {
 		std::vector<std::pair<int, std::function<void(T...)>>> m_Callbacks;		///<	The callbacks
 		int m_CallbackId;														///<	The next callback id
 	};
+
 }
 
 #endif // INCLUDED_UTILITY_SIGNAL_HPP_

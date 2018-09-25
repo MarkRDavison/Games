@@ -1,5 +1,6 @@
 #include <Utility/VectorMath.hpp>
 #include <cmath>
+#include <stdexcept>
 
 namespace inf {
 	namespace VectorMath {
@@ -73,11 +74,19 @@ namespace inf {
 			return _left.x * _right.x + _left.y * _right.y + _left.z * _right.z;
 		}
 		
-		float toAngle(const sf::Vector2f& _vec) {
-			return std::atan2(_vec.y, _vec.x);
+		float toAngle(const sf::Vector2f& _vec, AngleType _type) {
+			const float Radians = std::atan2(_vec.y, _vec.x);
+			if (_type == AngleType::Radians) {
+				return Radians;
+			}
+
+			return Radians * 180.0f / Pi;
 		}
 
-		sf::Vector2f toDirection(float _angle) {
+		sf::Vector2f toDirection(float _angle, AngleType _type) {
+			if (_type == AngleType::Degrees) {
+				_angle = _angle * Pi / 180.0f;
+			}
 			return sf::Vector2f(cosf(_angle), sinf(_angle));
 		}
 	}
