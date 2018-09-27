@@ -3,11 +3,12 @@
 
 #include <string>
 #include <SFML/System/Vector2.hpp>
+#include <Infrastructure/Interfaces/IConfigurationManager.hpp>
 
 namespace inf {
 	class LuaManager;
 
-	class ConfigurationManager {
+	class ConfigurationManager : public IConfigurationManager {
 	public:
 		static const std::string Name;
 		static const std::string ConfigStateScope;
@@ -23,11 +24,11 @@ namespace inf {
 
 		void loadConfiguration(const std::string& _configFilePath);
 		void reloadConfiguration(void);
-		virtual void loadCustomConfigurations(LuaManager& _luaManager) {}
+		void loadCustomConfigurations(LuaManager& _luaManager) override {}
 
-		virtual sf::Vector2u getResolution(void) const;
-		virtual std::string getTitle(void) const;
-		virtual float getGameViewScale(void) const;
+		sf::Vector2u getResolution(void) const override;
+		std::string getTitle(void) const override;
+		float getGameViewScale(void) const override;
 
 	private:
 

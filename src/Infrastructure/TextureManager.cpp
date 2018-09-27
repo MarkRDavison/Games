@@ -19,6 +19,8 @@ namespace inf {
 
 		if (texture->loadFromFile(_filepath)) {
 			m_Textures.insert(std::make_pair(_textureName, texture));
+			texture->setSmooth(true);
+			texture->generateMipmap();
 			return true;
 		}
 		delete texture;

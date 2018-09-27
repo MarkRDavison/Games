@@ -32,6 +32,8 @@ SET(ENTITY_COMPONENT_SYSTEM_SOURCE_FILES ${ENTITY_COMPONENT_SYSTEM_SOURCE_FILES}
 
 # Infrastructure
 SET(INFRASTRUCURE_HEADER_FILES ${INFRASTRUCURE_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Infrastructure/Interfaces/IConfigurationManager.hpp
+
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/Application.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/ConfigurationManager.hpp
 	${CMAKE_SOURCE_DIR}/include/Infrastructure/FontManager.hpp
@@ -99,6 +101,7 @@ SET(TEST_SOURCE_FILES ${TEST_SOURCE_FILES}
 )
 
 SET(TEST_HEADER_FILES ${TEST_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/ConfigurationManagerMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/InputManagerMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Infrastructure/LuaManagerMock.hpp
 
@@ -478,8 +481,11 @@ SET(MINESWEEPER_SOURCE_FILES ${MINESWEEPER_SOURCE_FILES}
 
 # Pollution
 SET(POLLUTION_HEADER_FILES ${POLLUTION_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Pollution/DataStructures/AnimationData.hpp
+	${CMAKE_SOURCE_DIR}/include/Pollution/DataStructures/BuildingData.hpp
 	${CMAKE_SOURCE_DIR}/include/Pollution/DataStructures/WorldData.hpp
-
+	
+	${CMAKE_SOURCE_DIR}/include/Pollution/GameObjects/BuildingObject.hpp
 	${CMAKE_SOURCE_DIR}/include/Pollution/GameObjects/WorldObject.hpp
 
 	${CMAKE_SOURCE_DIR}/include/Pollution/Infrastructure/ConfigurationManager.hpp
@@ -495,6 +501,7 @@ SET(POLLUTION_HEADER_FILES ${POLLUTION_HEADER_FILES}
 )
 
 SET(POLLUTION_SOURCE_FILES ${POLLUTION_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Pollution/GameObjects/BuildingObject.cpp
 	${CMAKE_SOURCE_DIR}/src/Pollution/GameObjects/WorldObject.cpp
 
 	${CMAKE_SOURCE_DIR}/src/Pollution/Infrastructure/ConfigurationManager.cpp
@@ -510,4 +517,6 @@ SET(POLLUTION_TEST_HEADER_FILES ${POLLUTION_TEST_HEADER_FILES}
 )
 
 SET(POLLUTION_TEST_SOURCE_FILES ${POLLUTION_TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/Pollution/Services/WorldInteractionServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Pollution/Services/WorldUpdateServiceTests.cpp
 )

@@ -27,4 +27,8 @@ namespace inf {
 	sf::Vector2i InputManager::getMousePositionRelativeToCenter(void) {
 		return getMousePosition() - getWindowSize() / 2;
 	}
+
+	sf::Vector2i InputManager::getMousePositionRelativeToCenter(const sf::Vector2i& _eventCoordinates) {
+		return _eventCoordinates - getWindowSize() / 2;
+	}
 }

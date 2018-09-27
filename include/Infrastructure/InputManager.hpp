@@ -15,6 +15,7 @@ namespace inf {
 		virtual sf::Vector2i getWindowSize(void);
 		virtual sf::Vector2i getMousePosition(void);
 		virtual sf::Vector2i getMousePositionRelativeToCenter(void);
+		virtual sf::Vector2i getMousePositionRelativeToCenter(const sf::Vector2i& _eventCoordinates);
 
 		std::function<sf::Vector2i(void)> m_GetWindowSizeCallback;
 		std::function<sf::Vector2i(void)> m_GetMousePositionCallback;

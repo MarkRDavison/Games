@@ -80,12 +80,12 @@ namespace inf {
 				return Radians;
 			}
 
-			return Radians * 180.0f / Pi;
+			return Radians * 180.0f / static_cast<float>(M_PI);
 		}
 
 		sf::Vector2f toDirection(float _angle, AngleType _type) {
 			if (_type == AngleType::Degrees) {
-				_angle = _angle * Pi / 180.0f;
+				_angle = _angle * static_cast<float>(M_PI) / 180.0f;
 			}
 			return sf::Vector2f(cosf(_angle), sinf(_angle));
 		}

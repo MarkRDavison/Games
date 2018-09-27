@@ -13,6 +13,16 @@ namespace inf {
 		};
 
 		std::vector<Resource> resources;
+
+		std::string getResources(void) {
+			std::string str;
+
+			for (const Resource& resource : resources) {
+				str += resource.name + ": " + std::to_string(resource.amount) + "\n";
+			}
+
+			return str;
+		}
 	};
 
 }

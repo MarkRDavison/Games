@@ -1,16 +1,19 @@
 #ifndef INCLUDED_EXPEDITION_UTILITY_VECTOR_MATH_HPP
 #define INCLUDED_EXPEDITION_UTILITY_VECTOR_MATH_HPP
 
+#include <cmath>
 
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
+
+#ifndef M_PI
+#define M_PI 3.141592653589793238462643383
+#endif 
 
 
 namespace inf {
 
 	namespace VectorMath {
-
-		static const constexpr float Pi = 3.14159265f;
 
 		enum class AngleType {
 			Radians,

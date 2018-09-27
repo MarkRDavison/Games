@@ -7,6 +7,8 @@
 #include <Pollution/Infrastructure/Definitions.hpp>
 #include <Pollution/Scenes/GameScene.hpp>
 #include <Infrastructure/Services/ResourceService.hpp>
+#include <Pollution/Services/WorldUpdateService.hpp>
+#include <Pollution/Services/WorldInteractionService.hpp>
 
 struct ManagerPackage {
 
@@ -27,11 +29,16 @@ struct ManagerPackage {
 
 struct ServicePackage {
 
-	ServicePackage(ManagerPackage& _managerPackage) {
+	ServicePackage(ManagerPackage& _managerPackage) :
+		worldUpdate(resource),
+		worldInteraction(_managerPackage.inputManager, _managerPackage.config, resource) {
 
 	}
 
 	inf::ResourceService resource;
+
+	pol::WorldUpdateService worldUpdate;
+	pol::WorldInteractionService worldInteraction;
 };
 
 int main(int _argc, char **_argv) {
@@ -50,12 +57,18 @@ int main(int _argc, char **_argv) {
 		return sf::Mouse::getPosition(managerPackage.app.getWindow());
 	};
 
-	pol::GameScene *scene = new pol::GameScene(managerPackage.inputManager, managerPackage.config);
+	managerPackage.textureManager.loadTexture("./data/textures/Pollution/test_planet.png", pol::Definitions::TestSunTextureName);
+	managerPackage.textureManager.loadTexture("./data/textures/Pollution/building_sprite_sheet.png", pol::Definitions::BuildingTextureName);
+
+	pol::GameScene *scene = new pol::GameScene(managerPackage.inputManager, managerPackage.fontManager, managerPackage.textureManager, servicePackage.resource, managerPackage.config, servicePackage.worldUpdate, servicePackage.worldInteraction);
 
 	pol::WorldDataInitialisationPackage worldData{};
-	worldData.Sides = 36;
+	worldData.Sides = 24;
 	worldData.SnapMargin = 0.2f;
+	worldData.rotationRate = 12.5f;
+	worldData.rotation = 0.0f;
 	scene->initialise(worldData);
+	scene->getWorldObject().setWorldTexture(managerPackage.textureManager.getTexture(pol::Definitions::TestSunTextureName));
 
 	managerPackage.sceneManager.pushScene(scene);
 
