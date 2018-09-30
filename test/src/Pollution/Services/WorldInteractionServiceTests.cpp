@@ -211,7 +211,7 @@ namespace pol {
 			WorldInteractionService service(inputManager, configurationManagerMock, resourceService);
 
 			bool canOffordInvoked = false;
-			resourceService.canAffordCallback = [&](const inf::ResourceBundle& _resourceBundle) {
+			resourceService.canAffordBundleCallback = [&](const inf::ResourceBundle& _resourceBundle) {
 				canOffordInvoked = true;
 				return false;
 			};
@@ -237,7 +237,7 @@ namespace pol {
 			BuildingData buildingData{};
 			buildingData.age = Age;
 
-			resourceService.canAffordCallback = [](const inf::ResourceBundle& _resourceBundle) { return true; };
+			resourceService.canAffordBundleCallback = [](const inf::ResourceBundle& _resourceBundle) { return true; };
 
 			REQUIRE(Definitions::PlaceBuildingResult::CannotOverwrite == service.canPlacePrototypeatSegmentIndex(worldData, buildingData, 0));
 		}
@@ -258,7 +258,7 @@ namespace pol {
 			BuildingData buildingData{};
 			buildingData.age = Age;
 
-			resourceService.canAffordCallback = [](const inf::ResourceBundle& _resourceBundle) { return true; };
+			resourceService.canAffordBundleCallback = [](const inf::ResourceBundle& _resourceBundle) { return true; };
 
 			REQUIRE(Definitions::PlaceBuildingResult::CanPlace == service.canPlacePrototypeatSegmentIndex(worldData, buildingData, 0));
 		}
@@ -277,7 +277,7 @@ namespace pol {
 			BuildingData buildingData{};
 			buildingData.age = Age;
 
-			resourceService.canAffordCallback = [](const inf::ResourceBundle& _resourceBundle) { return true; };
+			resourceService.canAffordBundleCallback = [](const inf::ResourceBundle& _resourceBundle) { return true; };
 
 			REQUIRE(Definitions::PlaceBuildingResult::CanPlace == service.canPlacePrototypeatSegmentIndex(worldData, buildingData, 0));
 		}

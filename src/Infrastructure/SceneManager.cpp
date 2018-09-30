@@ -66,6 +66,12 @@ namespace inf {
 		m_NewlyRemovedScenes.push_back(_scene);
 	}
 
+	void SceneManager::clearScenes(void) {
+		for (Scene *_scene : m_Scenes) {
+			_scene->remove();
+		}
+	}
+
 	Scene *SceneManager::popScene(void) {
 		const auto popped = m_Scenes.back();
 		m_Scenes.erase(m_Scenes.begin() + m_Scenes.size() - 1);

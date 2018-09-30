@@ -1,0 +1,16 @@
+Every user interaction that makes a change to the game state should go through one central place -> GameCommandService
+	-	Replays save/load etc
+	-	RandomNumber service - seed
+	-	Should be possible to run the game without graphics
+	-	Should be possible to run the game without graphics, and then attach the graphics to it, i.e. generate graphics at any time from given state
+
+Message Queue/Bus
+	-	This is how we notify the view that a tile has changed etc
+	-	How an entity enters/leaves a tile etc
+
+Tiles can reveal things when mined
+	-	Enhance rooms (mining x 2)
+	-	Haunted room (needs decline x 2)
+
+Create std::function enhanced for testing, with is invoked method
+	-	Times (Once, twice never, X etc...)

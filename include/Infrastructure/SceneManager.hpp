@@ -18,6 +18,7 @@ namespace inf {
 
 		void pushScene(Scene *_scene);
 		void removeScene(Scene *_scene);
+		void clearScenes(void);
 		Scene *popScene(void);
 
 	private:

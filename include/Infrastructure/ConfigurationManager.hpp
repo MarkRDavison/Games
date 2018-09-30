@@ -20,7 +20,7 @@ namespace inf {
 		static const constexpr float DefaultGameViewScale = 50.0f;
 
 		ConfigurationManager(LuaManager& _luaManager);
-		virtual ~ConfigurationManager(void);
+		virtual ~ConfigurationManager(void) override;
 
 		void loadConfiguration(const std::string& _configFilePath);
 		void reloadConfiguration(void);

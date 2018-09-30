@@ -31,15 +31,27 @@ namespace inf {
 			return 0;
 		}
 		bool canAfford(const ResourceBundle& _resourceBundle) override {
-			if (canAffordCallback) {
-				return canAffordCallback(_resourceBundle);
+			if (canAffordBundleCallback) {
+				return canAffordBundleCallback(_resourceBundle);
 			}
 
+			return false;
+		}
+
+		bool canAfford(std::size_t _resourceId, int _amount) override {
+			if (canAffordIdCallback) {
+				return canAffordIdCallback(_resourceId, _amount);
+			}
 			return false;
 		}
 		void payResourceBundle(const ResourceBundle& _resourceBundle) override {
 			if (payResourceBundleCallback) {
 				payResourceBundleCallback(_resourceBundle);
+			}
+		}
+		void payResourceId(std::size_t _resourceId, int _amount) override {
+			if (payResourceIdCallback) {
+				payResourceIdCallback(_resourceId, _amount);
 			}
 		}
 		void receiveResourceBundle(const ResourceBundle& _resourceBundle) override {
@@ -48,13 +60,22 @@ namespace inf {
 			}
 		}
 
+		void registerResourceId(const std::string& _resourceName) override {
+			if (registerResourceIdCallback) {
+				registerResourceIdCallback(_resourceName);
+			}
+		}
+
 		std::function<void(const std::string&, int)> updateResourceCallback;
 		std::function<void(const std::string&, int)> setResourceCallback;
 		std::function<void(const std::string&, int)> setResourceMaximumCallback;
 		std::function<int(const std::string&)> getResourceCallback;
-		std::function<bool(const ResourceBundle&)> canAffordCallback;
+		std::function<bool(const ResourceBundle&)> canAffordBundleCallback;
+		std::function<bool(std::size_t, int)> canAffordIdCallback;
+		std::function<void(std::size_t, int)> payResourceIdCallback;
 		std::function<void(const ResourceBundle&)> payResourceBundleCallback;
 		std::function<void(const ResourceBundle&)> receiveResourceBundleCallback;
+		std::function<void(const std::string&)> registerResourceIdCallback;
 	};
 }
 

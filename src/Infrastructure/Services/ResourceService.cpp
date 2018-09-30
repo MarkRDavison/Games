@@ -1,4 +1,5 @@
 #include <Infrastructure/Services/ResourceService.hpp>
+#include <Utility/Hash.hpp>
 
 namespace inf {
 	
@@ -47,6 +48,19 @@ namespace inf {
 		return true;
 	}
 
+	bool ResourceService::canAfford(std::size_t _resourceId, int _amount) {
+		if (m_ResourceIdMap.find(_resourceId) == m_ResourceIdMap.end()) {
+			return false;
+		}
+
+		const std::string resourceName = m_ResourceIdMap[_resourceId];
+		if (!resourceExists(resourceName)) {
+			return false;
+		}
+
+		return _amount <= getResource(resourceName);
+	}
+
 	void ResourceService::payResourceBundle(const ResourceBundle& _resourceBundle) {
 		for (const ResourceBundle::Resource& _res : _resourceBundle.resources) {
 			if (_res.amount == 0) {
@@ -57,6 +71,19 @@ namespace inf {
 		}
 	}
 
+	void ResourceService::payResourceId(std::size_t _resourceId, int _amount) {
+		if (m_ResourceIdMap.find(_resourceId) == m_ResourceIdMap.end()) {
+			return;
+		}
+
+		const std::string resourceName = m_ResourceIdMap[_resourceId];
+		if (!resourceExists(resourceName)) {
+			return;
+		}
+
+		updateResource(resourceName, -_amount);
+	}
+
 	void ResourceService::receiveResourceBundle(const ResourceBundle& _resourceBundle) {
 		for (const ResourceBundle::Resource& _res : _resourceBundle.resources) {
 			if (_res.amount == 0) {
@@ -65,6 +92,13 @@ namespace inf {
 
 			updateResource(_res.name, _res.amount);
 		}
+	}
+	void ResourceService::registerResourceId(const std::string& _resourceName) {
+		const std::size_t resourceId = inf::djb_hash(_resourceName.c_str());
+		if (m_ResourceIdMap.find(resourceId) == m_ResourceIdMap.end()) {
+			return;
+		}
+		m_ResourceIdMap[resourceId] = _resourceName;
 	}
 
 	bool ResourceService::resourceExists(const std::string& _resourceName) const {

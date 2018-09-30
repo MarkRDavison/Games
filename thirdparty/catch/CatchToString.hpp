@@ -13,9 +13,17 @@ namespace Catch {
 			return "x: " + std::to_string(_value.x) + ", y: " + std::to_string(_value.y);
 		}
 	};
+
 	template<>
 	struct StringMaker<sf::Vector2i> {
 		static std::string convert(sf::Vector2i const& _value) {
+			return "x: " + std::to_string(_value.x) + ", y: " + std::to_string(_value.y);
+		}
+	};
+
+	template<>
+	struct StringMaker<sf::Vector2u> {
+		static std::string convert(sf::Vector2u const& _value) {
 			return "x: " + std::to_string(_value.x) + ", y: " + std::to_string(_value.y);
 		}
 	};

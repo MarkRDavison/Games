@@ -2,6 +2,7 @@
 SET(UTILITY_HEADER_FILES ${UTILITY_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Utility/Collision.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/Colour.hpp
+	${CMAKE_SOURCE_DIR}/include/Utility/Hash.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/Orientation.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/PhysicsDebug.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/Signal.hpp
@@ -519,4 +520,116 @@ SET(POLLUTION_TEST_HEADER_FILES ${POLLUTION_TEST_HEADER_FILES}
 SET(POLLUTION_TEST_SOURCE_FILES ${POLLUTION_TEST_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/test/src/Pollution/Services/WorldInteractionServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Pollution/Services/WorldUpdateServiceTests.cpp
+)
+
+# Driller 
+SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Driller/Core/Game.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingData.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingInstance.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingPrototype.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobData.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobInstance.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobPrototype.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/GameCommand.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/TerrainData.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/TerrainTile.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/TerrainRow.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/WorkerData.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/WorkerInstance.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/WorkerPrototype.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Driller/GameObjects/GameObject.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Driller/Infrastructure/ConfigurationManager.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Infrastructure/Definitions.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Driller/Scenes/ExitScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Scenes/GameScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Scenes/GameUiScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Scenes/TitleScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IBuildingPlacementService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IGameCommandService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IIdentificationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IJobAllocationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IJobCreationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IPrototypeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/ISceneChangeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/ITerrainAlterationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IWorkerUpdateService.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/BuildingPlacementService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/BuildingPrototypeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/GameCommandService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/IdentificationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/JobAllocationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/JobCreationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/JobPrototypeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/PrototypeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/SceneChangeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/TerrainAlterationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/WorkerPrototypeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/WorkerUpdateService.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Driller/Views/View.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Driller/Views/BuildingView.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Views/JobView.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Views/TerrainView.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Views/WorkerView.hpp
+)
+
+SET(DRILLER_SOURCE_FILES ${DRILLER_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Driller/Core/Game.cpp
+
+	${CMAKE_SOURCE_DIR}/src/Driller/Infrastructure/ConfigurationManager.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Infrastructure/Definitions.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Driller/Scenes/ExitScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Scenes/GameScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Scenes/GameUiScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Scenes/TitleScene.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/BuildingPlacementService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/BuildingPrototypeService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/GameCommandService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/IdentificationService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobAllocationService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobCreationService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobPrototypeService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/SceneChangeService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/TerrainAlterationService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/WorkerPrototypeService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/WorkerUpdateService.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Driller/Views/BuildingView.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Views/JobView.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Views/TerrainView.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Views/WorkerView.cpp
+)
+
+SET(DRILLER_TEST_HEADER_FILES ${DRILLER_TEST_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/BuildingPlacementServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/GameCommandServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/IdentificationServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/JobAllocationServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/JobCreationServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/TerrainAlterationServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/PrototypeServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/WorkerUpdateServiceMock.hpp
+)
+
+SET(DRILLER_TEST_SOURCE_FILES ${DRILLER_TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Core/GameTests.cpp
+	
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/BuildingPlacementServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/BuildingPrototypeServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/GameCommandServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobAllocationServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobCreationServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/SceneChangeServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/TerrainAlterationServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/WorkerUpdateServiceTests.cpp
 )
