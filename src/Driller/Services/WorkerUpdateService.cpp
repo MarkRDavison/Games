@@ -5,9 +5,10 @@
 
 namespace drl {
 
-	WorkerUpdateService::WorkerUpdateService(WorkerData& _workerData, JobData& _jobData) :
+	WorkerUpdateService::WorkerUpdateService(WorkerData& _workerData, JobData& _jobData, IJobCompletionService& _jobCompletionService) :
 		m_WorkerData(_workerData),
-		m_JobData(_jobData) {
+		m_JobData(_jobData),
+		m_JobCompletionService(_jobCompletionService){
 		
 	}
 	WorkerUpdateService::~WorkerUpdateService(void) {
@@ -27,6 +28,9 @@ namespace drl {
 			return;
 		case WorkerInstance::WorkerState::MovingToJob: 
 			updateMovingToJobWorker(_worker, _delta);
+			return;
+		case WorkerInstance::WorkerState::WorkingJob:
+			updateWorkingJobWorker(_worker, _delta);
 			return;
 		default:
 			break;
@@ -101,6 +105,27 @@ namespace drl {
 		} else if (!_worker.path.path.nodes.empty()) {
 			followPath(_worker, _delta);
 		}
+	}
+
+	void WorkerUpdateService::updateWorkingJobWorker(WorkerInstance& _worker, float _delta) {
+		JobInstance& job = retrieveJob(_worker.allocatedJobId);
+
+		job.workPerformed += _delta;
+		if (job.workPerformed >= job.workRequired) {
+			if (m_JobCompletionService.isJobCompleteDelegateRegistered(job.prototypeId)) {
+				JobCompleteDelegate& jobComplete = m_JobCompletionService.getJobCompleteDelegate(job.prototypeId);
+				jobComplete(job);
+			}
+
+			m_JobCompletionService.handleJobCompleted(job);
+			resetWorkerAfterCompletingJob(_worker, job);
+		}
+	}
+
+	void WorkerUpdateService::resetWorkerAfterCompletingJob(WorkerInstance& _worker, const JobInstance& _jobInstance) {
+		_worker.hasAllocatedJob = false;
+		_worker.allocatedJobId = 0u;
+		_worker.state = WorkerInstance::WorkerState::Idle;
 	}
 
 	JobInstance& WorkerUpdateService::retrieveJob(EntityId _jobId) {

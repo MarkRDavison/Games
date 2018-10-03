@@ -22,6 +22,7 @@ namespace drl {
 		sf::Vector2f position;
 
 		bool hasAllocatedJob{ false };
+		bool removalRequired{ false };
 		EntityId allocatedJobId{ 0u };
 
 		std::vector<JobPrototypeId> validJobTypes;

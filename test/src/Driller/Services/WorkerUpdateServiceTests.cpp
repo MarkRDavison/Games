@@ -2,6 +2,7 @@
 #include <catch/CatchToString.hpp>
 #include <Driller/Services/WorkerUpdateService.hpp>
 #include <Driller/DataStructures/JobData.hpp>
+#include <Mocks/Driller/Services/JobCompletionServiceMock.hpp>
 
 namespace drl {
 	namespace WorkerUpdateServiceTests {
@@ -9,7 +10,8 @@ namespace drl {
 		TEST_CASE("updating idle worker from idle state with job assigned updates state to working job", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			WorkerInstance& worker = workerData.workers.emplace_back();
 			worker.Id = { 1u };
@@ -29,7 +31,8 @@ namespace drl {
 		TEST_CASE("updating moving to job worker with no allocated job updates state to idle", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			WorkerInstance& worker = workerData.workers.emplace_back();
 			worker.Id = { 1u };
@@ -49,7 +52,8 @@ namespace drl {
 		TEST_CASE("updating moving to job worker with no allocated job id updates state to idle", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			WorkerInstance& worker = workerData.workers.emplace_back();
 			worker.Id = { 1u };
@@ -69,7 +73,8 @@ namespace drl {
 		TEST_CASE("populatePath where worker is already at its target does nothing", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const sf::Vector2i Coordinates{ 1,1 };
 
@@ -94,7 +99,8 @@ namespace drl {
 		TEST_CASE("populatePath where worker is already on same level as target creates path with only start and end nodes", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const sf::Vector2i WorkerCoordinates{ 1,1 };
 			const sf::Vector2i JobCoordinates{ 4,1 };
@@ -125,7 +131,8 @@ namespace drl {
 		TEST_CASE("populatePath where worker is on different level as target creates path with 4 nodes", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const sf::Vector2i WorkerCoordinates{ 1,1 };
 			const sf::Vector2i JobCoordinates{ 4,3 };
@@ -165,7 +172,8 @@ namespace drl {
 		TEST_CASE("followPath moves towards the next node in the path if it cant reach it", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const int Speed = static_cast<int>(Definitions::BaseWorkerSpeed);
 
@@ -185,7 +193,8 @@ namespace drl {
 		TEST_CASE("followPath moves to the next node in the path if it can reach it", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const int Speed = static_cast<int>(Definitions::BaseWorkerSpeed);
 
@@ -206,7 +215,8 @@ namespace drl {
 		TEST_CASE("followPath moves past a node if it has enough speed", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const int Speed = static_cast<int>(Definitions::BaseWorkerSpeed);
 
@@ -227,7 +237,8 @@ namespace drl {
 		TEST_CASE("followPath moves past a node if it has enough speed and can go in different directions", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const int Speed = static_cast<int>(Definitions::BaseWorkerSpeed);
 
@@ -249,7 +260,8 @@ namespace drl {
 		TEST_CASE("followPath sets the path back to invalid when the path is complete, and the workers state is updated", "[Driller][Services][WorkerUpdateService]") {
 			WorkerData workerData{};
 			JobData jobData{};
-			WorkerUpdateService service(workerData, jobData);
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
 
 			const int Speed = static_cast<int>(Definitions::BaseWorkerSpeed);
 
@@ -265,5 +277,47 @@ namespace drl {
 			REQUIRE(WorkerInstance::WorkerState::WorkingJob == worker.state);
 		}
 
+		TEST_CASE("updateWorkingJobWorker updates worked time on job", "[Driller][Services][WorkerUpdateService]") {
+			WorkerData workerData{};
+			JobData jobData{};
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
+
+			WorkerInstance& worker = workerData.workers.emplace_back();
+			worker.allocatedJobId = 1u;
+			JobInstance& job = jobData.jobs.emplace_back();
+			job.Id = worker.allocatedJobId;
+
+			service.updateWorkingJobWorker(worker, 1.0f);
+
+			REQUIRE(1.0f == job.workPerformed);
+		}
+
+		TEST_CASE("updateWorkingJobWorker where the job gets completed invokes the job completion service", "[Driller][Services][WorkerUpdateService]") {
+			WorkerData workerData{};
+			JobData jobData{};
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
+
+			WorkerInstance& worker = workerData.workers.emplace_back();
+			worker.allocatedJobId = 1u;
+			JobInstance& job = jobData.jobs.emplace_back();
+			job.Id = worker.allocatedJobId;
+			job.workRequired = 1.0f;
+
+			bool jobCompletionInvoked = false;
+			jobCompletionService.defaultJobCompleteDelegate = [&](const JobInstance& _jobInstance) {
+				REQUIRE(job.Id == _jobInstance.Id);
+				jobCompletionInvoked = true;
+			};
+
+			jobCompletionService.isJobCompleteDelegateRegisteredCallback = [](const JobPrototypeId&) {
+				return true;
+			};
+
+			service.updateWorkingJobWorker(worker, job.workRequired);
+			
+			REQUIRE(jobCompletionInvoked);
+		}
 	}
 }

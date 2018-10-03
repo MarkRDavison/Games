@@ -25,6 +25,8 @@
 #include <Driller/Services/JobAllocationService.hpp>
 #include <Driller/Services/WorkerUpdateService.hpp>
 #include <Driller/Services/IdentificationService.hpp>
+#include <Driller/Services/WorkerCreationService.hpp>
+#include <Driller/Services/JobCompletionService.hpp>
 
 struct ManagerPackage {
 
@@ -57,10 +59,12 @@ struct ServicePackage {
 		jobPrototype(identificationService),
 		jobCreation(jobData, terrainAlteration, jobPrototype),
 		jobAllocation(workerData, jobData, terrainAlteration),
+		jobCompletion(jobData),
+		workerCreation(workerData, workerPrototype),
 		workerPrototype(identificationService),
-		workerUpdate(workerData, jobData),
-		gameCommand(resource, terrainAlteration, buildingPlacement, buildingPrototype, jobCreation, jobPrototype, jobAllocation, workerPrototype),
-		game(gameCommand, jobAllocation, workerUpdate, terrainData, buildingData, jobData, workerData) {
+		workerUpdate(workerData, jobData, jobCompletion),
+		gameCommand(resource, terrainAlteration, buildingPlacement, buildingPrototype, jobCreation, jobPrototype, jobAllocation, workerCreation, workerPrototype),
+		game(gameCommand, jobAllocation, jobCompletion, workerUpdate, terrainData, buildingData, jobData, workerData) {
 		
 	}
 
@@ -82,6 +86,8 @@ struct ServicePackage {
 	drl::JobPrototypeService jobPrototype;
 	drl::JobCreationService jobCreation;
 	drl::JobAllocationService jobAllocation;
+	drl::JobCompletionService jobCompletion;
+	drl::WorkerCreationService workerCreation;
 	drl::WorkerPrototypeService workerPrototype;
 	drl::WorkerUpdateService workerUpdate;
 	drl::GameCommandService gameCommand;
@@ -122,11 +128,17 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 	_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::Building4PrototypeName, drl::BuildingPrototype{ {4,1}, drl::Definitions::FourBuildingCoordinate  });
 	_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::Building5PrototypeName, drl::BuildingPrototype{ {5,1}, drl::Definitions::FiveBuildingCoordinate  });
 
-	_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_Dig, drl::JobPrototype{ });
+	drl::JobPrototype digDirtProtoype{};
+	digDirtProtoype.workRequired = 2.0f;
+	_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_Dig, digDirtProtoype);
+
+	drl::JobCompleteDelegate digDirtCompletePrototype = [&](const drl::JobInstance& _jobInstance) {
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ _jobInstance.coordinates.y, _jobInstance.coordinates.x }));
+	};
+	_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_Dig, digDirtCompletePrototype);
 	
 	drl::WorkerPrototype allPrototype{ };
-	allPrototype.validJobTypes = { inf::djb_hash(drl::Definitions::JobPrototypeName_Dig) };
-	
+	allPrototype.validJobTypes = { inf::djb_hash(drl::Definitions::JobPrototypeName_Dig) };	
 	_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_All, allPrototype);
 }
 
@@ -134,14 +146,9 @@ void runSetupGameCommands(ManagerPackage& _managerPackage, ServicePackage& _serv
 	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ 0 }));
 
 	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 0, +1 }));
-	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 0, -1 }));
-	
-	//_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_Dig, {-2,0}, {1,1}, {} }));
-	//_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_Dig, {+2,0}, {1,1}, {} }));
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 0, +2 }));
 
-	// TODO: These are created from prototypeService -> need an Id service of some sort
-	drl::WorkerInstance& worker = _servicePackage.workerData.workers.emplace_back(_servicePackage.workerPrototype.createInstance(inf::djb_hash(drl::Definitions::WorkerPrototypeName_All)));
-	worker.position = drl::Definitions::ShuttleLandingCoordinates;
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateWorkerEvent{ drl::Definitions::WorkerPrototypeName_All, drl::Definitions::ShuttleLandingCoordinates }));
 }
 
 int main(int _argc, char **_argv) {
@@ -158,7 +165,7 @@ int main(int _argc, char **_argv) {
 
 	setupSceneTransitions(managerPackage, servicePackage);
 
-	servicePackage.sceneChange.setSceneState(drl::Definitions::GameSceneState::Title);
+	servicePackage.sceneChange.setSceneState(drl::Definitions::GameSceneState::Gameplay);
 
 	registerPrototypes(managerPackage, servicePackage);
 	runSetupGameCommands(managerPackage, servicePackage);

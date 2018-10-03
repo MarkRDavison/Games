@@ -61,6 +61,26 @@ namespace drl {
 			REQUIRE_FALSE(service.canWorkerPerformJobType(worker, job));
 		}
 
+		TEST_CASE("canWorkerPerformJob returns false when job requires removal", "[Driller][Services][JobAllocationService]") {
+			WorkerData workerData{};
+			JobData jobData{};
+			TerrainAlterationServiceMock terrainAlterationService;
+			JobAllocationService service(workerData, jobData, terrainAlterationService);
+
+			terrainAlterationService.isTileDugOutCallback = [](int, int) { return true; };
+			terrainAlterationService.doesLevelExistCallback = [](int) { return true; };
+
+			const JobPrototypeId JobId = inf::djb_hash(drl::Definitions::JobPrototypeName_Dig);
+
+			WorkerInstance worker{};
+			worker.validJobTypes = { JobId };
+			JobInstance job{};
+			job.prototypeId = JobId;
+			job.removalRequired = true;
+
+			REQUIRE_FALSE(service.canWorkerPerformJobType(worker, job));
+		}
+
 		TEST_CASE("canWorkerPerformJob returns false when worker already has an allocated job", "[Driller][Services][JobAllocationService]") {
 			WorkerData workerData{};
 			JobData jobData{};

@@ -9,12 +9,13 @@
 #include <Driller/DataStructures/WorkerData.hpp>
 #include <Driller/Services/Interfaces/IJobAllocationService.hpp>
 #include <Driller/Services/Interfaces/IWorkerUpdateService.hpp>
+#include <Driller/Services/Interfaces/IJobCompletionService.hpp>
 
 namespace drl {
 	
 	class Game {
 	public:
-		Game(IGameCommandService& _gameCommandService, IJobAllocationService& _jobAllocationService, IWorkerUpdateService& _workerUpdateService, TerrainData& _terrainData, BuildingData& _buildingData, JobData& _jobData, WorkerData& _workerData);
+		Game(IGameCommandService& _gameCommandService, IJobAllocationService& _jobAllocationService, IJobCompletionService& _jobCompletionService, IWorkerUpdateService& _workerUpdateService, TerrainData& _terrainData, BuildingData& _buildingData, JobData& _jobData, WorkerData& _workerData);
 		~Game(void);
 
 		void update(float _delta) const;
@@ -23,6 +24,7 @@ namespace drl {
 		IGameCommandService& m_GameCommandService;
 
 		IJobAllocationService& m_JobAllocationService;
+		IJobCompletionService& m_JobCompletionService;
 
 		IWorkerUpdateService& m_WorkerUpdateService;
 

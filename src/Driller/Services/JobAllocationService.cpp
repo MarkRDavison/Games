@@ -43,7 +43,7 @@ namespace drl {
 	}
 
 	bool JobAllocationService::canWorkerPerformJobType(const WorkerInstance& _workerInstance, const JobInstance& _jobInstance) {
-		if (_workerInstance.hasAllocatedJob) {
+		if (_workerInstance.hasAllocatedJob || _jobInstance.removalRequired) {
 			return false;
 		}
 

@@ -16,6 +16,9 @@ namespace drl {
 
 		bool allocated{ false };
 		EntityId allocatedWorkerId{ 0u };
+		float workPerformed{ 0.0f };
+		float workRequired{ 0.0f };
+		bool removalRequired{ false };
 
 		JobPrototypeId prototypeId;
 	};

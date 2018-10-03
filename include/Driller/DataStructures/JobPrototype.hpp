@@ -9,7 +9,7 @@ namespace drl {
 	using JobPrototypeId = std::size_t;
 
 	struct JobPrototype {
-
+		float workRequired{ 0.0f };
 	};
 
 }

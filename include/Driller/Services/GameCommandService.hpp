@@ -8,13 +8,14 @@
 #include <Infrastructure/Services/Interfaces/IResourceService.hpp>
 #include "Interfaces/IJobCreationService.hpp"
 #include "Interfaces/IJobAllocationService.hpp"
+#include "Interfaces/IWorkerCreationService.hpp"
 
 namespace drl {
 	
 	class GameCommandService : public IGameCommandService {
 	public:
-		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerPrototypeService& _workerPrototypeService);
-		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerPrototypeService& _workerPrototypeService, long long _startTick);
+		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService);
+		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, long long _startTick);
 		~GameCommandService(void) override;
 
 		void tick(void) override;
@@ -29,6 +30,7 @@ namespace drl {
 		bool handleAdjustResourceCommand(const GameCommand::AdjustResourceEvent& _event) const;
 		bool handleCreateJobCommand(const GameCommand::CreateJobEvent& _event) const;
 		bool handleResetJobAllocationsCommand(const GameCommand::ResetJobAllocationsEvent& _event) const;
+		bool handleCreateWorkerCommand(const GameCommand::CreateWorkerEvent& _event) const;
 
 	private:
 		inf::IResourceService& m_ResourceService;
@@ -38,6 +40,7 @@ namespace drl {
 		IJobCreationService& m_JobCreationService;
 		IJobPrototypeService& m_JobPrototypeService;
 		IJobAllocationService& m_JobAllocationService;
+		IWorkerCreationService& m_WorkerCreationService;
 		IWorkerPrototypeService& m_WorkerPrototypeService;
 
 		long long m_CurrentTick;

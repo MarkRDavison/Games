@@ -59,6 +59,22 @@ namespace drl {
 			
 		};
 
+		struct CreateWorkerEvent {
+			CreateWorkerEvent(void) {}
+			CreateWorkerEvent(const std::string& _prototypeName, const sf::Vector2f& _position) :
+				CreateWorkerEvent(_prototypeName.c_str(), _position) {
+				
+			}
+			CreateWorkerEvent(const char *_prototypeId, const sf::Vector2f& _position) :
+				prototypeId(inf::djb_hash(_prototypeId)),
+				position(_position) {
+				
+			}
+
+			std::size_t prototypeId{ 0u };
+			sf::Vector2f position;
+		};
+
 		enum EventType {
 			PlaceBuilding,
 			DigTile,
@@ -66,6 +82,7 @@ namespace drl {
 			AdjustResouce,
 			CreateJob,
 			ResetJobAllocations,
+			CreateWorker,
 
 			Count
 		} type;
@@ -77,6 +94,7 @@ namespace drl {
 			AdjustResourceEvent adjustResource;
 			CreateJobEvent createJob;
 			ResetJobAllocationsEvent resetJobAllocations;
+			CreateWorkerEvent createWorker;
 		};
 
 
@@ -113,6 +131,12 @@ namespace drl {
 			type(EventType::ResetJobAllocations),
 			resetJobAllocations(_resetJobAllocations) {
 
+		}
+
+		explicit GameCommand(const CreateWorkerEvent& _createWorker) :
+			type(EventType::CreateWorker),
+			createWorker(_createWorker) {
+			
 		}
 	};
 

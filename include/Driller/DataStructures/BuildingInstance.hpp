@@ -11,6 +11,7 @@ namespace drl {
 		sf::Vector2u size;
 		sf::Vector2u textureCoords; // Top left corner
 		sf::Vector2i coordinates; // Top Left corner
+		bool removalRequired{ false };
 	};
 
 }

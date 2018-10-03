@@ -12,7 +12,9 @@ namespace drl {
 	}
 
 	JobInstance JobPrototypeService::createInstance(const JobPrototypeId& _prototypeId) {
+		const JobPrototype& prototype = getPrototype(_prototypeId);
 		JobInstance instance{};
+		instance.workRequired = prototype.workRequired;
 		instance.Id = m_IdentificationService.generateId();
 		return instance;
 	}
