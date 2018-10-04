@@ -26,7 +26,7 @@ namespace drl {
 		bool handleEvent(const sf::Event & _event) override;
 		void draw(sf::RenderTarget & _target, sf::RenderStates _states, float _alpha) const override;
 		
-		bool handleLeftMouseButton(const int _x, const int _y);
+		bool handleMouseButton(sf::Mouse::Button _button, const int _x, const int _y);
 
 	private:
 		inf::IConfigurationManager& m_Config;
@@ -40,7 +40,6 @@ namespace drl {
 		JobView& m_JobView;
 		
 		sf::Vector2f m_CameraOffset;
-		int m_BuildingSelected{ -1 };
 	};
 
 }

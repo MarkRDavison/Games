@@ -33,42 +33,14 @@ namespace drl {
 
 	bool GameScene::handleEvent(const sf::Event & _event) {
 		if (_event.type == sf::Event::MouseButtonPressed) {
-			if (_event.mouseButton.button == sf::Mouse::Left) {
-				if (handleLeftMouseButton(_event.mouseButton.x, _event.mouseButton.y)) {
-					return true;
-				}
+			if (handleMouseButton(_event.mouseButton.button, _event.mouseButton.x, _event.mouseButton.y)) {
+				return true;
 			}
 		}
 
 		if (_event.type == sf::Event::KeyPressed) {
 			if (_event.key.code == sf::Keyboard::F5) {
 				m_GameCommandService.executeGameCommand(GameCommand{ GameCommand::ResetJobAllocationsEvent{} });
-				return true;
-			}
-			if (_event.key.code == sf::Keyboard::Escape) {
-				if (m_BuildingSelected != -1) {
-					m_BuildingSelected = -1;
-					return true;
-				}
-			}
-			if (_event.key.code == sf::Keyboard::Num1) {
-				m_BuildingSelected = 1;
-				return true;
-			}
-			if (_event.key.code == sf::Keyboard::Num2) {
-				m_BuildingSelected = 2;
-				return true;
-			}
-			if (_event.key.code == sf::Keyboard::Num3) {
-				m_BuildingSelected = 3;
-				return true;
-			}
-			if (_event.key.code == sf::Keyboard::Num4) {
-				m_BuildingSelected = 4;
-				return true;
-			}
-			if (_event.key.code == sf::Keyboard::Num5) {
-				m_BuildingSelected = 5;
 				return true;
 			}
 		}
@@ -98,7 +70,7 @@ namespace drl {
 		m_WorkerView.draw(_target, _states, _alpha);
 	}
 
-	bool GameScene::handleLeftMouseButton(const int _x, const int _y) {
+	bool GameScene::handleMouseButton(sf::Mouse::Button _button, const int _x, const int _y) {
 		const sf::Vector2f mousePosition = sf::Vector2f(static_cast<float>(_x), static_cast<float>(_y)) / m_Config.getGameViewScale() - m_CameraOffset;
 
 		if (mousePosition.y < 0.0f) {
@@ -119,43 +91,27 @@ namespace drl {
 			if (m_GameCommandService.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ level }))) {
 				return true;
 			}
-		} else {
-			// Handle creating dig tile job
-			if (m_BuildingSelected >= 1 && m_BuildingSelected <= 5) {
-
-				BuildingPrototypeId id{ 0u };
-
-				switch (m_BuildingSelected) {
-				case 1:
-					id = inf::djb_hash(drl::Definitions::Building1PrototypeName);
-					break;
-				case 2:
-					id = inf::djb_hash(drl::Definitions::Building2PrototypeName);
-					break;
-				case 3:
-					id = inf::djb_hash(drl::Definitions::Building3PrototypeName);
-					break;
-				case 4:
-					id = inf::djb_hash(drl::Definitions::Building4PrototypeName);
-					break;
-				case 5:
-					id = inf::djb_hash(drl::Definitions::Building5PrototypeName);
-					break;
-				default:
-					return false;
-				}
-
-				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {m_BuildingSelected,1}, {static_cast<float>(m_BuildingSelected - 1) * 0.5f, 0.0f} };
-				e.additionalPrototypeId = id;
-				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
-					m_BuildingSelected = -1;
-					return true;
-				}
-			}
-			else {
+		} else {	
+			if (_button == sf::Mouse::Left) {
 				if (m_GameCommandService.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_Dig, {col, level}, {1,1}, {} }))) {
 					return true;
 				}
+			} else if (_button == sf::Mouse::Right) {
+				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {2,1}, {0.5f, 0.0f} };
+				e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingBunkPrototypeName);
+				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+					return true;
+				}
+			} else if (_button == sf::Mouse::Middle) {
+				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {2,1}, {0.5f, 0.0f} };
+				e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingBuilderPrototypeName);
+				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+					return true;
+				}
+			} else if (_button == sf::Mouse::XButton1) {
+				// Side Back Button
+			} else if (_button == sf::Mouse::XButton1) {
+				// Side Forward Button
 			}
 		}
 		

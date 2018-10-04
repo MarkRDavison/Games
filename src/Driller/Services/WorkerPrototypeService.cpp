@@ -16,6 +16,7 @@ namespace drl {
 		WorkerInstance instance{};
 		instance.Id = m_IdentificationService.generateId();
 		instance.validJobTypes = p.validJobTypes;
+		instance.prototypeId = _prototypeId;
 		return instance;
 	}
 

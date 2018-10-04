@@ -19,6 +19,8 @@ namespace drl {
 			building.Id = m_IdentificationService.generateId();
 			building.size = p.size;
 			building.textureCoords = p.textureCoords;
+			building.providedWorkerPrototypeId = p.providedWorkerPrototypeId;
+			building.providedWorkerPrototypeAmount = p.providedWorkerPrototypeAmount;
 			return building;
 		}
 		return BuildingInstance{};

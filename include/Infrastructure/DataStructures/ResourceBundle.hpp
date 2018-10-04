@@ -8,6 +8,16 @@ namespace inf {
 
 	struct ResourceBundle {
 		struct Resource {
+
+			Resource(void) {
+				
+			}
+			Resource(const std::string& _resourceName, int _amount) :
+				name(_resourceName),
+				amount(_amount) {
+				
+			}
+
 			std::string name;
 			int amount{ 0 };
 		};

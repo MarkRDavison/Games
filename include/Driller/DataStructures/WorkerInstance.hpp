@@ -3,9 +3,10 @@
 
 #include <Driller/Infrastructure/Definitions.hpp>
 #include <Driller/DataStructures/JobPrototype.hpp>
+#include <Driller/DataStructures/WorkerPrototype.hpp>
+#include <Infrastructure/DataStructures/Path.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <vector>
-#include <Infrastructure/DataStructures/Path.hpp>
 
 namespace drl {
 
@@ -28,6 +29,7 @@ namespace drl {
 		std::vector<JobPrototypeId> validJobTypes;
 
 		WorkerState state{ WorkerState::Idle };
+		WorkerPrototypeId prototypeId;
 
 		struct WorkerPathfindingInstance {
 			inf::Path path;

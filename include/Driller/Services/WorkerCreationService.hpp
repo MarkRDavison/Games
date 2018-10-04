@@ -1,6 +1,7 @@
 #ifndef INCLUDED_DRILLER_SERVICES_WORKER_CREATION_SERVICE_HPP_
 #define INCLUDED_DRILLER_SERVICES_WORKER_CREATION_SERVICE_HPP_
 
+#include <Driller/Services/Interfaces/IWorkerClassService.hpp>
 #include <Driller/Services/Interfaces/IWorkerCreationService.hpp>
 #include <Driller/Services/Interfaces/IPrototypeService.hpp>
 #include <Driller/DataStructures/WorkerData.hpp>
@@ -9,7 +10,7 @@ namespace drl {
 
 	class WorkerCreationService : public IWorkerCreationService {
 	public:
-		WorkerCreationService(WorkerData& _workerData, IWorkerPrototypeService& _prototypeService);
+		WorkerCreationService(WorkerData& _workerData, IWorkerPrototypeService& _prototypeService, IWorkerClassService& _workerClassService);
 		~WorkerCreationService(void) override;
 
 		bool canCreateWorker(const GameCommand::CreateWorkerEvent& _event) override;
@@ -18,6 +19,7 @@ namespace drl {
 	private:
 		WorkerData& m_WorkerData;
 		IWorkerPrototypeService& m_PrototypeService;
+		IWorkerClassService& m_WorkerClassService;
 	};
 
 }

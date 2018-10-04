@@ -10,7 +10,9 @@ namespace inf {
 	void ResourceService::updateResource(const std::string& _resourceName, int _amount) {
 		setResource(_resourceName, _amount + getResource(_resourceName));
 	}
-
+	void ResourceService::updateResourceMax(const std::string& _resourceName, int _amount) {
+		setResourceMaximum(_resourceName, getResourceMax(_resourceName) + _amount);
+	}
 	void ResourceService::setResource(const std::string& _resourceName, int _amount) {
 		LevelResource& resource = getOrCreateResource(_resourceName);
 		resource.amount = _amount;
@@ -26,7 +28,9 @@ namespace inf {
 	int ResourceService::getResource(const std::string& _resourceName) {
 		return getOrCreateResource(_resourceName).amount;
 	}
-
+	int ResourceService::getResourceMax(const std::string& _resourceName) {
+		return getOrCreateResource(_resourceName).max;
+	}
 	bool ResourceService::canAfford(const ResourceBundle& _resourceBundle) {
 
 		for (const ResourceBundle::Resource& _res : _resourceBundle.resources) {
@@ -93,6 +97,17 @@ namespace inf {
 			updateResource(_res.name, _res.amount);
 		}
 	}
+
+	void ResourceService::receiveResourceMaxBundle(const ResourceBundle& _resourceBundle) {
+		for (const ResourceBundle::Resource& _res : _resourceBundle.resources) {
+			if (_res.amount == 0) {
+				continue;
+			}
+
+			updateResourceMax(_res.name, _res.amount);
+		}
+	}
+
 	void ResourceService::registerResourceId(const std::string& _resourceName) {
 		const std::size_t resourceId = inf::djb_hash(_resourceName.c_str());
 		if (m_ResourceIdMap.find(resourceId) == m_ResourceIdMap.end()) {

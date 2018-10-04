@@ -2,10 +2,11 @@
 
 namespace drl {
 
-	BuildingPlacementService::BuildingPlacementService(BuildingData& _buildingData, const TerrainData& _terrainData, IBuildingPrototypeService& _buildingPrototypeService) :
+	BuildingPlacementService::BuildingPlacementService(BuildingData& _buildingData, const TerrainData& _terrainData, IBuildingPrototypeService& _buildingPrototypeService, IWorkerClassService& _workerClassService) :
 		m_BuildingData(_buildingData),
 		m_TerrainData(_terrainData),
-		m_BuildingPrototypeService(_buildingPrototypeService) {
+		m_BuildingPrototypeService(_buildingPrototypeService),
+		m_WorkerClassService(_workerClassService) {
 		
 	}
 
@@ -49,6 +50,7 @@ namespace drl {
 	void BuildingPlacementService::placePrototype(const GameCommand::PlaceBuildingEvent& _placeBuilding) {
 		BuildingInstance& buildingInstance = m_BuildingData.buildings.emplace_back(m_BuildingPrototypeService.createInstance(_placeBuilding.prototypeId));
 		buildingInstance.coordinates = { _placeBuilding.column, _placeBuilding.level };
+		m_WorkerClassService.increaseClassMaximum(buildingInstance.providedWorkerPrototypeId, buildingInstance.providedWorkerPrototypeAmount);
 	}
 
 }

@@ -560,6 +560,7 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IPrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/ISceneChangeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/ITerrainAlterationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IWorkerClassService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IWorkerCreationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IWorkerUpdateService.hpp
 	
@@ -574,6 +575,7 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/PrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/SceneChangeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/TerrainAlterationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/WorkerClassService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/WorkerCreationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/WorkerPrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/WorkerUpdateService.hpp
@@ -607,6 +609,7 @@ SET(DRILLER_SOURCE_FILES ${DRILLER_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobPrototypeService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/SceneChangeService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/TerrainAlterationService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/WorkerClassService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/WorkerCreationService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/WorkerPrototypeService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/WorkerUpdateService.cpp
@@ -626,7 +629,8 @@ SET(DRILLER_TEST_HEADER_FILES ${DRILLER_TEST_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/JobCreationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/TerrainAlterationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/PrototypeServiceMock.hpp
-	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/WorkerCreationMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/WorkerClassServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/WorkerCreationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/WorkerUpdateServiceMock.hpp
 )
 
@@ -641,6 +645,7 @@ SET(DRILLER_TEST_SOURCE_FILES ${DRILLER_TEST_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobCreationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/SceneChangeServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/TerrainAlterationServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/WorkerClassServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/WorkerCreationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/WorkerUpdateServiceTests.cpp
 )

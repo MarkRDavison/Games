@@ -15,8 +15,10 @@ namespace drl {
 
 		static constexpr const char OreResourceName[] = "Ore";
 		static constexpr const char MoneyResourceName[] = "Money";
-		static constexpr const char MaxWorkerResourceName[] = "MaxWorker";
+
 		static constexpr const char CurrentWorkerResourceName[] = "CurrentWorker";
+
+		static constexpr const char CurrentBuilderResourceName[] = "CurrentBuilder";
 
 		static constexpr const char TileSpriteSheetTextureName[] = "tile_sprite_sheet";
 
@@ -26,10 +28,13 @@ namespace drl {
 		static constexpr const char Building4PrototypeName[] = "Four";
 		static constexpr const char Building5PrototypeName[] = "Five";
 
+		static constexpr const char BuildingBunkPrototypeName[] = "Building_Bunk";
+		static constexpr const char BuildingBuilderPrototypeName[] = "Building_Builder";
+
 		static constexpr const char JobPrototypeName_Dig[] = "Job_Dig";
 		static constexpr const char JobPrototypeName_BuildBuilding[] = "Job_BuildBuilding";
 
-		static constexpr const char WorkerPrototypeName_All[] = "Worker_All";
+		static constexpr const char WorkerPrototypeName_Builder[] = "Worker_Builder";
 
 		static constexpr const float TileSize{ 1.0f };
 		static constexpr const float GroundLevel{ -1.0f };
@@ -40,6 +45,8 @@ namespace drl {
 		static const sf::Vector2u ThreeBuildingCoordinate;
 		static const sf::Vector2u FourBuildingCoordinate;
 		static const sf::Vector2u FiveBuildingCoordinate;
+		static const sf::Vector2u BunkBuildingCoordinate;
+		static const sf::Vector2u BuilderBuildingCoordinate;
 
 		static const sf::Vector2u DigJobCoordinate;
 
