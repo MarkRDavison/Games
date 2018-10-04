@@ -38,19 +38,19 @@ namespace drl {
 		);
 		_vertex.append(sf::Vertex(
 			sf::Vector2f(
-				static_cast<float>(_tileCoordinates.x + _size.x) - 0.5f,
+				static_cast<float>(_tileCoordinates.x) + static_cast<float>(_size.x) - 0.5f,
 				static_cast<float>(_tileCoordinates.y) + 0.0f) * Definitions::TileSize,
 			sf::Vector2f(
-				static_cast<float>(_textureTileCoordinates.x + _size.x),
+				static_cast<float>(_textureTileCoordinates.x) + static_cast<float>(_size.x),
 				static_cast<float>(_textureTileCoordinates.y + 0)) * 64.0f)
 		);
 		_vertex.append(sf::Vertex(
 			sf::Vector2f(
-				static_cast<float>(_tileCoordinates.x + _size.x) - 0.5f,
-				static_cast<float>(_tileCoordinates.y + _size.y)) * Definitions::TileSize,
+				static_cast<float>(_tileCoordinates.x) + static_cast<float>(_size.x) - 0.5f,
+				static_cast<float>(_tileCoordinates.y) + static_cast<float>(_size.y)) * Definitions::TileSize,
 			sf::Vector2f(
-				static_cast<float>(_textureTileCoordinates.x + _size.x),
-				static_cast<float>(_textureTileCoordinates.y + _size.y)) * 64.0f)
+				static_cast<float>(_textureTileCoordinates.x) + static_cast<float>(_size.x),
+				static_cast<float>(_textureTileCoordinates.y) + static_cast<float>(_size.y)) * 64.0f)
 		);
 
 		_vertex.append(sf::Vertex(
@@ -63,19 +63,19 @@ namespace drl {
 		);
 		_vertex.append(sf::Vertex(
 			sf::Vector2f(
-				static_cast<float>(_tileCoordinates.x + _size.x) - 0.5f,
-				static_cast<float>(_tileCoordinates.y + _size.y)) * Definitions::TileSize,
+				static_cast<float>(_tileCoordinates.x) + static_cast<float>(_size.x) - 0.5f,
+				static_cast<float>(_tileCoordinates.y) + static_cast<float>(_size.y)) * Definitions::TileSize,
 			sf::Vector2f(
-				static_cast<float>(_textureTileCoordinates.x + _size.x),
-				static_cast<float>(_textureTileCoordinates.y + _size.y)) * 64.0f)
+				static_cast<float>(_textureTileCoordinates.x) + static_cast<float>(_size.x),
+				static_cast<float>(_textureTileCoordinates.y) + static_cast<float>(_size.y)) * 64.0f)
 		);
 		_vertex.append(sf::Vertex(
 			sf::Vector2f(
 				static_cast<float>(_tileCoordinates.x) - 0.5f,
-				static_cast<float>(_tileCoordinates.y + _size.y)) * Definitions::TileSize,
+				static_cast<float>(_tileCoordinates.y) + static_cast<float>(_size.y)) * Definitions::TileSize,
 			sf::Vector2f(
 				static_cast<float>(_textureTileCoordinates.x + 0),
-				static_cast<float>(_textureTileCoordinates.y + _size.y)) * 64.0f)
+				static_cast<float>(_textureTileCoordinates.y) + static_cast<float>(_size.y)) * 64.0f)
 		);
 	}
 

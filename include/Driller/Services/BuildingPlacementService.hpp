@@ -13,6 +13,7 @@ namespace drl {
 		BuildingPlacementService(BuildingData& _buildingData, const TerrainData& _terrainData, IBuildingPrototypeService& _buildingPrototypeService);
 		~BuildingPlacementService(void) override;
 
+		bool canPlacePrototype(const BuildingPrototypeId& _prototypeId, int _level, int _column) override;
 		bool canPlacePrototype(const GameCommand::PlaceBuildingEvent& _placeBuilding) override;
 		void placePrototype(const GameCommand::PlaceBuildingEvent& _placeBuilding) override;
 

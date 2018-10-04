@@ -10,6 +10,13 @@ namespace drl {
 	public:
 		~BuildingPlacementServiceMock(void) override {}
 
+		bool canPlacePrototype(const BuildingPrototypeId& _prototypeId, int _level, int _column) override {
+			GameCommand::PlaceBuildingEvent event{};
+			event.prototypeId = _prototypeId;
+			event.column = _column;
+			event.level = _level;
+			return canPlacePrototype(event);
+		}
 		bool canPlacePrototype(const GameCommand::PlaceBuildingEvent& _placeBuilding) override {
 			if (canPlacePrototypeCallback) {
 				return canPlacePrototypeCallback(_placeBuilding);

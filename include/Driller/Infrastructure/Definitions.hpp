@@ -27,6 +27,7 @@ namespace drl {
 		static constexpr const char Building5PrototypeName[] = "Five";
 
 		static constexpr const char JobPrototypeName_Dig[] = "Job_Dig";
+		static constexpr const char JobPrototypeName_BuildBuilding[] = "Job_BuildBuilding";
 
 		static constexpr const char WorkerPrototypeName_All[] = "Worker_All";
 

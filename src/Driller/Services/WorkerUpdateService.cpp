@@ -50,6 +50,7 @@ namespace drl {
 		const sf::Vector2i target = job.coordinates;
 
 		if (current == target) {
+			_worker.state = WorkerInstance::WorkerState::WorkingJob;
 			return;
 		}
 
@@ -123,6 +124,7 @@ namespace drl {
 	}
 
 	void WorkerUpdateService::resetWorkerAfterCompletingJob(WorkerInstance& _worker, const JobInstance& _jobInstance) {
+		// TODO: What happens if we have repeating jobs?
 		_worker.hasAllocatedJob = false;
 		_worker.allocatedJobId = 0u;
 		_worker.state = WorkerInstance::WorkerState::Idle;

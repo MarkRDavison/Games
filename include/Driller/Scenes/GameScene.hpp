@@ -40,6 +40,7 @@ namespace drl {
 		JobView& m_JobView;
 		
 		sf::Vector2f m_CameraOffset;
+		int m_BuildingSelected{ -1 };
 	};
 
 }

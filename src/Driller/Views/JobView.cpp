@@ -41,6 +41,7 @@ namespace drl {
 			states.transform.translate(0.0f, Definitions::TileSize / 2.0f);
 			_target.draw(jobCoordinates, states);
 			states.transform.translate(0.0f, Definitions::TileSize / 2.0f);
+			states.transform.translate(_job.jobPerformOffset);
 			_target.draw(jobPerform, states);
 		}
 

@@ -1,13 +1,15 @@
 #include <Driller/Services/JobCreationService.hpp>
 #include <Driller/DataStructures/TerrainTile.hpp>
 #include <Driller/Infrastructure/Definitions.hpp>
+#include <Sol2/sol.hpp>
 
 namespace drl {
 
-	JobCreationService::JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService) :
+	JobCreationService::JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService) :
 		m_JobData(_jobData),
 		m_TerrainAlterationService(_terrainAlterationService),
-		m_JobPrototypeService(_jobPrototypeService) {
+		m_JobPrototypeService(_jobPrototypeService),
+		m_BuildingPlacementService(_buildingPlacementService) {
 		
 	}
 
@@ -28,11 +30,20 @@ namespace drl {
 			return canCreateDigTileJob(_event);
 		}
 
+		if (_event.jobTypeId == m_JobPrototypeService.getPrototypeId(Definitions::JobPrototypeName_BuildBuilding)) {
+			return canCreateBuildBuildingJob(_event);
+		}
+
 		throw std::runtime_error("Job Prototype does not have a specific canCreateJob implementation");
 	}
 	void JobCreationService::createJob(const GameCommand::CreateJobEvent& _event) {
 		if (_event.jobTypeId == m_JobPrototypeService.getPrototypeId(Definitions::JobPrototypeName_Dig)) {
 			createDigTileJob(_event);
+			return;
+		}
+
+		if (_event.jobTypeId == m_JobPrototypeService.getPrototypeId(Definitions::JobPrototypeName_BuildBuilding)) {
+			createBuildBuildingJob(_event);
 			return;
 		}
 
@@ -61,6 +72,21 @@ namespace drl {
 		instance.bounds = _event.bounds;
 		instance.jobPerformOffset = _event.jobPerformOffset;
 		instance.prototypeId = _event.jobTypeId;
+	}
+
+	bool JobCreationService::canCreateBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const {
+		return m_BuildingPlacementService.canPlacePrototype(_event.additionalPrototypeId, _event.coordinates.y, _event.coordinates.x);
+	}
+	void JobCreationService::createBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const {
+		m_TerrainAlterationService.initialiseTile(_event.coordinates.y, _event.coordinates.x);
+		m_TerrainAlterationService.reserveJobOnTile(_event.coordinates.y, _event.coordinates.x);
+
+		JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
+		instance.coordinates = _event.coordinates;
+		instance.bounds = _event.bounds;
+		instance.jobPerformOffset = _event.jobPerformOffset;
+		instance.prototypeId = _event.jobTypeId;
+		instance.additionalPrototypeId = _event.additionalPrototypeId;
 	}
 
 }

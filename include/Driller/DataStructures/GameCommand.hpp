@@ -50,6 +50,7 @@ namespace drl {
 				jobTypeId(inf::djb_hash(_jobType)), coordinates(_coordinates), bounds(_bounds), jobPerformOffset(_performOffset) {}
 				
 			std::size_t jobTypeId{ 0u };
+			std::size_t additionalPrototypeId{ 0u };
 			sf::Vector2i coordinates;		// Top Left
 			sf::Vector2i bounds;			// bounds the job encompasses, i.e. if placing building over multiple tiles it reserves those tiles
 			sf::Vector2f jobPerformOffset;	// The offset to perform the job from, i.e. outside the tile for digging, inside for repairing etc

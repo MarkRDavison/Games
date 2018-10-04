@@ -22,8 +22,8 @@ namespace drl {
 
 		void populatePath(WorkerInstance& _worker);
 		void followPath(WorkerInstance& _worker, float _delta) const;
-		
-		void resetWorkerAfterCompletingJob(WorkerInstance& _worker, const JobInstance& _jobInstance);
+
+		static void resetWorkerAfterCompletingJob(WorkerInstance& _worker, const JobInstance& _jobInstance);
 
 		JobInstance& retrieveJob(EntityId _jobId) ;
 		const JobInstance& retrieveJob(EntityId _jobId) const;

@@ -13,6 +13,14 @@ namespace drl {
 		
 	}
 
+	bool BuildingPlacementService::canPlacePrototype(const BuildingPrototypeId& _prototypeId, int _level, int _column) {
+		GameCommand::PlaceBuildingEvent event{};
+		event.prototypeId = _prototypeId;
+		event.level = _level;
+		event.column = _column;
+		return canPlacePrototype(event);
+	}
+
 	bool BuildingPlacementService::canPlacePrototype(const GameCommand::PlaceBuildingEvent& _placeBuilding) {
 		if (!m_BuildingPrototypeService.isPrototypeRegistered(_placeBuilding.prototypeId)) {
 			return false;

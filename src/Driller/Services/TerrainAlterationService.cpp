@@ -34,6 +34,7 @@ namespace drl {
 				if (row.rightTiles.size() == xCoord) {
 					// Need to append a new tile
 					TerrainTile& t = row.rightTiles.emplace_back();
+					t.jobReserved = false;
 					t.dugOut = true;
 					return true;
 				}
@@ -43,6 +44,7 @@ namespace drl {
 					if (t.dugOut) {
 						return false;
 					}
+					t.jobReserved = false;
 					t.dugOut = true;
 					return true;
 				}
@@ -54,6 +56,7 @@ namespace drl {
 				if (row.leftTiles.size() == xCoord) {
 					// Need to append a new tile
 					TerrainTile& t = row.leftTiles.emplace_back();
+					t.jobReserved = false;
 					t.dugOut = true;
 					return true;
 				}
@@ -63,6 +66,7 @@ namespace drl {
 					if (t.dugOut) {
 						return false;
 					}
+					t.jobReserved = false;
 					t.dugOut = true;
 					return true;
 				}
@@ -104,7 +108,7 @@ namespace drl {
 	}
 
 	bool TerrainAlterationService::doesLevelExist(int _level) const {
-		return m_TerrainData.rows.size() > _level;
+		return static_cast<int>(m_TerrainData.rows.size()) > _level;
 	}
 
 	bool TerrainAlterationService::isTileDugOut(int _level, int _column) const {

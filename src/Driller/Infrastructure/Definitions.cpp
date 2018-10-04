@@ -16,6 +16,7 @@ namespace drl {
 	constexpr const char Definitions::Building5PrototypeName[];
 
 	constexpr const char Definitions::JobPrototypeName_Dig[];
+	constexpr const char Definitions::JobPrototypeName_BuildBuilding[];
 
 	constexpr const char Definitions::WorkerPrototypeName_All[];
 

@@ -57,7 +57,7 @@ struct ServicePackage {
 		buildingPrototype(identificationService),
 		buildingPlacement(buildingData, terrainData, buildingPrototype),
 		jobPrototype(identificationService),
-		jobCreation(jobData, terrainAlteration, jobPrototype),
+		jobCreation(jobData, terrainAlteration, jobPrototype, buildingPlacement),
 		jobAllocation(workerData, jobData, terrainAlteration),
 		jobCompletion(jobData),
 		workerCreation(workerData, workerPrototype),
@@ -128,26 +128,94 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 	_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::Building4PrototypeName, drl::BuildingPrototype{ {4,1}, drl::Definitions::FourBuildingCoordinate  });
 	_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::Building5PrototypeName, drl::BuildingPrototype{ {5,1}, drl::Definitions::FiveBuildingCoordinate  });
 
-	drl::JobPrototype digDirtProtoype{};
-	digDirtProtoype.workRequired = 2.0f;
-	_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_Dig, digDirtProtoype);
+	{
+		drl::JobPrototype digDirtProtoype{};
+		digDirtProtoype.workRequired = 2.0f;
+		_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_Dig, digDirtProtoype);
 
-	drl::JobCompleteDelegate digDirtCompletePrototype = [&](const drl::JobInstance& _jobInstance) {
-		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ _jobInstance.coordinates.y, _jobInstance.coordinates.x }));
-	};
-	_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_Dig, digDirtCompletePrototype);
+		drl::JobCompleteDelegate digDirtCompletePrototype = [&](const drl::JobInstance& _jobInstance) {
+			_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ _jobInstance.coordinates.y, _jobInstance.coordinates.x }));
+		};
+		_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_Dig, digDirtCompletePrototype);
+	}
+	{
+		drl::JobPrototype buildBuildingPrototype{};
+		buildBuildingPrototype.workRequired = 2.0f;
+		_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_BuildBuilding, buildBuildingPrototype);
+
+		drl::JobCompleteDelegate buildBuildingCompletePrototype = [&](const drl::JobInstance& _jobInstance) {
+			drl::GameCommand::PlaceBuildingEvent event{};
+			event.prototypeId = _jobInstance.additionalPrototypeId;
+			event.level = _jobInstance.coordinates.y;
+			event.column = _jobInstance.coordinates.x;
+			_servicePackage.gameCommand.executeGameCommand(drl::GameCommand{ event });
+		};
+		_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_BuildBuilding, buildBuildingCompletePrototype);
+	}
 	
 	drl::WorkerPrototype allPrototype{ };
-	allPrototype.validJobTypes = { inf::djb_hash(drl::Definitions::JobPrototypeName_Dig) };	
+	allPrototype.validJobTypes = {
+		inf::djb_hash(drl::Definitions::JobPrototypeName_Dig),
+		inf::djb_hash(drl::Definitions::JobPrototypeName_BuildBuilding)
+	};	
 	_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_All, allPrototype);
 }
 
 void runSetupGameCommands(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {
 	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ 0 }));
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ 1 }));
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ 2 }));
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ 3 }));
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ 4 }));
 
-	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 0, +1 }));
-	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 0, +2 }));
+	{
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 0, +1 }));
 
+		auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {1, 0}, {1,1}, {0.0f, 0.0f} };
+		e.additionalPrototypeId = inf::djb_hash(drl::Definitions::Building1PrototypeName);
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(e));
+	}
+	{
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 1, +1 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 1, +2 }));
+
+		auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {1, 1}, {2,1}, {0.5f, 0.0f} };
+		e.additionalPrototypeId = inf::djb_hash(drl::Definitions::Building2PrototypeName);
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(e));
+	}
+	{
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 2, +1 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 2, +2 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 2, +3 }));
+
+		auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {1, 2}, {3,1}, {1.0f, 0.0f} };
+		e.additionalPrototypeId = inf::djb_hash(drl::Definitions::Building3PrototypeName);
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(e));
+	}
+	{
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 3, +1 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 3, +2 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 3, +3 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 3, +4 }));
+
+		auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {1, 3}, {4,1}, {1.5f, 0.0f} };
+		e.additionalPrototypeId = inf::djb_hash(drl::Definitions::Building4PrototypeName);
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(e));
+	}
+	{
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 4, +1 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 4, +2 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 4, +3 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 4, +4 }));
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::DigTileEvent{ 4, +5 }));
+
+		auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {1, 4}, {5,1}, {2.0f, 0.0f} };
+		e.additionalPrototypeId = inf::djb_hash(drl::Definitions::Building5PrototypeName);
+		_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(e));
+	}
+
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateWorkerEvent{ drl::Definitions::WorkerPrototypeName_All, drl::Definitions::ShuttleLandingCoordinates }));
+	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateWorkerEvent{ drl::Definitions::WorkerPrototypeName_All, drl::Definitions::ShuttleLandingCoordinates }));
 	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateWorkerEvent{ drl::Definitions::WorkerPrototypeName_All, drl::Definitions::ShuttleLandingCoordinates }));
 }
 

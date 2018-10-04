@@ -1,5 +1,6 @@
 #include <Driller/Scenes/GameScene.hpp>
 #include <Utility/Colour.hpp>
+#include <Driller/DataStructures/BuildingPrototype.hpp>
 
 namespace drl {
 	GameScene::GameScene(inf::IConfigurationManager& _config, inf::InputManager& _inputManager, ISceneChangeService& _sceneChangeService, IGameCommandService& _gameCommandService, Game& _game, TerrainView& _terrainView, BuildingView& _buildingView, JobView& _jobView, WorkerView& _workerView) :
@@ -42,6 +43,32 @@ namespace drl {
 		if (_event.type == sf::Event::KeyPressed) {
 			if (_event.key.code == sf::Keyboard::F5) {
 				m_GameCommandService.executeGameCommand(GameCommand{ GameCommand::ResetJobAllocationsEvent{} });
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Escape) {
+				if (m_BuildingSelected != -1) {
+					m_BuildingSelected = -1;
+					return true;
+				}
+			}
+			if (_event.key.code == sf::Keyboard::Num1) {
+				m_BuildingSelected = 1;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num2) {
+				m_BuildingSelected = 2;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num3) {
+				m_BuildingSelected = 3;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num4) {
+				m_BuildingSelected = 4;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num5) {
+				m_BuildingSelected = 5;
 				return true;
 			}
 		}
@@ -94,8 +121,41 @@ namespace drl {
 			}
 		} else {
 			// Handle creating dig tile job
-			if (m_GameCommandService.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_Dig, {col, level}, {1,1}, {} }))) {
-				return true;
+			if (m_BuildingSelected >= 1 && m_BuildingSelected <= 5) {
+
+				BuildingPrototypeId id{ 0u };
+
+				switch (m_BuildingSelected) {
+				case 1:
+					id = inf::djb_hash(drl::Definitions::Building1PrototypeName);
+					break;
+				case 2:
+					id = inf::djb_hash(drl::Definitions::Building2PrototypeName);
+					break;
+				case 3:
+					id = inf::djb_hash(drl::Definitions::Building3PrototypeName);
+					break;
+				case 4:
+					id = inf::djb_hash(drl::Definitions::Building4PrototypeName);
+					break;
+				case 5:
+					id = inf::djb_hash(drl::Definitions::Building5PrototypeName);
+					break;
+				default:
+					return false;
+				}
+
+				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {m_BuildingSelected,1}, {static_cast<float>(m_BuildingSelected - 1) * 0.5f, 0.0f} };
+				e.additionalPrototypeId = id;
+				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+					m_BuildingSelected = -1;
+					return true;
+				}
+			}
+			else {
+				if (m_GameCommandService.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_Dig, {col, level}, {1,1}, {} }))) {
+					return true;
+				}
 			}
 		}
 		

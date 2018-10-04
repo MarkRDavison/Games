@@ -21,6 +21,8 @@ namespace drl {
 		bool removalRequired{ false };
 
 		JobPrototypeId prototypeId;
+
+		std::size_t additionalPrototypeId;
 	};
 
 }
