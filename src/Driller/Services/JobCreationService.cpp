@@ -65,7 +65,7 @@ namespace drl {
 
 	void JobCreationService::createDigTileJob(const GameCommand::CreateJobEvent& _event) const {
 		m_TerrainAlterationService.initialiseTile(_event.coordinates.y, _event.coordinates.x);
-		m_TerrainAlterationService.reserveJobOnTile(_event.coordinates.y, _event.coordinates.x);
+		m_TerrainAlterationService.reserveJobOnTile(_event.coordinates.y, _event.coordinates.x, true);
 
 		JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
 		instance.coordinates = _event.coordinates;
@@ -79,7 +79,7 @@ namespace drl {
 	}
 	void JobCreationService::createBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const {
 		m_TerrainAlterationService.initialiseTile(_event.coordinates.y, _event.coordinates.x);
-		m_TerrainAlterationService.reserveJobOnTile(_event.coordinates.y, _event.coordinates.x);
+		m_TerrainAlterationService.reserveJobOnTile(_event.coordinates.y, _event.coordinates.x, true);
 
 		JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
 		instance.coordinates = _event.coordinates;

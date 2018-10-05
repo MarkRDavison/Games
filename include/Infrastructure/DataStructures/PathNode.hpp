@@ -6,6 +6,8 @@ namespace inf {
 	struct PathNode {
 		int x{0};
 		int y{0};
+		//float offsetX{ 0.0f };
+		//float offsetY{ 0.0f };
 		enum class NodeType {
 			Start,
 			End,

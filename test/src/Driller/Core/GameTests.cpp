@@ -5,6 +5,9 @@
 #include <Mocks/Driller/Services/JobAllocationServiceMock.hpp>
 #include <Mocks/Driller/Services/WorkerUpdateServiceMock.hpp>
 #include <Mocks/Driller/Services/JobCompletionServiceMock.hpp>
+#include <Mocks/Driller/Services/ShuttleDepartureServiceMock.hpp>
+#include <Mocks/Driller/Services/ShuttleUpdateServiceMock.hpp>
+#include <Mocks/Driller/Services/ShuttleCompletionServiceMock.hpp>
 
 namespace drl {
 	namespace GameTests {
@@ -19,8 +22,11 @@ namespace drl {
 			JobAllocationServiceMock jobAllocationService;
 			JobCompletionServiceMock jobCompletionService;
 			WorkerUpdateServiceMock workerUpdateService;
+			ShuttleDepartureServiceMock shuttleDepartureService;
+			ShuttleUpdateServiceMock shuttleUpdateService;
+			ShuttleCompletionServiceMock shuttleCompletionService;
 
-			Game game(gameCommandService, jobAllocationService, jobCompletionService, workerUpdateService, terrainData, buildingData, jobData, workerData);
+			Game game(gameCommandService, jobAllocationService, jobCompletionService, workerUpdateService, shuttleDepartureService, shuttleUpdateService, shuttleCompletionService, terrainData, buildingData, jobData, workerData);
 		}
 
 	}

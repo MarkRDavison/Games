@@ -4,8 +4,9 @@
 
 namespace drl {
 
-	JobCompletionService::JobCompletionService(JobData& _jobData) :
-		m_JobData(_jobData) {
+	JobCompletionService::JobCompletionService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService) :
+		m_JobData(_jobData),
+		m_TerrainAlterationService(_terrainAlterationService) {
 		
 	}
 
@@ -17,6 +18,7 @@ namespace drl {
 		_jobInstance.removalRequired = true;
 		_jobInstance.allocated = false;
 		_jobInstance.allocatedWorkerId = 0u;
+		m_TerrainAlterationService.reserveJobOnTile(_jobInstance.coordinates.y, _jobInstance.coordinates.x, false); // TODO: This and creating jobs needs to do this for all tiles in the job
 		m_JobCompleted = true;
 	}
 

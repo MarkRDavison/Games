@@ -118,11 +118,17 @@ namespace drl {
 		return false;
 	}
 
-	void TerrainAlterationService::reserveJobOnTile(int _level, int _column) {
+	void TerrainAlterationService::reserveJobOnTile(int _level, int _column, bool _jobReserved) {
 		assert(doesTileExist(_level, _column));
 
-		m_TerrainData.getTile(_level, _column).jobReserved = true;
+		m_TerrainData.getTile(_level, _column).jobReserved = _jobReserved;
 	}
+	void TerrainAlterationService::placeBuildingOnTile(int _level, int _column, bool _placeBuilding) {
+		assert(doesTileExist(_level, _column));
+
+		m_TerrainData.getTile(_level, _column).hasBuilding = _placeBuilding;
+	}
+
 
 	const TerrainTile& TerrainAlterationService::getTile(int _level, int _column) const {
 		assert(doesTileExist(_level, _column));

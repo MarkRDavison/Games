@@ -3,7 +3,7 @@
 #include <Driller/DataStructures/BuildingPrototype.hpp>
 
 namespace drl {
-	GameScene::GameScene(inf::IConfigurationManager& _config, inf::InputManager& _inputManager, ISceneChangeService& _sceneChangeService, IGameCommandService& _gameCommandService, Game& _game, TerrainView& _terrainView, BuildingView& _buildingView, JobView& _jobView, WorkerView& _workerView) :
+	GameScene::GameScene(inf::IConfigurationManager& _config, inf::InputManager& _inputManager, ISceneChangeService& _sceneChangeService, IGameCommandService& _gameCommandService, Game& _game, TerrainView& _terrainView, BuildingView& _buildingView, JobView& _jobView, WorkerView& _workerView, ShuttleView& _shuttleView) :
 		inf::Scene("drl::GameScene"),
 		m_Config(_config),
 		m_InputManager(_inputManager),
@@ -13,7 +13,8 @@ namespace drl {
 		m_TerrainView(_terrainView),
 		m_BuildingView(_buildingView),
 		m_JobView(_jobView),
-		m_WorkerView(_workerView) {
+		m_WorkerView(_workerView),
+		m_ShuttleView(_shuttleView) {
 
 		const auto& Size = m_InputManager.getWindowSize();
 		m_CameraOffset = sf::Vector2f(static_cast<float>(Size.x / 2) / m_Config.getGameViewScale(), static_cast<float>(Size.x / 8) / m_Config.getGameViewScale());
@@ -29,6 +30,7 @@ namespace drl {
 		m_BuildingView.update(_delta);
 		m_JobView.update(_delta);
 		m_WorkerView.update(_delta);
+		m_ShuttleView.update(_delta);
 	}
 
 	bool GameScene::handleEvent(const sf::Event & _event) {
@@ -67,6 +69,7 @@ namespace drl {
 		m_TerrainView.draw(_target, _states, _alpha);
 		m_BuildingView.draw(_target, _states, _alpha);
 		m_JobView.draw(_target, _states, _alpha);
+		m_ShuttleView.draw(_target, _states, _alpha);
 		m_WorkerView.draw(_target, _states, _alpha);
 	}
 

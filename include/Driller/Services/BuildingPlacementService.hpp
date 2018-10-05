@@ -4,15 +4,15 @@
 #include <Driller/DataStructures/BuildingData.hpp>
 #include <Driller/Services/Interfaces/IBuildingPlacementService.hpp>
 #include <Driller/Services/Interfaces/IPrototypeService.hpp>
-#include <Driller/DataStructures/TerrainData.hpp>
-#include <Infrastructure/Services/Interfaces/IResourceService.hpp>
-#include "Interfaces/IWorkerClassService.hpp"
+#include <Driller/Services/Interfaces/IWorkerClassService.hpp>
+#include <Driller/Services/Interfaces/ITerrainAlterationService.hpp>
+#include "Interfaces/IShuttleDepartureService.hpp"
 
 namespace drl {
 
 	class BuildingPlacementService : public IBuildingPlacementService {
 	public:
-		BuildingPlacementService(BuildingData& _buildingData, const TerrainData& _terrainData, IBuildingPrototypeService& _buildingPrototypeService, IWorkerClassService& _workerClassService);
+		BuildingPlacementService(BuildingData& _buildingData, ITerrainAlterationService& _terrainAlterationService, IBuildingPrototypeService& _buildingPrototypeService, IWorkerClassService& _workerClassService, IShuttleDepartureService& _shuttleDepartureService);
 		~BuildingPlacementService(void) override;
 
 		bool canPlacePrototype(const BuildingPrototypeId& _prototypeId, int _level, int _column) override;
@@ -21,9 +21,10 @@ namespace drl {
 
 	private:
 		BuildingData& m_BuildingData;
-		const TerrainData& m_TerrainData;
+		ITerrainAlterationService& m_TerrainAlterationService;
 		IBuildingPrototypeService& m_BuildingPrototypeService;
 		IWorkerClassService& m_WorkerClassService;
+		IShuttleDepartureService& m_ShuttleDepartureService;
 	};
 	
 }

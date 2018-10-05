@@ -25,6 +25,8 @@ namespace drl {
 
 	constexpr const char Definitions::WorkerPrototypeName_Builder[];
 
+	constexpr const char Definitions::ShuttlePrototypeName_Starting[];
+
 	const sf::Vector2u Definitions::OneBuildingCoordinate	{ 2, 0 };
 	const sf::Vector2u Definitions::TwoBuildingCoordinate	{ 2, 1 };
 	const sf::Vector2u Definitions::ThreeBuildingCoordinate	{ 2, 2 };
@@ -36,6 +38,8 @@ namespace drl {
 
 	const sf::Vector2u Definitions::DigJobCoordinate		{ 1, 1 };
 
+	const sf::Vector2f Definitions::ShuttleStartingCoordinates{ -15.0f, -10.0f};
 	const sf::Vector2f Definitions::ShuttleLandingCoordinates{ -5.0f, GroundLevel };;
+	const sf::Vector2f Definitions::ShuttleEndingCoordinates{ +25.0f, -5.0f };
 
 }

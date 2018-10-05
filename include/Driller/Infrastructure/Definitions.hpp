@@ -36,8 +36,11 @@ namespace drl {
 
 		static constexpr const char WorkerPrototypeName_Builder[] = "Worker_Builder";
 
+		static constexpr const char ShuttlePrototypeName_Starting[] = "Shuttle_Starting";
+
 		static constexpr const float TileSize{ 1.0f };
 		static constexpr const float GroundLevel{ -1.0f };
+		static constexpr const float BaseShuttleSpeed{ 5.0f };
 		static constexpr const float BaseWorkerSpeed{ 2.0f };
 
 		static const sf::Vector2u OneBuildingCoordinate;
@@ -50,7 +53,9 @@ namespace drl {
 
 		static const sf::Vector2u DigJobCoordinate;
 
+		static const sf::Vector2f ShuttleStartingCoordinates;
 		static const sf::Vector2f ShuttleLandingCoordinates;
+		static const sf::Vector2f ShuttleEndingCoordinates;
 
 		enum class GameSceneState {
 			Title,

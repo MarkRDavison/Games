@@ -280,7 +280,7 @@ namespace drl {
 			REQUIRE_FALSE(service.isTileDugOut(Coords.y, Coords.x));
 		}
 
-		TEST_CASE("doesLevelExist returns true when asking about level that exists") {
+		TEST_CASE("doesLevelExist returns true when asking about level that exists", "[Driller][Service][TerrainAlterationService]") {
 			TerrainData terrainData{};
 			TerrainAlterationService service(terrainData);
 			terrainData.rows.emplace_back();
@@ -288,7 +288,7 @@ namespace drl {
 			REQUIRE(service.doesLevelExist(0));
 		}
 
-		TEST_CASE("doesLevelExist returns false when asking about level that does not exist") {
+		TEST_CASE("doesLevelExist returns false when asking about level that does not exist", "[Driller][Service][TerrainAlterationService]") {
 			TerrainData terrainData{};
 			TerrainAlterationService service(terrainData);
 
@@ -297,6 +297,20 @@ namespace drl {
 			terrainData.rows.emplace_back();
 
 			REQUIRE_FALSE(service.doesLevelExist(1));
+		}
+
+		TEST_CASE("placeBuildingOnTile correctly sets the flag", "[Driller][Service][TerrainAlterationService]") {
+			TerrainData terrainData{};
+			TerrainAlterationService service(terrainData);
+
+			const sf::Vector2i Coords{ +1, 0 };
+
+			service.digShaft(Coords.y);
+			service.digTile(Coords.y, Coords.x);
+
+			service.placeBuildingOnTile(Coords.y, Coords.x, true);
+
+			REQUIRE(terrainData.getTile(Coords.y, Coords.x).hasBuilding);
 		}
 	}
 }

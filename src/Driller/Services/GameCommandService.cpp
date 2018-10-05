@@ -2,11 +2,11 @@
 
 namespace drl {
 
-	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService) :
-		GameCommandService(_resourceService, _terrainAlterationService, _buildingPlacementService, _buildingPrototypeService, _jobCreationService, _jobPrototypeService, _jobAllocationService, _workerCreationService, _workerPrototypeService, 0ll) {
+	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService) :
+		GameCommandService(_resourceService, _terrainAlterationService, _buildingPlacementService, _buildingPrototypeService, _jobCreationService, _jobPrototypeService, _jobAllocationService, _workerCreationService, _workerPrototypeService, _shuttleCreationService, 0ll) {
 		
 	}
-	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, long long _startTick) :
+	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, long long _startTick) :
 		m_ResourceService(_resourceService),
 		m_TerrainAlterationService(_terrainAlterationService),
 		m_BuildingPlacementService(_buildingPlacementService),
@@ -16,6 +16,7 @@ namespace drl {
 		m_JobAllocationService(_jobAllocationService),
 		m_WorkerCreationService(_workerCreationService),
 		m_WorkerPrototypeService(_workerPrototypeService),
+		m_ShuttleCreationService(_shuttleCreationService),
 		m_CurrentTick(_startTick) {
 		
 	}
@@ -46,6 +47,8 @@ namespace drl {
 			return handleResetJobAllocationsCommand(_command.resetJobAllocations);
 		case GameCommand::CreateWorker:
 			return handleCreateWorkerCommand(_command.createWorker);
+		case GameCommand::CreateShuttle:
+			return handleCreateShuttleCommand(_command.createShuttle);
 		default:
 			return false;
 		}
@@ -100,6 +103,15 @@ namespace drl {
 		}
 
 		m_WorkerCreationService.createWorker(_event);
+		return true;
+	}
+
+	bool GameCommandService::handleCreateShuttleCommand(const GameCommand::CreateShuttleEvent& _event) const {
+		if (!m_ShuttleCreationService.canCreateShuttle(_event)) {
+			return false;
+		}
+
+		m_ShuttleCreationService.createShuttle(_event);
 		return true;
 	}
 }

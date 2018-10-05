@@ -14,12 +14,13 @@
 #include <Driller/Views/BuildingView.hpp>
 #include <Driller/Views/JobView.hpp>
 #include <Driller/Views/WorkerView.hpp>
+#include <Driller/Views/ShuttleView.hpp>
 
 namespace drl {
 
 	class GameScene : public inf::Scene {
 	public:
-		GameScene(inf::IConfigurationManager& _config, inf::InputManager& _inputManager, ISceneChangeService& _sceneChangeService, IGameCommandService& _gameCommandService, Game& _game, TerrainView& _terrainView, BuildingView& _buildingView, JobView& _jobView, WorkerView& _workerView);
+		GameScene(inf::IConfigurationManager& _config, inf::InputManager& _inputManager, ISceneChangeService& _sceneChangeService, IGameCommandService& _gameCommandService, Game& _game, TerrainView& _terrainView, BuildingView& _buildingView, JobView& _jobView, WorkerView& _workerView, ShuttleView& _shuttleView);
 		~GameScene(void) override;
 
 		void update(float _delta) override;
@@ -38,6 +39,7 @@ namespace drl {
 		BuildingView& m_BuildingView;
 		WorkerView& m_WorkerView;
 		JobView& m_JobView;
+		ShuttleView& m_ShuttleView;
 		
 		sf::Vector2f m_CameraOffset;
 	};

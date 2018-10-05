@@ -144,9 +144,10 @@ namespace drl {
 			const GameCommand::CreateJobEvent event{ Definitions::JobPrototypeName_Dig, {1, 0}, {1, 1}, {0.0f, 0.0f} };
 
 			bool reserveJobOnTileInvoked = false;
-			package.terrainAlterationService.reserveJobOnTileCallback = [&](int _level, int _column) {
+			package.terrainAlterationService.reserveJobOnTileCallback = [&](int _level, int _column, bool _jobReserved) {
 				REQUIRE(event.coordinates.y == _level);
 				REQUIRE(event.coordinates.x == _column);
+				REQUIRE(_jobReserved);
 				reserveJobOnTileInvoked = true;
 			};
 			
@@ -164,9 +165,10 @@ namespace drl {
 			const GameCommand::CreateJobEvent event{ Definitions::JobPrototypeName_Dig, {1, 0}, {1, 1}, {0.0f, 0.0f} };
 
 			bool terrainTileReserved = false;
-			package.terrainAlterationService.reserveJobOnTileCallback = [&](int _level, int _column) {
+			package.terrainAlterationService.reserveJobOnTileCallback = [&](int _level, int _column, bool _jobReserved) {
 				REQUIRE(event.coordinates.y == _level);
 				REQUIRE(event.coordinates.x == _column);
+				REQUIRE(_jobReserved);
 				terrainTileReserved = true;
 			};
 

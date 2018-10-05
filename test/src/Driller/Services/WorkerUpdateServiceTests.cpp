@@ -319,5 +319,36 @@ namespace drl {
 			
 			REQUIRE(jobCompletionInvoked);
 		}
+
+		TEST_CASE("updateWorkingJobWorker where the job gets completed handles the job complete before invoking the job complete delegate", "[Driller][Services][WorkerUpdateService]") {
+			WorkerData workerData{};
+			JobData jobData{};
+			JobCompletionServiceMock jobCompletionService;
+			WorkerUpdateService service(workerData, jobData, jobCompletionService);
+
+			WorkerInstance& worker = workerData.workers.emplace_back();
+			worker.allocatedJobId = 1u;
+			JobInstance& job = jobData.jobs.emplace_back();
+			job.Id = worker.allocatedJobId;
+			job.workRequired = 1.0f;
+
+			bool jobCompletionInvoked = false;
+			bool handleJobCompleteInvoked = false;
+			jobCompletionService.defaultJobCompleteDelegate = [&](const JobInstance& _jobInstance) {
+				REQUIRE(handleJobCompleteInvoked);
+				REQUIRE(job.Id == _jobInstance.Id);
+				jobCompletionInvoked = true;
+			};
+			jobCompletionService.handleJobCompletedCallback = [&](JobInstance& _job) -> void {
+				REQUIRE_FALSE(handleJobCompleteInvoked);
+				handleJobCompleteInvoked = true;
+			};
+			jobCompletionService.isJobCompleteDelegateRegisteredCallback = [](const JobPrototypeId&) -> bool { return true; };
+
+			service.updateWorkingJobWorker(worker, job.workRequired);
+
+			REQUIRE(jobCompletionInvoked);
+			REQUIRE(handleJobCompleteInvoked);
+		}
 	}
 }

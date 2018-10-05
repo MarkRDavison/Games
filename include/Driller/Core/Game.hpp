@@ -10,12 +10,15 @@
 #include <Driller/Services/Interfaces/IJobAllocationService.hpp>
 #include <Driller/Services/Interfaces/IWorkerUpdateService.hpp>
 #include <Driller/Services/Interfaces/IJobCompletionService.hpp>
+#include <Driller/Services/Interfaces/IShuttleDepartureService.hpp>
+#include <Driller/Services/Interfaces/IShuttleUpdateService.hpp>
+#include <Driller/Services/Interfaces/IShuttleCompletionService.hpp>
 
 namespace drl {
 	
 	class Game {
 	public:
-		Game(IGameCommandService& _gameCommandService, IJobAllocationService& _jobAllocationService, IJobCompletionService& _jobCompletionService, IWorkerUpdateService& _workerUpdateService, TerrainData& _terrainData, BuildingData& _buildingData, JobData& _jobData, WorkerData& _workerData);
+		Game(IGameCommandService& _gameCommandService, IJobAllocationService& _jobAllocationService, IJobCompletionService& _jobCompletionService, IWorkerUpdateService& _workerUpdateService, IShuttleDepartureService& _shuttleDepartureService, IShuttleUpdateService& _shuttleUpdateService, IShuttleCompletionService& _shuttleCompletionService, TerrainData& _terrainData, BuildingData& _buildingData, JobData& _jobData, WorkerData& _workerData);
 		~Game(void);
 
 		void update(float _delta) const;
@@ -27,6 +30,10 @@ namespace drl {
 		IJobCompletionService& m_JobCompletionService;
 
 		IWorkerUpdateService& m_WorkerUpdateService;
+
+		IShuttleDepartureService& m_ShuttleDepartureService;
+		IShuttleUpdateService& m_ShuttleUpdateService;
+		IShuttleCompletionService& m_ShuttleCompletionService;
 
 		TerrainData& m_TerrainData;
 		BuildingData& m_BuildingData;

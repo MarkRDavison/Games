@@ -5,9 +5,10 @@
 #include <Driller/DataStructures/BuildingPrototype.hpp>
 #include <Driller/DataStructures/JobInstance.hpp>
 #include <Driller/DataStructures/JobPrototype.hpp>
+#include <Driller/DataStructures/ShuttleInstance.hpp>
+#include <Driller/DataStructures/ShuttlePrototype.hpp>
 #include <Driller/DataStructures/WorkerInstance.hpp>
 #include <Driller/DataStructures/WorkerPrototype.hpp>
-
 #include <Driller/Services/Interfaces/IPrototypeService.hpp>
 #include <functional>
 
@@ -97,6 +98,7 @@ namespace drl {
 
 	using BuildingPrototypeServiceMock = PrototypeServiceMock<BuildingPrototype, BuildingInstance, BuildingPrototypeId>;
 	using JobPrototypeServiceMock = PrototypeServiceMock<JobPrototype, JobInstance, JobPrototypeId>;
+	using ShuttlePrototypeServiceMock = PrototypeServiceMock<ShuttlePrototype, ShuttleInstance, ShuttlePrototypeId>;
 	using WorkerPrototypeServiceMock = PrototypeServiceMock<WorkerPrototype, WorkerInstance, WorkerPrototypeId>;
 
 }

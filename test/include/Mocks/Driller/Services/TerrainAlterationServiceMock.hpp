@@ -50,9 +50,14 @@ namespace drl {
 			return false;
 		}
 
-		void reserveJobOnTile(int _level, int _column) override {
+		void reserveJobOnTile(int _level, int _column, bool _jobReserved) override {
 			if (reserveJobOnTileCallback) {
-				reserveJobOnTileCallback(_level, _column);
+				reserveJobOnTileCallback(_level, _column, _jobReserved);
+			}
+		}
+		void placeBuildingOnTile(int _level, int _column, bool _placeBuilding) override {
+			if (placeBuildingOnTileCallback) {
+				placeBuildingOnTileCallback(_level, _column, _placeBuilding);
 			}
 		}
 
@@ -72,7 +77,8 @@ namespace drl {
 		std::function<bool(int, int)> doesTileExistCallback;
 		std::function<bool(int)> doesLevelExistCallback;
 		std::function<bool(int, int)> isTileDugOutCallback;
-		std::function<void(int, int)> reserveJobOnTileCallback;
+		std::function<void(int, int, bool)> reserveJobOnTileCallback;
+		std::function<void(int, int, bool)> placeBuildingOnTileCallback;
 		std::function<const TerrainTile&(int, int)> getTileCallback;
 	};
 

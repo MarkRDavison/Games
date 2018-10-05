@@ -17,7 +17,8 @@ namespace drl {
 		virtual bool doesLevelExist(int _level) const = 0;
 		virtual bool isTileDugOut(int _level, int _column) const = 0;
 
-		virtual void reserveJobOnTile(int _level, int _column) = 0;
+		virtual void reserveJobOnTile(int _level, int _column, bool _jobReserved) = 0;
+		virtual void placeBuildingOnTile(int _level, int _column, bool _placeBuilding) = 0;
 
 		virtual const TerrainTile& getTile(int _level, int _column) const = 0;
 	};

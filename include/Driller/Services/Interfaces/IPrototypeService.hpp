@@ -8,6 +8,8 @@
 #include <Driller/DataStructures/JobInstance.hpp>
 #include <Driller/DataStructures/WorkerPrototype.hpp>
 #include <Driller/DataStructures/WorkerInstance.hpp>
+#include <Driller/DataStructures/ShuttlePrototype.hpp>
+#include <Driller/DataStructures/ShuttleInstance.hpp>
 
 namespace drl {
 	template <typename TPrototype, typename TInstance, typename TPrototypeId>
@@ -32,6 +34,7 @@ namespace drl {
 
 	using IBuildingPrototypeService = IPrototypeService<BuildingPrototype, BuildingInstance, BuildingPrototypeId>;
 	using IJobPrototypeService = IPrototypeService<JobPrototype, JobInstance, JobPrototypeId>;
+	using IShuttlePrototypeService = IPrototypeService<ShuttlePrototype, ShuttleInstance, ShuttlePrototypeId>;
 	using IWorkerPrototypeService = IPrototypeService<WorkerPrototype, WorkerInstance, WorkerPrototypeId>;
 }
 

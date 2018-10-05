@@ -14,8 +14,8 @@ namespace drl {
 		sf::Vector2u size;
 		sf::Vector2u textureCoords;
 
-		WorkerPrototypeId providedWorkerPrototypeId;
-		int providedWorkerPrototypeAmount;
+		WorkerPrototypeId providedWorkerPrototypeId{0u};
+		int providedWorkerPrototypeAmount{-1};
 	};
 
 }

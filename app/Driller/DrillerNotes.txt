@@ -3,10 +3,14 @@ Every user interaction that makes a change to the game state should go through o
 	-	RandomNumber service - seed
 	-	Should be possible to run the game without graphics
 	-	Should be possible to run the game without graphics, and then attach the graphics to it, i.e. generate graphics at any time from given state
+	-	Shuttle landing directly calls the WorkerCreationService, should it not invoke the GameCommandService???
 
 Message Queue/Bus
 	-	This is how we notify the view that a tile has changed etc
 	-	How an entity enters/leaves a tile etc
+
+Beds
+	-	Just provide the sleep need, aren't required
 
 Tiles can reveal things when mined
 	-	Enhance rooms (mining x 2)
@@ -14,3 +18,13 @@ Tiles can reveal things when mined
 
 Create std::function enhanced for testing, with is invoked method
 	-	Times (Once, twice never, X etc...)
+
+Services should be stateless?
+	-	E.g. ShuttleDepartureService -> Shouldn't have member variables, instead have ShuttleDepartureData, and take reference to it
+
+WorkerRecruitmentService
+	-	Gets available workers for different jobs
+		-	Can set max pay etc etc
+EconomyService
+	-	Over time different resources are worth different amounts, go down if you saturate the market etc
+	-	

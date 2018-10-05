@@ -19,7 +19,8 @@ namespace drl {
 		bool doesLevelExist(int _level) const override;
 		bool isTileDugOut(int _level, int _column) const override;
 
-		void reserveJobOnTile(int _level, int _column) override;
+		void reserveJobOnTile(int _level, int _column, bool _jobReserved) override;
+		void placeBuildingOnTile(int _level, int _column, bool _placeBuilding) override;
 
 		const TerrainTile& getTile(int _level, int _column) const override;
 

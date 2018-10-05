@@ -76,6 +76,16 @@ namespace drl {
 			sf::Vector2f position;
 		};
 
+		struct CreateShuttleEvent {
+			CreateShuttleEvent(void) {}
+			CreateShuttleEvent(const std::string& _prototypeName) :
+				CreateShuttleEvent(_prototypeName.c_str()) {}
+			CreateShuttleEvent(const char * _prototypeName) :
+				prototypeId(inf::djb_hash(_prototypeName)) {}
+
+			std::size_t prototypeId{ 0u };
+		};
+
 		enum EventType {
 			PlaceBuilding,
 			DigTile,
@@ -84,6 +94,7 @@ namespace drl {
 			CreateJob,
 			ResetJobAllocations,
 			CreateWorker,
+			CreateShuttle,
 
 			Count
 		} type;
@@ -96,6 +107,7 @@ namespace drl {
 			CreateJobEvent createJob;
 			ResetJobAllocationsEvent resetJobAllocations;
 			CreateWorkerEvent createWorker;
+			CreateShuttleEvent createShuttle;
 		};
 
 
@@ -137,7 +149,13 @@ namespace drl {
 		explicit GameCommand(const CreateWorkerEvent& _createWorker) :
 			type(EventType::CreateWorker),
 			createWorker(_createWorker) {
-			
+
+		}
+
+		explicit GameCommand(const CreateShuttleEvent& _createShuttle) :
+			type(EventType::CreateShuttle),
+			createShuttle(_createShuttle) {
+
 		}
 	};
 

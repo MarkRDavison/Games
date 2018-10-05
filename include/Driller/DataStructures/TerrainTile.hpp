@@ -7,6 +7,7 @@ namespace drl {
 
 		bool dugOut{ false };
 		bool jobReserved{ false };
+		bool hasBuilding{ false };
 
 	};
 

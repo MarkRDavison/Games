@@ -1,19 +1,50 @@
 #include <catch/catch.hpp>
 #include <catch/CatchToString.hpp>
 #include <Driller/Services/JobCompletionService.hpp>
+#include <Mocks/Driller/Services/TerrainAlterationServiceMock.hpp>
 
 namespace drl {
 	namespace JobCompletionServiceTests {
+
+		struct Package {
+
+			Package(void) :
+				service(jobData, terrainAlterationService) {
+				
+			}
+
+			JobData jobData;
+			TerrainAlterationServiceMock terrainAlterationService;
+			JobCompletionService service;
+		};
 		
 		TEST_CASE("handleJobCompleted marks the job to be removed", "[Driller][Services][JobCompletionService]") {
-			JobData jobData{};
-			JobCompletionService service(jobData);
+			Package package{};
 
 			JobInstance job{};
 
-			service.handleJobCompleted(job);
+			package.service.handleJobCompleted(job);
 
 			REQUIRE(job.removalRequired);
+		}
+
+		TEST_CASE("handleJobCompleted marks the tiles as no longer having a job reserved", "[Driller][Services][JobCompletionService]") {
+			Package package{};
+
+			JobInstance job{};
+			job.coordinates = { 1,2 };
+
+			bool reserveJobOnTileCallbackInvoked = false;
+			package.terrainAlterationService.reserveJobOnTileCallback = [&](int _level, int _column, bool _jobReserved) -> void {
+				REQUIRE(job.coordinates.y == _level);
+				REQUIRE(job.coordinates.x == _column);
+				REQUIRE_FALSE(_jobReserved);
+				reserveJobOnTileCallbackInvoked = true;
+			};
+
+			package.service.handleJobCompleted(job);
+
+			REQUIRE(reserveJobOnTileCallbackInvoked);
 		}
 
 		TEST_CASE("registerJobCompleteDelegate returns the same delegate when asked", "[Driller][Services][JobCompletionService]") {
@@ -24,14 +55,13 @@ namespace drl {
 
 			const JobPrototypeId Id{ 1u };
 
-			JobData jobData{};
-			JobCompletionService service(jobData);
+			Package package{};
 
-			service.registerJobCompleteDelegate(Id, jobCompleteDelegate);
+			package.service.registerJobCompleteDelegate(Id, jobCompleteDelegate);
 
-			REQUIRE(service.isJobCompleteDelegateRegistered(Id));
+			REQUIRE(package.service.isJobCompleteDelegateRegistered(Id));
 
-			JobCompleteDelegate& del = service.getJobCompleteDelegate(Id);
+			JobCompleteDelegate& del = package.service.getJobCompleteDelegate(Id);
 
 			del({});
 
@@ -39,16 +69,15 @@ namespace drl {
 		}
 
 		TEST_CASE("cleanupCompletedJobs only removes jobs that require removal", "[Driller][Services][JobCompletionService]") {
-			JobData jobData{};
-			JobCompletionService service(jobData);
+			Package package{};
 
-			jobData.jobs.emplace_back();
-			jobData.jobs.emplace_back();
+			package.jobData.jobs.emplace_back();
+			package.jobData.jobs.emplace_back();
 
-			service.handleJobCompleted(jobData.jobs.front());
-			service.cleanupCompletedJobs();
+			package.service.handleJobCompleted(package.jobData.jobs.front());
+			package.service.cleanupCompletedJobs();
 
-			REQUIRE(1 == jobData.jobs.size());
+			REQUIRE(1 == package.jobData.jobs.size());
 		}
 	}
 }

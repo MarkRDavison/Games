@@ -113,12 +113,13 @@ namespace drl {
 
 		job.workPerformed += _delta;
 		if (job.workPerformed >= job.workRequired) {
+			m_JobCompletionService.handleJobCompleted(job);
+
 			if (m_JobCompletionService.isJobCompleteDelegateRegistered(job.prototypeId)) {
 				JobCompleteDelegate& jobComplete = m_JobCompletionService.getJobCompleteDelegate(job.prototypeId);
 				jobComplete(job);
 			}
 
-			m_JobCompletionService.handleJobCompleted(job);
 			resetWorkerAfterCompletingJob(_worker, job);
 		}
 	}

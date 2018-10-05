@@ -2,6 +2,7 @@
 #define INCLUDED_DRILLER_SERVICES_JOB_COMPLETION_SERVICE_HPP_
 
 #include <Driller/Services/Interfaces/IJobCompletionService.hpp>
+#include <Driller/Services/Interfaces/ITerrainAlterationService.hpp>
 #include <Driller/DataStructures/JobData.hpp>
 #include <map>
 
@@ -9,7 +10,7 @@ namespace drl {
 	
 	class JobCompletionService : public IJobCompletionService {
 	public:
-		JobCompletionService(JobData& _jobData);
+		JobCompletionService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService);
 		~JobCompletionService(void) override;
 
 		void handleJobCompleted(JobInstance& _jobInstance) override;
@@ -25,6 +26,8 @@ namespace drl {
 		bool m_JobCompleted{ false };
 		JobData& m_JobData;
 		std::map<JobPrototypeId, JobCompleteDelegate> m_DelegateMap;
+
+		ITerrainAlterationService& m_TerrainAlterationService;
 	};
 
 }

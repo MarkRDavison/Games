@@ -118,6 +118,5 @@ namespace pol {
 
 			REQUIRE(0.0f == building.accumulatedDropTime);
 		}
-
 	}
 }
