@@ -67,9 +67,9 @@ struct ServicePackage {
 		sceneChange(_managerPackage.sceneManager),
 		terrainAlteration(terrainData),
 		buildingPrototype(identificationService),
-		buildingPlacement(buildingData, terrainAlteration, buildingPrototype, workerClass, shuttleDeparture),
+		buildingPlacement(buildingData, terrainAlteration, buildingPrototype, workerClass, shuttleDeparture, resource),
 		jobPrototype(identificationService),
-		jobCreation(jobData, terrainAlteration, jobPrototype, buildingPlacement),
+		jobCreation(jobData, terrainAlteration, jobPrototype, buildingPlacement, buildingPrototype, resource),
 		jobAllocation(workerData, jobData, terrainAlteration),
 		jobCompletion(jobData, terrainAlteration),
 		workerClass(resource),
@@ -133,8 +133,8 @@ void setupSceneTransitions(ManagerPackage& _managerPackage, ServicePackage& _ser
 		} else if (_currentState == drl::Definitions::GameSceneState::Gameplay) {
 			drl::GameScene *gameScene = new drl::GameScene(_managerPackage.config, _managerPackage.inputManager, _servicePackage.sceneChange, _servicePackage.gameCommand, _servicePackage.game, _servicePackage.terrainView, _servicePackage.buildingView, _servicePackage.jobView, _servicePackage.workerView, _servicePackage.shuttleView);
 			drl::GameUiScene *gameUiScene = new drl::GameUiScene(_servicePackage.sceneChange, _managerPackage.fontManager, _servicePackage.resource, _servicePackage.gameCommand);
-			gameUiScene->setDeleteOnRemove(true);
 			gameScene->setDeleteOnRemove(true);
+			gameUiScene->setDeleteOnRemove(true);
 			_sceneManager.pushScene(gameScene);
 			_sceneManager.pushScene(gameUiScene);
 		} else if (_currentState == drl::Definitions::GameSceneState::Exit) {
@@ -152,6 +152,7 @@ void setupSceneTransitions(ManagerPackage& _managerPackage, ServicePackage& _ser
 void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {
 	{
 		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Builder), drl::Definitions::CurrentBuilderResourceName);
+		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Miner), drl::Definitions::CurrentMinerResourceName);
 	}
 	{
 		drl::ShuttlePrototype startingShuttlePrototype{};
@@ -161,21 +162,38 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 		_servicePackage.shuttleDeparture.registerShuttle(inf::djb_hash(drl::Definitions::ShuttlePrototypeName_Starting), 2.0f);
 	}
 	{
-		drl::WorkerPrototype allPrototype{ };
-		allPrototype.validJobTypes = {
+		drl::WorkerPrototype builderPrototype{ };
+		builderPrototype.validJobTypes = {
 			inf::djb_hash(drl::Definitions::JobPrototypeName_Dig),
 			inf::djb_hash(drl::Definitions::JobPrototypeName_BuildBuilding)
 		};
-		_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_Builder, allPrototype);
+		_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_Builder, builderPrototype);
 	}
 	{
-		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingBunkPrototypeName, drl::BuildingPrototype{ {2,1}, drl::Definitions::BunkBuildingCoordinate });
+		drl::WorkerPrototype minerPrototype{ };
+		minerPrototype.validJobTypes = {
+			inf::djb_hash(drl::Definitions::JobPrototypeName_Miner)
+		};
+		_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_Miner, minerPrototype);
+	}
+	{
+		auto bunkPrototype = drl::BuildingPrototype{ {2,1}, drl::Definitions::BunkBuildingCoordinate };
+		bunkPrototype.cost.resources.emplace_back(drl::Definitions::MoneyResourceName, 60);
+		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingBunkPrototypeName, bunkPrototype);
 	}
 	{
 		auto builderPrototype = drl::BuildingPrototype{ {2,1}, drl::Definitions::BuilderBuildingCoordinate };
 		builderPrototype.providedWorkerPrototypeId = inf::djb_hash(drl::Definitions::WorkerPrototypeName_Builder);
 		builderPrototype.providedWorkerPrototypeAmount = 1;
+		builderPrototype.cost.resources.emplace_back(drl::Definitions::MoneyResourceName, 40);
 		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingBuilderPrototypeName, builderPrototype);
+	}
+	{
+		auto minerPrototype = drl::BuildingPrototype{ {3,1}, drl::Definitions::MinerBuildingCoordinate };
+		minerPrototype.providedWorkerPrototypeId = inf::djb_hash(drl::Definitions::WorkerPrototypeName_Miner);
+		minerPrototype.providedWorkerPrototypeAmount = 1;
+		minerPrototype.cost.resources.emplace_back(drl::Definitions::MoneyResourceName, 40);
+		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingMinerPrototypeName, minerPrototype);
 	}
 	{
 		drl::JobPrototype digDirtProtoype{};
@@ -192,7 +210,7 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 		buildBuildingPrototype.workRequired = 2.0f;
 		_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_BuildBuilding, buildBuildingPrototype);
 
-		drl::JobCompleteDelegate buildBuildingCompletePrototype = [&](const drl::JobInstance& _jobInstance) {
+		drl::JobCompleteDelegate buildBuildingCompletePrototype = [&](const drl::JobInstance& _jobInstance) -> void {
 			drl::GameCommand::PlaceBuildingEvent event{};
 			event.prototypeId = _jobInstance.additionalPrototypeId;
 			event.level = _jobInstance.coordinates.y;
@@ -201,6 +219,15 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 		};
 		_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_BuildBuilding, buildBuildingCompletePrototype);
 	}
+	{
+		drl::JobPrototype minePrototype{}; 
+		minePrototype.workRequired = 5.0f;
+		minePrototype.repeats = true;
+		_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_Miner, minePrototype);
+		
+		drl::JobCompleteDelegate mineCompletePrototype = [&](const drl::JobInstance& _jobInstance) -> void {};
+		_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_Miner, mineCompletePrototype);
+	}
 }
 
 void initialiseResources(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {
@@ -208,6 +235,8 @@ void initialiseResources(ManagerPackage& _managerPackage, ServicePackage& _servi
 	_servicePackage.resource.setResource(drl::Definitions::OreResourceName, 0);
 	_servicePackage.resource.setResource(drl::Definitions::CurrentBuilderResourceName, 0);
 	_servicePackage.resource.setResourceMaximum(drl::Definitions::CurrentBuilderResourceName, 0);
+	_servicePackage.resource.setResource(drl::Definitions::CurrentMinerResourceName, 0);
+	_servicePackage.resource.setResourceMaximum(drl::Definitions::CurrentMinerResourceName, 0);
 }
 
 void runSetupGameCommands(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {

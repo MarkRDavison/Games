@@ -19,6 +19,7 @@ namespace drl {
 		static constexpr const char CurrentWorkerResourceName[] = "CurrentWorker";
 
 		static constexpr const char CurrentBuilderResourceName[] = "CurrentBuilder";
+		static constexpr const char CurrentMinerResourceName[] = "CurrentMiner";
 
 		static constexpr const char TileSpriteSheetTextureName[] = "tile_sprite_sheet";
 
@@ -30,11 +31,14 @@ namespace drl {
 
 		static constexpr const char BuildingBunkPrototypeName[] = "Building_Bunk";
 		static constexpr const char BuildingBuilderPrototypeName[] = "Building_Builder";
+		static constexpr const char BuildingMinerPrototypeName[] = "Building_Miner";
 
 		static constexpr const char JobPrototypeName_Dig[] = "Job_Dig";
 		static constexpr const char JobPrototypeName_BuildBuilding[] = "Job_BuildBuilding";
+		static constexpr const char JobPrototypeName_Miner[] = "Job_Miner";
 
 		static constexpr const char WorkerPrototypeName_Builder[] = "Worker_Builder";
+		static constexpr const char WorkerPrototypeName_Miner[] = "Worker_Miner";
 
 		static constexpr const char ShuttlePrototypeName_Starting[] = "Shuttle_Starting";
 
@@ -50,6 +54,7 @@ namespace drl {
 		static const sf::Vector2u FiveBuildingCoordinate;
 		static const sf::Vector2u BunkBuildingCoordinate;
 		static const sf::Vector2u BuilderBuildingCoordinate;
+		static const sf::Vector2u MinerBuildingCoordinate;
 
 		static const sf::Vector2u DigJobCoordinate;
 

@@ -2,6 +2,7 @@
 #define INCLUDED_DRILLER_DATA_STRUCTURES_BUILDING_PROTOTYPE_HPP_
 
 #include <Driller/DataStructures/WorkerPrototype.hpp>
+#include <Infrastructure/DataStructures/ResourceBundle.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <cstdlib>
 
@@ -16,6 +17,9 @@ namespace drl {
 
 		WorkerPrototypeId providedWorkerPrototypeId{0u};
 		int providedWorkerPrototypeAmount{-1};
+		inf::ResourceBundle cost;
+		bool providesJobs{ false };
+		bool providesNeeds{ false };
 	};
 
 }

@@ -5,11 +5,13 @@
 
 namespace drl {
 
-	JobCreationService::JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService) :
+	JobCreationService::JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, inf::IResourceService& _resourceService) :
 		m_JobData(_jobData),
 		m_TerrainAlterationService(_terrainAlterationService),
 		m_JobPrototypeService(_jobPrototypeService),
-		m_BuildingPlacementService(_buildingPlacementService) {
+		m_BuildingPlacementService(_buildingPlacementService),
+		m_BuildingPrototypeService(_buildingPrototypeService),
+		m_ResourceService(_resourceService) {
 		
 	}
 
@@ -75,12 +77,14 @@ namespace drl {
 	}
 
 	bool JobCreationService::canCreateBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const {
-		return m_BuildingPlacementService.canPlacePrototype(_event.additionalPrototypeId, _event.coordinates.y, _event.coordinates.x);
+		return m_BuildingPlacementService.canPlacePrototype(GameCommand::CommandContext::CreatingJob, _event.additionalPrototypeId, _event.coordinates.y, _event.coordinates.x);
 	}
 	void JobCreationService::createBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const {
 		m_TerrainAlterationService.initialiseTile(_event.coordinates.y, _event.coordinates.x);
 		m_TerrainAlterationService.reserveJobOnTile(_event.coordinates.y, _event.coordinates.x, true);
-
+		
+		const BuildingPrototype& prototype = m_BuildingPrototypeService.getPrototype(_event.additionalPrototypeId);
+		m_ResourceService.payResourceBundle(prototype.cost);
 		JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
 		instance.coordinates = _event.coordinates;
 		instance.bounds = _event.bounds;

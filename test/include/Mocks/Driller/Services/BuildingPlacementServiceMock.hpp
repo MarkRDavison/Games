@@ -10,29 +10,29 @@ namespace drl {
 	public:
 		~BuildingPlacementServiceMock(void) override {}
 
-		bool canPlacePrototype(const BuildingPrototypeId& _prototypeId, int _level, int _column) override {
+		bool canPlacePrototype(const GameCommand::CommandContext _context, const BuildingPrototypeId& _prototypeId, int _level, int _column) override {
 			GameCommand::PlaceBuildingEvent event{};
 			event.prototypeId = _prototypeId;
 			event.column = _column;
 			event.level = _level;
-			return canPlacePrototype(event);
+			return canPlacePrototype(_context, event);
 		}
-		bool canPlacePrototype(const GameCommand::PlaceBuildingEvent& _placeBuilding) override {
+		bool canPlacePrototype(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _placeBuilding) override {
 			if (canPlacePrototypeCallback) {
-				return canPlacePrototypeCallback(_placeBuilding);
+				return canPlacePrototypeCallback(_context, _placeBuilding);
 			}
 
 			return false;
 		}
 
-		void placePrototype(const GameCommand::PlaceBuildingEvent& _placeBuilding) override {
+		void placePrototype(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _placeBuilding) override {
 			if (placePrototypeCallback) {
-				placePrototypeCallback(_placeBuilding);
+				placePrototypeCallback(_context, _placeBuilding);
 			}
 		}
 
-		std::function<bool(const GameCommand::PlaceBuildingEvent&)> canPlacePrototypeCallback;
-		std::function<void(const GameCommand::PlaceBuildingEvent&)> placePrototypeCallback;
+		std::function<bool(const GameCommand::CommandContext, const GameCommand::PlaceBuildingEvent&)> canPlacePrototypeCallback;
+		std::function<void(const GameCommand::CommandContext, const GameCommand::PlaceBuildingEvent&)> placePrototypeCallback;
 	};
 
 }

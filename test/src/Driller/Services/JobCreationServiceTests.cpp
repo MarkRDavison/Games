@@ -6,21 +6,24 @@
 #include <Mocks/Driller/Services/PrototypeServiceMock.hpp>
 #include <Driller/DataStructures/JobData.hpp>
 #include <Mocks/Driller/Services/BuildingPlacementServiceMock.hpp>
+#include <Mocks/Infrastructure/Services/ResourceServiceMock.hpp>
 
 namespace drl {
 	namespace JobCreationServiceTests {
 
 		struct ServicePackage {
 			ServicePackage() :
-				service(jobData, terrainAlterationService, jobPrototypeService, buildingPlacementService) {
+				service(jobData, terrainAlterationService, jobPrototypeService, buildingPlacementService, buildingPrototypeService, resourceService) {
 				
 			}
 
 			JobData jobData;
 			TerrainAlterationServiceMock terrainAlterationService;
 			JobPrototypeServiceMock jobPrototypeService;
-			JobCreationService service;
 			BuildingPlacementServiceMock buildingPlacementService;
+			BuildingPrototypeServiceMock buildingPrototypeService;
+			inf::ResourceServiceMock resourceService;
+			JobCreationService service;
 		};
 		
 		TEST_CASE("canCreateJob for digging tile at location that has not been dug returns true", "[Driller][Services][JobCreationService]") {
@@ -206,7 +209,7 @@ namespace drl {
 			event.additionalPrototypeId = Id;
 
 			bool canPlacePrototypeInvoked = false;
-			package.buildingPlacementService.canPlacePrototypeCallback = [&](const GameCommand::PlaceBuildingEvent& _event) {
+			package.buildingPlacementService.canPlacePrototypeCallback = [&](GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _event) {
 				REQUIRE(Id == _event.prototypeId);
 				REQUIRE(PlaceCoordinates.y == _event.level);
 				REQUIRE(PlaceCoordinates.x == _event.column);
@@ -234,6 +237,35 @@ namespace drl {
 			JobInstance& job = package.jobData.jobs[0];
 			REQUIRE(Id == job.additionalPrototypeId);
 			REQUIRE(PlaceCoordinates == job.coordinates);
+		}
+
+		TEST_CASE("createBuildBuildingJob gets the building prototype and pays the resource cost", "[Driller][Services][JobCreationService]") {
+			ServicePackage package{};
+
+			BuildingPrototypeId Id{ 1u };
+			const sf::Vector2i PlaceCoordinates{ 1,2 };
+			BuildingPrototype buildingPrototype{};
+
+			GameCommand::CreateJobEvent event{};
+			event.coordinates = PlaceCoordinates;
+			event.additionalPrototypeId = Id;
+
+			bool getPrototypeByIdCallbackInvoked = false;
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const BuildingPrototype& { 
+				getPrototypeByIdCallbackInvoked = true;
+				return buildingPrototype; 
+			};
+
+			bool payResourceBundleCallbackInvoked = false;
+			package.resourceService.payResourceBundleCallback = [&](const inf::ResourceBundle& _resourceBundle) -> void {
+				REQUIRE(&buildingPrototype.cost == &_resourceBundle);
+				payResourceBundleCallbackInvoked = true;
+			};
+
+			package.service.createBuildBuildingJob(event);
+
+			REQUIRE(getPrototypeByIdCallbackInvoked);
+			REQUIRE(payResourceBundleCallbackInvoked);
 		}
 
 	}

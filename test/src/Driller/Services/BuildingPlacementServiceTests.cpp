@@ -7,6 +7,7 @@
 #include <Mocks/Driller/Services/TerrainAlterationServiceMock.hpp>
 #include <Driller/DataStructures/TerrainData.hpp>
 #include <Mocks/Driller/Services/ShuttleDepartureServiceMock.hpp>
+#include <Mocks/Infrastructure/Services/ResourceServiceMock.hpp>
 
 namespace drl {
 	namespace BuildingPlacementServiceTests {
@@ -14,7 +15,7 @@ namespace drl {
 		struct Package {
 
 			Package(void) :
-				service(buildingData, terrainAlterationService, buildingPrototypeService, workerClassService, shuttleDepartureService) {
+				service(buildingData, terrainAlterationService, buildingPrototypeService, workerClassService, shuttleDepartureService, resourceServiceMock) {
 
 				terrainAlterationService.doesTileExistCallback = [this](int _level, int _column) -> bool { return terrainData.tileExists(_level, _column); };
 				terrainAlterationService.getTileCallback = [this](int _level, int _column) -> TerrainTile& { return terrainData.getTile(_level, _column); };
@@ -26,10 +27,11 @@ namespace drl {
 			BuildingPrototypeServiceMock buildingPrototypeService;
 			ShuttleDepartureServiceMock shuttleDepartureService;
 			WorkerClassServiceMock workerClassService;
+			inf::ResourceServiceMock resourceServiceMock;
 			BuildingPlacementService service;
 			
 		};
-		
+
 		TEST_CASE("canPlacePrototype returns false when the prototype does not exist", "[Driller][Services][BuildingPlacementService]") {
 			Package package{};
 
@@ -45,8 +47,54 @@ namespace drl {
 				return false;
 			};
 
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 			REQUIRE(isPrototypeRegisteredInvoked);
+		}
+
+		TEST_CASE("canPlacePrototype returns false when the cost of the resource cannot be paid if for creating job command context", "[Driller][Services][BuildingPlacementService]") {
+			Package package{};
+
+			const int Amount = 50;
+			const std::string PrototypeName = "Name";
+			const sf::Vector2i Coordinates{ 0,1 };
+			BuildingPrototype BuildingPrototype{ {1,1},{0,0} };
+			BuildingPrototype.cost.resources.emplace_back(Definitions::MoneyResourceName, Amount);
+
+			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
+
+			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId&) { return true; };
+
+			bool canAffordBundleCallbackInvoked = false;
+			package.resourceServiceMock.canAffordBundleCallback = [&](const inf::ResourceBundle&) -> bool {
+				canAffordBundleCallbackInvoked = true;
+				return false;
+			};
+
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
+			REQUIRE(canAffordBundleCallbackInvoked);
+		}
+
+		TEST_CASE("canPlacePrototype does not look at resource costs for creating entity command context", "[Driller][Services][BuildingPlacementService]") {
+			Package package{};
+
+			const int Amount = 50;
+			const std::string PrototypeName = "Name";
+			const sf::Vector2i Coordinates{ 0,1 };
+			BuildingPrototype BuildingPrototype{ {1,1},{0,0} };
+			BuildingPrototype.cost.resources.emplace_back(Definitions::MoneyResourceName, Amount);
+
+			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
+
+			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId&) { return true; };
+
+			bool canAffordBundleCallbackInvoked = false;
+			package.resourceServiceMock.canAffordBundleCallback = [&](const inf::ResourceBundle&) -> bool {
+				canAffordBundleCallbackInvoked = true;
+				return false;
+			};
+
+			REQUIRE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingEntity, placeBuilding));
+			REQUIRE_FALSE(canAffordBundleCallbackInvoked);
 		}
 
 		TEST_CASE("canPlacePrototype returns false when a 1x1 buildings prototype exists but the terrain has not been generated", "[Driller][Services][BuildingPlacementService]") {
@@ -61,7 +109,7 @@ namespace drl {
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
 			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) { return BuildingPrototype; };
 		
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 		}
 		
 		TEST_CASE("canPlacePrototype returns false when a 1x1 buildings prototype exists but the terrain has not been dug out", "[Driller][Services][BuildingPlacementService]") {
@@ -81,7 +129,7 @@ namespace drl {
 		
 			tile.dugOut = false;
 		
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 		}
 		
 		TEST_CASE("canPlacePrototype returns true when a 1x1 buildings prototype exists but the terrain has been dug out", "[Driller][Services][BuildingPlacementService]") {
@@ -94,14 +142,15 @@ namespace drl {
 			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
 		
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) { return BuildingPrototype; };
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& { return BuildingPrototype; };
+			package.resourceServiceMock.canAffordBundleCallback = [&](const inf::ResourceBundle&) -> bool { return true; };
 		
 			TerrainRow& row = package.terrainData.rows.emplace_back();
 			TerrainTile& tile = row.rightTiles.emplace_back();
 		
 			tile.dugOut = true;
 		
-			REQUIRE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 		}
 		
 		TEST_CASE("canPlacePrototype returns false when a 1x2 buildings prototype exists but the terrain has been half dug out", "[Driller][Services][BuildingPlacementService]") {
@@ -125,7 +174,7 @@ namespace drl {
 			row.rightTiles.emplace_back().dugOut = true;
 			row.rightTiles.emplace_back().dugOut = false;
 		
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 			REQUIRE(getPrototypeByIdInvoked);
 		}
 		
@@ -150,7 +199,7 @@ namespace drl {
 			row.rightTiles.emplace_back().dugOut = false;
 			row.rightTiles.emplace_back().dugOut = true;
 		
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 			REQUIRE(getPrototypeByIdInvoked);
 		}
 		
@@ -162,10 +211,11 @@ namespace drl {
 			const BuildingPrototype BuildingPrototype{ {2,1},{0,0} };
 		
 			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
-		
+
+			package.resourceServiceMock.canAffordBundleCallback = [&](const inf::ResourceBundle&) -> bool { return true; };
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
 			bool getPrototypeByIdInvoked = false;
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) {
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& {
 				REQUIRE(placeBuilding.prototypeId == _id);
 				getPrototypeByIdInvoked = true;
 				return BuildingPrototype;
@@ -175,7 +225,7 @@ namespace drl {
 			row.rightTiles.emplace_back().dugOut = true;
 			row.rightTiles.emplace_back().dugOut = true;
 		
-			REQUIRE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 			REQUIRE(getPrototypeByIdInvoked);
 		}
 		
@@ -187,10 +237,11 @@ namespace drl {
 			const BuildingPrototype BuildingPrototype{ {2,1},{0,0} };
 		
 			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
-		
+
+			package.resourceServiceMock.canAffordBundleCallback = [&](const inf::ResourceBundle&) -> bool { return true; };
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
 			bool getPrototypeByIdInvoked = false;
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) {
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& {
 				REQUIRE(placeBuilding.prototypeId == _id);
 				getPrototypeByIdInvoked = true;
 				return BuildingPrototype;
@@ -200,7 +251,7 @@ namespace drl {
 			row.leftTiles.emplace_back().dugOut = true;
 			row.leftTiles.emplace_back().dugOut = true;
 		
-			REQUIRE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 			REQUIRE(getPrototypeByIdInvoked);
 		}
 		
@@ -215,7 +266,7 @@ namespace drl {
 		
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
 			bool getPrototypeByIdInvoked = false;
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) {
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& {
 				REQUIRE(placeBuilding.prototypeId == _id);
 				getPrototypeByIdInvoked = true;
 				return BuildingPrototype;
@@ -225,7 +276,7 @@ namespace drl {
 			row.leftTiles.emplace_back().dugOut = false;
 			row.leftTiles.emplace_back().dugOut = false;
 		
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 			REQUIRE(getPrototypeByIdInvoked);
 		}
 		
@@ -237,10 +288,11 @@ namespace drl {
 			const BuildingPrototype BuildingPrototype{ {1,2},{0,0} };
 		
 			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
-		
+
+			package.resourceServiceMock.canAffordBundleCallback = [&](const inf::ResourceBundle&) -> bool { return true; };
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
 			bool getPrototypeByIdInvoked = false;
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) {
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& {
 				REQUIRE(placeBuilding.prototypeId == _id);
 				getPrototypeByIdInvoked = true;
 				return BuildingPrototype;
@@ -249,7 +301,7 @@ namespace drl {
 			package.terrainData.rows.emplace_back().rightTiles.emplace_back().dugOut = true;
 			package.terrainData.rows.emplace_back().rightTiles.emplace_back().dugOut = true;
 		
-			REQUIRE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 			REQUIRE(getPrototypeByIdInvoked);
 		}
 
@@ -264,7 +316,7 @@ namespace drl {
 
 			bool createInstanceCallbackInvoked = false;
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) { return BuildingPrototype; };
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& { return BuildingPrototype; };
 			package.buildingPrototypeService.createInstanceByIdCallback = [&](const BuildingPrototypeId& _id) {
 				createInstanceCallbackInvoked = true;
 				return BuildingInstance{};
@@ -274,7 +326,7 @@ namespace drl {
 			row.rightTiles.emplace_back().dugOut = true;
 			row.rightTiles.emplace_back().dugOut = true;
 
-			package.service.placePrototype(placeBuilding);
+			package.service.placePrototype(GameCommand::CommandContext::CreatingEntity, placeBuilding);
 
 			REQUIRE(1 == package.buildingData.buildings.size());
 			REQUIRE(createInstanceCallbackInvoked);
@@ -292,7 +344,7 @@ namespace drl {
 			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
 
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) { return BuildingPrototype; };
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& { return BuildingPrototype; };
 			package.buildingPrototypeService.createInstanceByIdCallback = [&](const BuildingPrototypeId& _id) {	return instance; };
 
 			bool placeBuildingOnTileCallbackInvoked = false;
@@ -307,7 +359,7 @@ namespace drl {
 			row.rightTiles.emplace_back().dugOut = true;
 			row.rightTiles.emplace_back().dugOut = true;
 
-			package.service.placePrototype(placeBuilding);
+			package.service.placePrototype(GameCommand::CommandContext::CreatingEntity, placeBuilding);
 
 			REQUIRE(placeBuildingOnTileCallbackInvoked);
 		}
@@ -323,7 +375,7 @@ namespace drl {
 		
 			bool createInstanceCallbackInvoked = false;
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) { return BuildingPrototype; };
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& { return BuildingPrototype; };
 			package.buildingPrototypeService.createInstanceByIdCallback = [&](const BuildingPrototypeId& _id) {
 				createInstanceCallbackInvoked = true;
 				return BuildingInstance{};
@@ -333,7 +385,7 @@ namespace drl {
 			row.leftTiles.emplace_back().dugOut = true;
 			row.leftTiles.emplace_back().dugOut = true;
 		
-			package.service.placePrototype(placeBuilding);
+			package.service.placePrototype(GameCommand::CommandContext::CreatingEntity, placeBuilding);
 		
 			REQUIRE(1 == package.buildingData.buildings.size());
 			REQUIRE(createInstanceCallbackInvoked);
@@ -357,7 +409,7 @@ namespace drl {
 				increaseClassMaximumCallbackInvoked = true;
 			};
 
-			package.service.placePrototype(GameCommand::PlaceBuildingEvent{});
+			package.service.placePrototype(GameCommand::CommandContext::CreatingEntity, GameCommand::PlaceBuildingEvent{});
 
 			REQUIRE(increaseClassMaximumCallbackInvoked);
 		}
@@ -372,7 +424,7 @@ namespace drl {
 			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
 
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) { return BuildingPrototype; };
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& { return BuildingPrototype; };
 
 			TerrainRow& row = package.terrainData.rows.emplace_back();
 			TerrainTile& tile = row.rightTiles.emplace_back();
@@ -380,7 +432,7 @@ namespace drl {
 			tile.dugOut = true;
 			tile.jobReserved = true;
 
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 		}
 
 		TEST_CASE("Tiles that have a building on them cannot be used to place buildings on", "[Driller][Services][BuildingPlacementService]") {
@@ -393,7 +445,7 @@ namespace drl {
 			const GameCommand::PlaceBuildingEvent placeBuilding{ PrototypeName, Coordinates.y, Coordinates.x };
 
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
-			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) { return BuildingPrototype; };
+			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& { return BuildingPrototype; };
 
 			TerrainRow& row = package.terrainData.rows.emplace_back();
 			TerrainTile& tile = row.rightTiles.emplace_back();
@@ -402,9 +454,9 @@ namespace drl {
 			tile.jobReserved = false;
 			tile.hasBuilding = true;
 
-			REQUIRE_FALSE(package.service.canPlacePrototype(placeBuilding));
+			REQUIRE_FALSE(package.service.canPlacePrototype(GameCommand::CommandContext::CreatingJob, placeBuilding));
 		}
-		
+
 		TEST_CASE("placePrototype invokes addWorkerPrototypeToQueue on the shuttle departure service", "[Driller][Services][BuildingPlacementService]") {
 			Package package{};
 			BuildingInstance instance{};
@@ -422,7 +474,7 @@ namespace drl {
 				addWorkerPrototypeToQueueCallbackInvoked = true;
 			};
 
-			package.service.placePrototype(GameCommand::PlaceBuildingEvent{});
+			package.service.placePrototype(GameCommand::CommandContext::CreatingEntity, GameCommand::PlaceBuildingEvent{});
 
 			REQUIRE(addWorkerPrototypeToQueueCallbackInvoked);
 		}

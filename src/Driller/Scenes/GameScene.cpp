@@ -100,8 +100,8 @@ namespace drl {
 					return true;
 				}
 			} else if (_button == sf::Mouse::Right) {
-				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {2,1}, {0.5f, 0.0f} };
-				e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingBunkPrototypeName);
+				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {3,1}, {1.0f, 0.0f} };
+				e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingMinerPrototypeName);
 				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
 					return true;
 				}
@@ -111,11 +111,7 @@ namespace drl {
 				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
 					return true;
 				}
-			} else if (_button == sf::Mouse::XButton1) {
-				// Side Back Button
-			} else if (_button == sf::Mouse::XButton1) {
-				// Side Forward Button
-			}
+			} 
 		}
 		
 		return false;

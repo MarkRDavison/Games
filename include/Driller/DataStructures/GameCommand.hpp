@@ -8,6 +8,7 @@
 namespace drl {
 
 	struct GameCommand {
+
 		
 		struct PlaceBuildingEvent {
 			PlaceBuildingEvent(void){}
@@ -86,6 +87,12 @@ namespace drl {
 			std::size_t prototypeId{ 0u };
 		};
 
+		enum class CommandContext {
+			CreatingJob,
+			CreatingEntity,
+
+			Undefined
+		} commandContext{ CommandContext::Undefined };
 		enum EventType {
 			PlaceBuilding,
 			DigTile,

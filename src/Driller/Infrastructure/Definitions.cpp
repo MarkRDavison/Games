@@ -8,6 +8,7 @@ namespace drl {
 	constexpr const char Definitions::CurrentWorkerResourceName[];
 
 	constexpr const char Definitions::CurrentBuilderResourceName[];
+	constexpr const char Definitions::CurrentMinerResourceName[];
 
 	constexpr const char Definitions::TileSpriteSheetTextureName[];
 
@@ -19,11 +20,14 @@ namespace drl {
 
 	constexpr const char Definitions::BuildingBunkPrototypeName[];
 	constexpr const char Definitions::BuildingBuilderPrototypeName[];
+	constexpr const char Definitions::BuildingMinerPrototypeName[];
 
 	constexpr const char Definitions::JobPrototypeName_Dig[];
-	constexpr const char Definitions::JobPrototypeName_BuildBuilding[];
+	constexpr const char Definitions::JobPrototypeName_BuildBuilding[]; 
+	constexpr const char Definitions::JobPrototypeName_Miner[];
 
 	constexpr const char Definitions::WorkerPrototypeName_Builder[];
+	constexpr const char Definitions::WorkerPrototypeName_Miner[];
 
 	constexpr const char Definitions::ShuttlePrototypeName_Starting[];
 
@@ -33,8 +37,9 @@ namespace drl {
 	const sf::Vector2u Definitions::FourBuildingCoordinate	{ 2, 3 };
 	const sf::Vector2u Definitions::FiveBuildingCoordinate  { 2, 4 };
 
-	const sf::Vector2u Definitions::BunkBuildingCoordinate	{ 3, 0 };
-	const sf::Vector2u Definitions::BuilderBuildingCoordinate{ 5,0 };
+	const sf::Vector2u Definitions::BunkBuildingCoordinate		{ 3, 0 };
+	const sf::Vector2u Definitions::BuilderBuildingCoordinate	{ 5, 0 };
+	const sf::Vector2u Definitions::MinerBuildingCoordinate		{ 7, 0 };
 
 	const sf::Vector2u Definitions::DigJobCoordinate		{ 1, 1 };
 

@@ -54,6 +54,9 @@ namespace drl {
 
 	void ShuttleDepartureService::setShuttleOnRun(bool _onRun) {
 		m_OnRun = _onRun;
+		if (!_onRun) {
+			m_AccumulatedTime = 0.0f;
+		}
 	}
 
 	bool ShuttleDepartureService::getShuttleOnRun(void) const {

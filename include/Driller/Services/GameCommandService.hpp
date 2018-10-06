@@ -25,14 +25,14 @@ namespace drl {
 		bool executeGameCommand(const GameCommand& _command) override;
 
 	protected:
-		bool handlePlaceBuildingCommand(const GameCommand::PlaceBuildingEvent& _event) const;
-		bool handleDigShaftCommand(const GameCommand::DigShaftEvent& _event) const;
-		bool handleDigTileCommand(const GameCommand::DigTileEvent& _event) const;
-		bool handleAdjustResourceCommand(const GameCommand::AdjustResourceEvent& _event) const;
-		bool handleCreateJobCommand(const GameCommand::CreateJobEvent& _event) const;
-		bool handleResetJobAllocationsCommand(const GameCommand::ResetJobAllocationsEvent& _event) const;
-		bool handleCreateWorkerCommand(const GameCommand::CreateWorkerEvent& _event) const;
-		bool handleCreateShuttleCommand(const GameCommand::CreateShuttleEvent& _event) const;
+		bool handlePlaceBuildingCommand(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _event) const;
+		bool handleDigShaftCommand(const GameCommand::CommandContext _context, const GameCommand::DigShaftEvent& _event) const;
+		bool handleDigTileCommand(const GameCommand::CommandContext _context, const GameCommand::DigTileEvent& _event) const;
+		bool handleAdjustResourceCommand(const GameCommand::CommandContext _context, const GameCommand::AdjustResourceEvent& _event) const;
+		bool handleCreateJobCommand(const GameCommand::CommandContext _context, const GameCommand::CreateJobEvent& _event) const;
+		bool handleResetJobAllocationsCommand(const GameCommand::CommandContext _context, const GameCommand::ResetJobAllocationsEvent& _event) const;
+		bool handleCreateWorkerCommand(const GameCommand::CommandContext _context, const GameCommand::CreateWorkerEvent& _event) const;
+		bool handleCreateShuttleCommand(const GameCommand::CommandContext _context, const GameCommand::CreateShuttleEvent& _event) const;
 
 	private:
 		inf::IResourceService& m_ResourceService;

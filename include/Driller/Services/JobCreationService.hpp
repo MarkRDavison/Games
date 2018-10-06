@@ -1,17 +1,18 @@
 #ifndef INCLUDED_DRILLER_SERVICES_JOB_CREATION_SERVICE_HPP_
 #define INCLUDED_DRILLER_SERVICES_JOB_CREATION_SERVICE_HPP_
 
+#include <Driller/DataStructures/JobData.hpp>
 #include <Driller/Services/Interfaces/IJobCreationService.hpp>
 #include <Driller/Services/Interfaces/ITerrainAlterationService.hpp>
 #include <Driller/Services/Interfaces/IPrototypeService.hpp>
-#include <Driller/DataStructures/JobData.hpp>
-#include "Interfaces/IBuildingPlacementService.hpp"
+#include <Driller/Services/Interfaces/IBuildingPlacementService.hpp>
+#include <Infrastructure/Services/Interfaces/IResourceService.hpp>
 
 namespace drl {
 	
 	class JobCreationService : public IJobCreationService {
 	public:
-		JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService);
+		JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, inf::IResourceService& _resourceService);
 		~JobCreationService(void) override;
 
 		bool canCreateJob(const GameCommand::CreateJobEvent& _event) override;
@@ -28,6 +29,8 @@ namespace drl {
 		ITerrainAlterationService& m_TerrainAlterationService;
 		IJobPrototypeService& m_JobPrototypeService;
 		IBuildingPlacementService& m_BuildingPlacementService;
+		IBuildingPrototypeService& m_BuildingPrototypeService;
+		inf::IResourceService& m_ResourceService;
 	};
 
 }

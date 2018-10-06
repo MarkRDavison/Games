@@ -10,6 +10,7 @@ namespace drl {
 
 	struct JobPrototype {
 		float workRequired{ 0.0f };
+		bool repeats{ false };
 	};
 
 }
