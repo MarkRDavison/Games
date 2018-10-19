@@ -268,5 +268,40 @@ namespace drl {
 			REQUIRE(payResourceBundleCallbackInvoked);
 		}
 
+
+		TEST_CASE("createJobsForPlacedBuilding emplaces jobs as exected", "[Driller][Services][JobCreationService]") {
+			ServicePackage package{};
+
+			BuildingInstance instance{};
+			instance.coordinates = { 0,0 };
+			BuildingPrototype prototype{};
+			prototype.providesJobs = true;
+
+			const JobPrototypeId jobId = { 1u };
+
+			{
+				BuildingProvidedJob& job = prototype.providedJobs.emplace_back();
+				job.location = { 0,0 };
+				job.prototypeId = jobId;
+			}
+			{
+				BuildingProvidedJob& job = prototype.providedJobs.emplace_back();
+				job.location = { 1,0 };
+				job.prototypeId = jobId;
+			}
+			{
+				BuildingProvidedJob& job = prototype.providedJobs.emplace_back();
+				job.location = { 2,0 };
+				job.prototypeId = jobId;
+			}
+
+			package.service.createJobsForPlacedBuilding(prototype, instance);
+
+			REQUIRE(prototype.providedJobs.size() == package.jobData.jobs.size());
+
+			for (unsigned i = 0; i < prototype.providedJobs.size(); ++i) {
+				REQUIRE(prototype.providedJobs[i].location == package.jobData.jobs[i].coordinates);
+			}
+		}
 	}
 }

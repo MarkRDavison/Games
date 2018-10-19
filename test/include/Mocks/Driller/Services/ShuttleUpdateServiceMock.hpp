@@ -2,7 +2,7 @@
 #define INCLUDED_MOCKS_DRILLER_SERVICES_SHUTTLE_UPDATE_SERVICE_MOCK_HPP_
 
 #include <Driller/Services/Interfaces/IShuttleUpdateService.hpp>
-#include <functional>
+#include <Utility/TestSignal.hpp>
 
 namespace drl {
 
@@ -11,12 +11,10 @@ namespace drl {
 		~ShuttleUpdateServiceMock(void) override {}
 
 		void update(float _delta) override {
-			if (updateCallback) {
-				updateCallback(_delta);
-			}
+			updateCallback(_delta);
 		}
 
-		std::function<void(float)> updateCallback;
+		inf::TestSignal<void, float> updateCallback;
 	};
 
 }

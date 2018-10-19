@@ -2,7 +2,7 @@
 #define INCLUDED_MOCKS_DRILLER_SERVICES_SHUTTLE_DEPARTURE_SERVICE_MOCK_HPP_
 
 #include <Driller/Services/Interfaces/IShuttleDepartureService.hpp>
-#include <functional>
+#include <Utility/TestSignal.hpp>
 
 namespace drl {
 	
@@ -11,78 +11,50 @@ namespace drl {
 		~ShuttleDepartureServiceMock(void) override {}
 
 		void update(float _delta) override {
-			if (updateCallback) {
-				updateCallback(_delta);
-			}
+			updateCallback(_delta);
 		}
 
 		void registerShuttle(const ShuttlePrototypeId& _prototypeId, float _departureInterval) override {
-			if (registerShuttleCallback) {
-				registerShuttleCallback(_prototypeId, _departureInterval);
-			}
+			registerShuttleCallback(_prototypeId, _departureInterval);
 		}
 
 		ShuttlePrototypeId getCurrentPrototypeId(void) const override {
-			if (getCurrentPrototypeIdCallback) {
-				return getCurrentPrototypeIdCallback();
-			}
-
-			return 0u;
+			return getCurrentPrototypeIdCallback.invoke();
 		}
 		float getCurrentDepartureInterval(void) const override {
-			if (getCurrentDepartureIntervalCallback) {
-				return getCurrentDepartureIntervalCallback();
-			}
-
-			return 0.0f;
+			return getCurrentDepartureIntervalCallback.invoke();
 		}
 
 		void addWorkerPrototypeToQueue(const WorkerPrototypeId& _workerPrototypeId) override {
-			if (addWorkerPrototypeToQueueCallback) {
-				addWorkerPrototypeToQueueCallback(_workerPrototypeId);
-			}
+			addWorkerPrototypeToQueueCallback(_workerPrototypeId);
 		}
 		WorkerPrototypeId peekWorkerPrototypeQueue(int _failedPeeks) const override {
-			if (peekWorkerPrototypeQueueCallback) {
-				return peekWorkerPrototypeQueueCallback(_failedPeeks);
-			}
-			return {};
+			return peekWorkerPrototypeQueueCallback(_failedPeeks);
 		}
 		void popWorkerPrototoypeQueue(int _failedPeeks) override {
-			if (popWorkerPrototoypeQueueCallback) {
-				popWorkerPrototoypeQueueCallback(_failedPeeks);
-			}
+			popWorkerPrototoypeQueueCallback(_failedPeeks);			
 		}
 		bool workerPrototypeQueueEmpty(int _failedPeeks) const override {
-			if (workerPrototypeQueueEmptyCallback) {
-				return workerPrototypeQueueEmptyCallback(_failedPeeks);
-			}
-			return false;
+			return workerPrototypeQueueEmptyCallback(_failedPeeks);
 		}
 
 		void setShuttleOnRun(bool _onRun) override {
-			if (setShuttleOnRunCallback) {
-				setShuttleOnRunCallback(_onRun);
-			}
+			setShuttleOnRunCallback(_onRun);
 		}
 		bool getShuttleOnRun(void) const override {
-			if (getShuttleOnRunCallback) {
-				return getShuttleOnRunCallback();
-			}
-
-			return true;
+			return getShuttleOnRunCallback.invoke();
 		}
 
-		std::function<void(float)> updateCallback;
-		std::function<void(const ShuttlePrototypeId&, float)> registerShuttleCallback;
-		std::function<ShuttlePrototypeId(void)> getCurrentPrototypeIdCallback;
-		std::function<float(void)> getCurrentDepartureIntervalCallback;
-		std::function<void(const WorkerPrototypeId&)> addWorkerPrototypeToQueueCallback;
-		std::function<WorkerPrototypeId(int)> peekWorkerPrototypeQueueCallback;
-		std::function<void(int)> popWorkerPrototoypeQueueCallback;
-		std::function<bool(int)> workerPrototypeQueueEmptyCallback;
-		std::function<void(bool)> setShuttleOnRunCallback;
-		std::function<bool(void)> getShuttleOnRunCallback;
+		inf::TestSignal<void, float> updateCallback;
+		inf::TestSignal<void, const ShuttlePrototypeId&, float> registerShuttleCallback;
+		inf::TestSignal<ShuttlePrototypeId> getCurrentPrototypeIdCallback;
+		inf::TestSignal<float> getCurrentDepartureIntervalCallback;
+		inf::TestSignal<void, const WorkerPrototypeId&> addWorkerPrototypeToQueueCallback;
+		inf::TestSignal<WorkerPrototypeId, int> peekWorkerPrototypeQueueCallback;
+		inf::TestSignal<void, int> popWorkerPrototoypeQueueCallback;
+		inf::TestSignal<bool, int> workerPrototypeQueueEmptyCallback;
+		inf::TestSignal<void, bool> setShuttleOnRunCallback;
+		inf::TestSignal<bool> getShuttleOnRunCallback;
 	};
 
 }

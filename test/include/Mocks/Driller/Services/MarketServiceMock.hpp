@@ -2,7 +2,7 @@
 #define INCLUDED_MOCKS_DRILLER_SERVICES_MARKET_SERVICE_MOCK_HPP_
 
 #include <Driller/Services/Interfaces/IMarketService.hpp>
-#include <functional>
+#include <Utility/TestSignal.hpp>
 
 namespace drl {
 
@@ -11,12 +11,14 @@ namespace drl {
 		~MarketServiceMock(void) override {}
 		
 		void sellCargo(const inf::ResourceBundle& _cargo) override {
-			if (sellCargoCallback) {
-				sellCargoCallback(_cargo);
-			}
+			sellCargoCallback(_cargo);
+		}
+		inf::ResourceBundle applyExchangeRatesToBundle(const inf::ResourceBundle& _cargo) const override {
+			return applyExchangeRatesToBundleCallback(_cargo);
 		}
 
-		std::function<void(const inf::ResourceBundle&)> sellCargoCallback;
+		inf::TestSignal<void, const inf::ResourceBundle&> sellCargoCallback;
+		inf::TestSignal<inf::ResourceBundle, const inf::ResourceBundle&> applyExchangeRatesToBundleCallback;
 	};
 
 }

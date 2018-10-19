@@ -2,6 +2,7 @@
 #include <Utility/VectorMath.hpp>
 #include <iostream>
 #include <string>
+#include <cassert>
 
 namespace drl {
 
@@ -109,18 +110,24 @@ namespace drl {
 	}
 
 	void WorkerUpdateService::updateWorkingJobWorker(WorkerInstance& _worker, float _delta) {
+		assert(_worker.allocatedJobId != 0);
 		JobInstance& job = retrieveJob(_worker.allocatedJobId);
 
 		job.workPerformed += _delta;
 		if (job.workPerformed >= job.workRequired) {
-			m_JobCompletionService.handleJobCompleted(job);
+			if (!job.repeats) {
+				m_JobCompletionService.handleJobCompleted(job);
+				resetWorkerAfterCompletingJob(_worker, job);
+			}
 
 			if (m_JobCompletionService.isJobCompleteDelegateRegistered(job.prototypeId)) {
 				JobCompleteDelegate& jobComplete = m_JobCompletionService.getJobCompleteDelegate(job.prototypeId);
 				jobComplete(job);
 			}
 
-			resetWorkerAfterCompletingJob(_worker, job);
+			if (job.repeats) {
+				job.workPerformed -= job.workRequired;
+			}
 		}
 	}
 

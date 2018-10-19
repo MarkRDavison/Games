@@ -28,15 +28,11 @@ namespace drl {
 			instance.capacity = MaxWorkers;
 			WorkerPrototypeId Id{ 1u };
 
-			bool workerPrototypeQueueEmptyCallbackInvoked = false;
-			package.shuttleDeparture.workerPrototypeQueueEmptyCallback = [&](int) -> bool { 
-				workerPrototypeQueueEmptyCallbackInvoked = true;
-				return true; 
-			};
+			package.shuttleDeparture.workerPrototypeQueueEmptyCallback.registerCallback([&](int) -> bool { return true; });
 
 			package.service.recruitWorkers(instance);
 
-			REQUIRE(workerPrototypeQueueEmptyCallbackInvoked);
+			REQUIRE(package.shuttleDeparture.workerPrototypeQueueEmptyCallback.isInvokedOnce());
 		}
 
 		TEST_CASE("recruitWorkers peeks at a worker prototype", "[Driller][Services][WorkerRecruitmentService]") {
@@ -47,16 +43,12 @@ namespace drl {
 			instance.capacity = MaxWorkers;
 			WorkerPrototypeId Id{ 1u };
 
-			package.shuttleDeparture.workerPrototypeQueueEmptyCallback = [&](int _failedWorkers) -> bool { return _failedWorkers != 0; };
-			bool peekWorkerPrototypeQueueCallbackInvoked = false;
-			package.shuttleDeparture.peekWorkerPrototypeQueueCallback = [&](int _failedWorkers) -> WorkerPrototypeId {
-				peekWorkerPrototypeQueueCallbackInvoked = true;
-				return Id;
-			};
+			package.shuttleDeparture.workerPrototypeQueueEmptyCallback.registerCallback([](int _failedWorkers) -> bool { return _failedWorkers != 0; });
+			package.shuttleDeparture.peekWorkerPrototypeQueueCallback.registerCallback([&](int _failedWorkers) -> WorkerPrototypeId { return Id; });
 
 			package.service.recruitWorkers(instance);
 
-			REQUIRE(peekWorkerPrototypeQueueCallbackInvoked);
+			REQUIRE(package.shuttleDeparture.peekWorkerPrototypeQueueCallback.isInvokedOnce());
 		}
 
 		TEST_CASE("recruitWorkers asks if the worker can be created", "[Driller][Services][WorkerRecruitmentService]") {
@@ -67,8 +59,8 @@ namespace drl {
 			instance.capacity = MaxWorkers;
 			WorkerPrototypeId Id{ 1u };
 
-			package.shuttleDeparture.workerPrototypeQueueEmptyCallback = [&](int _failedWorkers) -> bool { return _failedWorkers != 0; };
-			package.shuttleDeparture.peekWorkerPrototypeQueueCallback = [&](int _failedWorkers) -> WorkerPrototypeId { return Id; };
+			package.shuttleDeparture.workerPrototypeQueueEmptyCallback.registerCallback([](int _failedWorkers) -> bool { return _failedWorkers != 0; });
+			package.shuttleDeparture.peekWorkerPrototypeQueueCallback.registerCallback([&](int _failedWorkers) -> WorkerPrototypeId { return Id; });
 			package.workerCreation.canCreateWorkerCallback = [&](const GameCommand::CreateWorkerEvent&) -> bool { return false; };
 
 			bool canCreateWorkerCallbackInvoked = false;
@@ -91,8 +83,8 @@ namespace drl {
 			instance.position = { 1.0f, 2.0f };
 			WorkerPrototypeId Id{ 1u };
 
-			package.shuttleDeparture.workerPrototypeQueueEmptyCallback = [&](int _failedWorkers) -> bool { return _failedWorkers != 0; };
-			package.shuttleDeparture.peekWorkerPrototypeQueueCallback = [&](int _failedWorkers) -> WorkerPrototypeId { return Id; };
+			package.shuttleDeparture.workerPrototypeQueueEmptyCallback.registerCallback([](int _failedWorkers) -> bool { return _failedWorkers != 0; });
+			package.shuttleDeparture.peekWorkerPrototypeQueueCallback.registerCallback([&](int _failedWorkers) -> WorkerPrototypeId { return Id; });
 			package.workerCreation.canCreateWorkerCallback = [&](const GameCommand::CreateWorkerEvent&) -> bool { return true; };
 
 			bool createWorkerCallbackInvoked = false;
@@ -115,8 +107,8 @@ namespace drl {
 			instance.capacity = MaxWorkers;
 			WorkerPrototypeId Id{ 1u };
 
-			package.shuttleDeparture.workerPrototypeQueueEmptyCallback = [&](int _failedWorkers) -> bool { return _failedWorkers != 0; };
-			package.shuttleDeparture.peekWorkerPrototypeQueueCallback = [&](int _failedWorkers) -> WorkerPrototypeId { return Id; };
+			package.shuttleDeparture.workerPrototypeQueueEmptyCallback.registerCallback([](int _failedWorkers) -> bool { return _failedWorkers != 0; });
+			package.shuttleDeparture.peekWorkerPrototypeQueueCallback.registerCallback([&](int _failedWorkers) -> WorkerPrototypeId { return Id; });
 			package.workerCreation.canCreateWorkerCallback = [&](const GameCommand::CreateWorkerEvent&) -> bool { return false; };
 
 			bool createWorkerCallbackInvoked = false;
@@ -139,8 +131,8 @@ namespace drl {
 			WorkerPrototypeId Id{ 1u };
 
 			int createWorkerCallbackInvokedCount = 0;
-			package.shuttleDeparture.workerPrototypeQueueEmptyCallback = [&](int _failedWorkers) -> bool { return WorkersInQueue <= _failedWorkers; };
-			package.shuttleDeparture.peekWorkerPrototypeQueueCallback = [&](int _failedWorkers) -> WorkerPrototypeId { return Id; };
+			package.shuttleDeparture.workerPrototypeQueueEmptyCallback.registerCallback([&](int _failedWorkers) -> bool { return WorkersInQueue <= _failedWorkers; });
+			package.shuttleDeparture.peekWorkerPrototypeQueueCallback.registerCallback([&](int _failedWorkers) -> WorkerPrototypeId { return Id; });
 			package.workerCreation.canCreateWorkerCallback = [&](const GameCommand::CreateWorkerEvent&) -> bool { return true; };
 			package.workerCreation.createWorkerCallback = [&](const GameCommand::CreateWorkerEvent& _event) -> void {
 				createWorkerCallbackInvokedCount++;
@@ -162,8 +154,8 @@ namespace drl {
 
 			int createWorkerCallbackInvokedCount = 0;
 			int canCreateWorkerCallbackInvokedCount = 0;
-			package.shuttleDeparture.workerPrototypeQueueEmptyCallback = [&](int _failedWorkers) -> bool { return WorkersInQueue <= _failedWorkers; };
-			package.shuttleDeparture.peekWorkerPrototypeQueueCallback = [&](int _failedWorkers) -> WorkerPrototypeId { return Id; };
+			package.shuttleDeparture.workerPrototypeQueueEmptyCallback.registerCallback([&](int _failedWorkers) -> bool { return WorkersInQueue <= _failedWorkers; });
+			package.shuttleDeparture.peekWorkerPrototypeQueueCallback.registerCallback([&](int _failedWorkers) -> WorkerPrototypeId { return Id; });
 			package.workerCreation.canCreateWorkerCallback = [&](const GameCommand::CreateWorkerEvent&) -> bool { 
 				return canCreateWorkerCallbackInvokedCount++ % 2 == 0;
 			};

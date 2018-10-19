@@ -10,6 +10,7 @@ namespace drl {
 		virtual ~IMarketService(void) = 0 {}
 
 		virtual void sellCargo(const inf::ResourceBundle& _cargo) = 0;
+		virtual inf::ResourceBundle applyExchangeRatesToBundle(const inf::ResourceBundle& _cargo) const = 0;
 	};
 
 }

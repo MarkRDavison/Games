@@ -346,6 +346,7 @@ namespace drl {
 			package.buildingPrototypeService.isPrototypeRegisteredByIdCallback = [&](const BuildingPrototypeId& _id) { return true; };
 			package.buildingPrototypeService.getPrototypeByIdCallback = [&](const BuildingPrototypeId& _id) -> const drl::BuildingPrototype& { return BuildingPrototype; };
 			package.buildingPrototypeService.createInstanceByIdCallback = [&](const BuildingPrototypeId& _id) {	return instance; };
+			package.shuttleDepartureService.addWorkerPrototypeToQueueCallback.registerCallback([](const WorkerPrototypeId&) -> void {});
 
 			bool placeBuildingOnTileCallbackInvoked = false;
 			package.terrainAlterationService.placeBuildingOnTileCallback = [&](int _level, int _column, bool _placeBuilding) -> void {
@@ -401,6 +402,7 @@ namespace drl {
 			package.buildingPrototypeService.createInstanceByIdCallback = [&](const BuildingPrototypeId& _id) {
 				return instance;
 			};
+			package.shuttleDepartureService.addWorkerPrototypeToQueueCallback.registerCallback([](const WorkerPrototypeId&) -> void {});
 
 			bool increaseClassMaximumCallbackInvoked = false;
 			package.workerClassService.increaseClassMaximumCallback = [&](const WorkerPrototypeId& _prototypeId, int _amount) {
@@ -468,15 +470,13 @@ namespace drl {
 				return instance;
 			};
 
-			bool addWorkerPrototypeToQueueCallbackInvoked = false;
-			package.shuttleDepartureService.addWorkerPrototypeToQueueCallback = [&](const WorkerPrototypeId& _prototypeId) -> void {
+			package.shuttleDepartureService.addWorkerPrototypeToQueueCallback.registerCallback([&](const WorkerPrototypeId& _prototypeId) -> void {
 				REQUIRE(instance.providedWorkerPrototypeId == _prototypeId);
-				addWorkerPrototypeToQueueCallbackInvoked = true;
-			};
+			});
 
 			package.service.placePrototype(GameCommand::CommandContext::CreatingEntity, GameCommand::PlaceBuildingEvent{});
 
-			REQUIRE(addWorkerPrototypeToQueueCallbackInvoked);
+			REQUIRE(package.shuttleDepartureService.addWorkerPrototypeToQueueCallback.isInvokedOnce());
 		}
 
 	}

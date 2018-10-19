@@ -93,4 +93,15 @@ namespace drl {
 		instance.additionalPrototypeId = _event.additionalPrototypeId;
 	}
 
+	void JobCreationService::createJobsForPlacedBuilding(const BuildingPrototype& _prototype, const BuildingInstance& _buildingInstance) {
+		if (!_prototype.providesJobs) {
+			return;
+		}
+
+		for (const BuildingProvidedJob& providedJob : _prototype.providedJobs) {
+			JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(providedJob.prototypeId));
+			instance.coordinates = _buildingInstance.coordinates + providedJob.location;
+		}
+	}
+
 }

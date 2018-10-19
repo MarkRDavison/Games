@@ -1,6 +1,7 @@
 #include <Driller/Scenes/GameScene.hpp>
 #include <Utility/Colour.hpp>
 #include <Driller/DataStructures/BuildingPrototype.hpp>
+#include <iostream>
 
 namespace drl {
 	GameScene::GameScene(inf::IConfigurationManager& _config, inf::InputManager& _inputManager, ISceneChangeService& _sceneChangeService, IGameCommandService& _gameCommandService, Game& _game, TerrainView& _terrainView, BuildingView& _buildingView, JobView& _jobView, WorkerView& _workerView, ShuttleView& _shuttleView) :
@@ -43,6 +44,49 @@ namespace drl {
 		if (_event.type == sf::Event::KeyPressed) {
 			if (_event.key.code == sf::Keyboard::F5) {
 				m_GameCommandService.executeGameCommand(GameCommand{ GameCommand::ResetJobAllocationsEvent{} });
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Up) {
+				m_CameraOffset.y += 1.0f;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Down) {
+				m_CameraOffset.y -= 1.0f;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Left) {
+				m_CameraOffset.x += 1.0f;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Right) {
+				m_CameraOffset.x -= 1.0f;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Escape) {
+				std::cout << "Deselected active building" << std::endl;
+				m_ActiveBuilding = -1;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num1) {
+				m_ActiveBuilding = 1;
+				std::cout << "Selected Builder Hut as active building" << std::endl;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num2) {
+				m_ActiveBuilding = 2;
+				std::cout << "Selected Miner as active building" << std::endl;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num3) {
+				m_ActiveBuilding = 3;
+				std::cout << "Selected Refiner as active building" << std::endl;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num4) {
+				m_ActiveBuilding = 4;
+				std::cout << "Selected Researcher as active building" << std::endl;
+				std::cout << "Deselected active building" << std::endl;
+				m_ActiveBuilding = -1;
 				return true;
 			}
 		}
@@ -91,25 +135,38 @@ namespace drl {
 
 		if (col == 0) {
 			// Handle maybe building shaft
-			if (m_GameCommandService.executeGameCommand(drl::GameCommand(drl::GameCommand::DigShaftEvent{ level }))) {
+			drl::GameCommand cmd = drl::GameCommand(drl::GameCommand::DigShaftEvent{level});
+			cmd.commandContext = GameCommand::CommandContext::CreatingEntity;
+			if (m_GameCommandService.executeGameCommand(cmd)) {
 				return true;
 			}
 		} else {	
 			if (_button == sf::Mouse::Left) {
-				if (m_GameCommandService.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_Dig, {col, level}, {1,1}, {} }))) {
-					return true;
+				if (m_ActiveBuilding == -1) {
+					if (m_GameCommandService.executeGameCommand(drl::GameCommand(drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_Dig, {col, level}, {1,1}, {} }))) {
+						return true;
+					}
 				}
-			} else if (_button == sf::Mouse::Right) {
-				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {3,1}, {1.0f, 0.0f} };
-				e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingMinerPrototypeName);
-				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
-					return true;
+				else if (m_ActiveBuilding == 1) {
+					auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {2,1}, {0.5f, 0.0f} };
+					e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingBuilderPrototypeName);
+					if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+						return true;
+					}
 				}
-			} else if (_button == sf::Mouse::Middle) {
-				auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {2,1}, {0.5f, 0.0f} };
-				e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingBuilderPrototypeName);
-				if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
-					return true;
+				else if (m_ActiveBuilding == 2) {
+					auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {3,1}, {1.0f, 0.0f} };
+					e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingMinerPrototypeName);
+					if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+						return true;
+					}
+				}
+				else if (m_ActiveBuilding == 3) {
+					auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {4,1}, {1.5f, 0.0f} };
+					e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingRefinerPrototypeName);
+					if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+						return true;
+					}
 				}
 			} 
 		}

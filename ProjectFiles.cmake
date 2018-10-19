@@ -6,6 +6,7 @@ SET(UTILITY_HEADER_FILES ${UTILITY_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Utility/Orientation.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/PhysicsDebug.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/Signal.hpp
+	${CMAKE_SOURCE_DIR}/include/Utility/TestSignal.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/TextHelpers.hpp
 	${CMAKE_SOURCE_DIR}/include/Utility/VectorMath.hpp
 )
@@ -529,6 +530,7 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingData.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingInstance.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingPrototype.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingProvidedJob.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobCompleteDelegate.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobData.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobInstance.hpp
@@ -555,6 +557,7 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/Scenes/TitleScene.hpp
 	
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IBuildingPlacementService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/ICostService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IGameCommandService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IIdentificationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IJobAllocationService.hpp
@@ -563,6 +566,7 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IMarketService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IPrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/ISceneChangeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IShuttleCargoService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IShuttleCompletionService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IShuttleCreationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IShuttleDepartureService.hpp
@@ -575,6 +579,7 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/BuildingPlacementService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/BuildingPrototypeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/CostService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/GameCommandService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/IdentificationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/JobAllocationService.hpp
@@ -584,6 +589,7 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/MarketService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/PrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/SceneChangeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/ShuttleCargoService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/ShuttleCompletionService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/ShuttleCreationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/ShuttleDepartureService.hpp
@@ -618,6 +624,7 @@ SET(DRILLER_SOURCE_FILES ${DRILLER_SOURCE_FILES}
 	
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/BuildingPlacementService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/BuildingPrototypeService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/CostService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/GameCommandService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/IdentificationService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobAllocationService.cpp
@@ -626,6 +633,7 @@ SET(DRILLER_SOURCE_FILES ${DRILLER_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobPrototypeService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/MarketService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/SceneChangeService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/ShuttleCargoService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/ShuttleCompletionService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/ShuttleCreationService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/ShuttleDepartureService.cpp
@@ -647,6 +655,7 @@ SET(DRILLER_SOURCE_FILES ${DRILLER_SOURCE_FILES}
 
 SET(DRILLER_TEST_HEADER_FILES ${DRILLER_TEST_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/BuildingPlacementServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/CostServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/GameCommandServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/IdentificationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/JobAllocationServiceMock.hpp
@@ -654,6 +663,7 @@ SET(DRILLER_TEST_HEADER_FILES ${DRILLER_TEST_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/JobCreationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/MarketServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/PrototypeServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ShuttleCargoServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ShuttleCompletionServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ShuttleCreationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ShuttleDepartureServiceMock.hpp
@@ -670,12 +680,14 @@ SET(DRILLER_TEST_SOURCE_FILES ${DRILLER_TEST_SOURCE_FILES}
 	
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/BuildingPlacementServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/BuildingPrototypeServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/CostServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/GameCommandServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobAllocationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobCompletionServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobCreationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/MarketServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/SceneChangeServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ShuttleCargoServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ShuttleCompletionServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ShuttleCreationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ShuttleDepartureServiceTests.cpp
@@ -685,4 +697,92 @@ SET(DRILLER_TEST_SOURCE_FILES ${DRILLER_TEST_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/WorkerCreationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/WorkerRecruitmentServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/WorkerUpdateServiceTests.cpp
+)
+
+# Sovereign
+
+SET(SOVEREIGN_HEADER_FILES ${SOVEREIGN_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Core/Definitions.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Core/Game.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Sovereign/DataStructures/ControlBindings.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/DataStructures/EntityContainedCell.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/DataStructures/EntityData.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/DataStructures/LevelChunk.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/DataStructures/LevelChunkCell.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/DataStructures/LevelData.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/DataStructures/MoveableEntity.hpp
+
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Enumerations/LogLevel.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Infrastructure/ConfigurationManager.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Scenes/ExitScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Scenes/GameScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Scenes/GameUiScene.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Scenes/TitleScene.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/ICollisionDetectionService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/ICollisionResponseService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/IEntityDataMutationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/IEntityDataQueryService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/IEntityMovementService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/ILevelDataMutationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/ILevelDataQueryService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/ILogService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/IPlayerControlService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/Interfaces/ISceneChangeService.hpp
+	
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/CollisionDetectionService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/CollisionResponseService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/EntityDataMutationService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/EntityDataQueryService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/EntityMovementService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/LevelDataQueryService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/LogService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/PlayerControlService.hpp
+	${CMAKE_SOURCE_DIR}/include/Sovereign/Services/SceneChangeService.hpp
+)
+
+SET(SOVEREIGN_SOURCE_FILES ${SOVEREIGN_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Core/Definitions.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Core/Game.cpp
+
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Infrastructure/ConfigurationManager.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Scenes/ExitScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Scenes/GameScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Scenes/GameUiScene.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Scenes/TitleScene.cpp
+	
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/CollisionDetectionService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/CollisionResponseService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/EntityDataMutationService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/EntityMovementService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/EntityDataQueryService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/LevelDataQueryService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/LogService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/PlayerControlService.cpp
+	${CMAKE_SOURCE_DIR}/src/Sovereign/Services/SceneChangeService.cpp
+)
+
+SET(SOVEREIGN_TEST_HEADER_FILES ${SOVEREIGN_TEST_HEADER_FILES}
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/CollisionDetectionServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/CollisionResponseServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/EntityDataMutationServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/EntityDataQueryServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/EntityMovementServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/LevelDataMutationServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/LevelDataQueryServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Sovereign/Services/PlayerControlServiceMock.hpp
+)
+
+SET(SOVEREIGN_TEST_SOURCE_FILES ${SOVEREIGN_TEST_SOURCE_FILES}
+	${CMAKE_SOURCE_DIR}/test/src/Sovereign/Services/CollisionDetectionServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Sovereign/Services/CollisionResponseServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Sovereign/Services/EntityDataMutationServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Sovereign/Services/EntityDataQueryServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Sovereign/Services/EntityMovementServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Sovereign/Services/LevelDataQueryServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Sovereign/Services/PlayerControlServiceTests.cpp
 )

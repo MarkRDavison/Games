@@ -3,11 +3,11 @@ Todo
 Infrastructure
 
 	-	Investigate minesweeper scene change service as an infrastructure candidate
+	-	Investigate driller identification service as an infrastructure candidate
 
 Castle
-
-	-	When transitioning to another level swap the player to the new level, on collide callback needs access to the gamescene - Global/Singleton?
-	-	When systems update/handle event they may need custom parameters e.g. collision system and level
+	-	Redo and get 2d platforming physics working reliably
+	-	Integrate lua, on enter, on exit physics interaction etc etc...
 
 Kingdom
 

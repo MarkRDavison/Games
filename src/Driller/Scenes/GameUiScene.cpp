@@ -10,8 +10,10 @@ namespace drl {
 
 		updateResourceText(Definitions::MoneyResourceName);
 		updateResourceText(Definitions::OreResourceName);
+		updateResourceText(Definitions::OreExchangeRateResourceName);
 		updateResourceText(Definitions::CurrentBuilderResourceName);
 		updateResourceText(Definitions::CurrentMinerResourceName);
+		updateResourceText(Definitions::CurrentRefinerResourceName);
 
 		m_ResourceService.resourceChanged.registerCallback([this](const std::string& _resourceName) {
 			updateResourceText(_resourceName);

@@ -31,4 +31,8 @@ namespace inf {
 	sf::Vector2i InputManager::getMousePositionRelativeToCenter(const sf::Vector2i& _eventCoordinates) {
 		return _eventCoordinates - getWindowSize() / 2;
 	}
+
+	sf::Vector2f InputManager::mapPixelToCoords(const sf::Vector2i& _pixel, const sf::View& _view) {
+		return m_MapPixelToCoordsCallback(_pixel, _view);
+	}
 }

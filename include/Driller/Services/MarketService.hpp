@@ -12,6 +12,7 @@ namespace drl {
 		~MarketService(void) override;
 
 		void sellCargo(const inf::ResourceBundle& _cargo) override;
+		inf::ResourceBundle applyExchangeRatesToBundle(const inf::ResourceBundle& _cargo) const override;
 
 	private:
 		inf::IResourceService& m_ResourceService;

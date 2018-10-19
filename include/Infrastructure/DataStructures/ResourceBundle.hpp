@@ -24,7 +24,7 @@ namespace inf {
 
 		std::vector<Resource> resources;
 
-		std::string getResources(void) {
+		std::string getResources(void) const {
 			std::string str;
 
 			for (const Resource& resource : resources) {

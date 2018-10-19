@@ -3,17 +3,19 @@
 #include <Driller/Services/ShuttleUpdateService.hpp>
 #include <Mocks/Driller/Services/ShuttleCompletionServiceMock.hpp>
 #include <Mocks/Driller/Services/WorkerRecruitmentServiceMock.hpp>
+#include <Mocks/Driller/Services/ShuttleCargoServiceMock.hpp>
 
 namespace drl {
 	namespace ShuttleUpdateServiceTests {
 		
 		struct Package {
 			Package(void) :
-				service(data, shuttleCompletion, workerRecruitment) {
+				service(data, shuttleCompletion, shuttleCargo, workerRecruitment) {
 				
 			}
 			ShuttleData data;
 			ShuttleCompletionServiceMock shuttleCompletion;
+			ShuttleCargoServiceMock shuttleCargo;
 			WorkerRecruitmentServiceMock workerRecruitment;
 			ShuttleUpdateService service;
 		};
@@ -148,6 +150,8 @@ namespace drl {
 			instance.state = ShuttleInstance::ShuttleState::WaitingOnSurface;
 			instance.loadingTime = LoadingTime;
 
+			package.shuttleCargo.loadShuttleWithCargoCallback.registerCallback([](ShuttleInstance&) -> void {});
+
 			package.service.updateShuttle(instance, Delta);
 
 			REQUIRE(ShuttleInstance::ShuttleState::LeavingSurface == instance.state);
@@ -176,6 +180,19 @@ namespace drl {
 			package.service.updateShuttle(instance, Delta);
 
 			REQUIRE(recruitWorkersCallbackInvoked);
+		}
+
+		TEST_CASE("when a shuttle goes to take off it calls the shuttle cargo service to load cargo", "[Driller][Services][ShuttleUpdateService]") {
+			Package package{};
+
+			ShuttleInstance& instance = package.data.shuttles.emplace_back();
+			instance.state = ShuttleInstance::ShuttleState::WaitingOnSurface;
+
+			package.shuttleCargo.loadShuttleWithCargoCallback.registerCallback([](ShuttleInstance&) -> void {});
+
+			package.service.update(0.0f);
+
+			REQUIRE(package.shuttleCargo.loadShuttleWithCargoCallback.isInvokedOnce());
 		}
 	}
 }

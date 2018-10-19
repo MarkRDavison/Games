@@ -15,6 +15,8 @@ namespace drl {
 		sf::Vector2f jobPerformOffset;
 
 		bool allocated{ false };
+		bool repeats{ false };
+		bool permanent{ false };
 		EntityId allocatedWorkerId{ 0u };
 		float workPerformed{ 0.0f };
 		float workRequired{ 0.0f };

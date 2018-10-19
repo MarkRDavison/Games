@@ -25,14 +25,18 @@ namespace drl {
 			return false;
 		}
 
-		void placePrototype(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _placeBuilding) override {
+		const BuildingInstance& placePrototype(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _placeBuilding) override {
 			if (placePrototypeCallback) {
-				placePrototypeCallback(_context, _placeBuilding);
+				return placePrototypeCallback(_context, _placeBuilding);
 			}
+
+			return defaultInstance;
 		}
 
+		BuildingInstance defaultInstance{};
+
 		std::function<bool(const GameCommand::CommandContext, const GameCommand::PlaceBuildingEvent&)> canPlacePrototypeCallback;
-		std::function<void(const GameCommand::CommandContext, const GameCommand::PlaceBuildingEvent&)> placePrototypeCallback;
+		std::function<const BuildingInstance& (const GameCommand::CommandContext, const GameCommand::PlaceBuildingEvent&)> placePrototypeCallback;
 	};
 
 }

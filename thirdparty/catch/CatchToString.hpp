@@ -4,6 +4,7 @@
 #include <Utility/Orientation.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <string>
+#include <SFML/Graphics/Rect.hpp>
 
 
 namespace Catch {
@@ -25,6 +26,13 @@ namespace Catch {
 	struct StringMaker<sf::Vector2u> {
 		static std::string convert(sf::Vector2u const& _value) {
 			return "x: " + std::to_string(_value.x) + ", y: " + std::to_string(_value.y);
+		}
+	};
+
+	template<>
+	struct StringMaker<sf::FloatRect> {
+		static std::string convert(sf::FloatRect const& _value) {
+			return "left: " + std::to_string(_value.left) + ", top: " + std::to_string(_value.top) + ", width: " + std::to_string(_value.width) + ", height: " + std::to_string(_value.height);
 		}
 	};
 

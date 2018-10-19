@@ -25,6 +25,9 @@ namespace drl {
 
 			ShuttleInstance& instance = package.data.shuttles.emplace_back();
 
+			package.marketService.sellCargoCallback.registerCallback([](const inf::ResourceBundle&) -> void {});
+			package.shuttleDepartureService.setShuttleOnRunCallback.registerCallback([](bool) -> void {});
+
 			package.service.handleShuttleCompleted(instance);
 
 			REQUIRE(instance.removalRequired);
@@ -34,6 +37,9 @@ namespace drl {
 			Package package{};
 
 			ShuttleInstance& instance = package.data.shuttles.emplace_back();
+
+			package.marketService.sellCargoCallback.registerCallback([](const inf::ResourceBundle&) -> void {});
+			package.shuttleDepartureService.setShuttleOnRunCallback.registerCallback([](bool) -> void {});
 
 			package.service.handleShuttleCompleted(instance);
 			package.service.cleanupCompletedShuttles();
@@ -49,33 +55,31 @@ namespace drl {
 			ShuttleInstance& instance = package.data.shuttles.emplace_back();
 			instance.cargo.resources.emplace_back(ResourceName, ResourceAmount);
 
-			bool sellCargoInvoked = false;
-			package.marketService.sellCargoCallback = [&](const inf::ResourceBundle& _cargo) -> void {
+			package.shuttleDepartureService.setShuttleOnRunCallback.registerCallback([](bool) -> void {});
+			package.marketService.sellCargoCallback.registerCallback([&](const inf::ResourceBundle& _cargo) -> void {
 				REQUIRE(1 == _cargo.resources.size());
 				REQUIRE(ResourceName == _cargo.resources[0].name);
 				REQUIRE(ResourceAmount == _cargo.resources[0].amount);
-				sellCargoInvoked = true;
-			};
+			});
 
 			package.service.handleShuttleCompleted(instance);
 			
-			REQUIRE(sellCargoInvoked);
+			REQUIRE(package.marketService.sellCargoCallback.isInvokedOnce());
 		}
 
 		TEST_CASE("handleShuttleCompleted sets on run to false in shuttle departure service", "[Driller][Services][ShuttleCompletionService]") {
 			Package package{};
 
-			bool setShuttleOnRunInvoked = false;
-			package.shuttleDepartureService.setShuttleOnRunCallback = [&](bool _onRun) -> void {
+			package.shuttleDepartureService.setShuttleOnRunCallback.registerCallback([](bool _onRun) -> void {
 				REQUIRE_FALSE(_onRun);
-				setShuttleOnRunInvoked = true;
-			};
+			});
+			package.marketService.sellCargoCallback.registerCallback([](const inf::ResourceBundle&) -> void {});
 
 			ShuttleInstance instance{};
 
 			package.service.handleShuttleCompleted(instance);
 
-			REQUIRE(setShuttleOnRunInvoked);
+			REQUIRE(package.shuttleDepartureService.setShuttleOnRunCallback.isInvokedOnce());
 		}
 	}
 }

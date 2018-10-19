@@ -3,9 +3,10 @@
 
 namespace drl {
 
-	ShuttleUpdateService::ShuttleUpdateService(ShuttleData& _shuttleData, IShuttleCompletionService& _shuttleCompletionService, IWorkerRecruitmentService& _workerRecruitmentService) :
+	ShuttleUpdateService::ShuttleUpdateService(ShuttleData& _shuttleData, IShuttleCompletionService& _shuttleCompletionService, IShuttleCargoService& _shuttleCargoService, IWorkerRecruitmentService& _workerRecruitmentService) :
 		m_ShuttleData(_shuttleData),
 		m_ShuttleCompletionService(_shuttleCompletionService),
+		m_ShuttleCargoService(_shuttleCargoService),
 		m_WorkerRecruitmentService(_workerRecruitmentService) {
 		
 	}
@@ -34,6 +35,7 @@ namespace drl {
 		case ShuttleInstance::ShuttleState::WaitingOnSurface:
 			_shuttle.loadingTime -= _delta;
 			if (_shuttle.loadingTime <= 0.0f) {
+				m_ShuttleCargoService.loadShuttleWithCargo(_shuttle);
 				_shuttle.state = ShuttleInstance::ShuttleState::LeavingSurface;
 			}
 			break;

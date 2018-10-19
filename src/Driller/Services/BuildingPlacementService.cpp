@@ -1,4 +1,5 @@
 #include <Driller/Services/BuildingPlacementService.hpp>
+#include <iostream>
 
 namespace drl {
 
@@ -33,6 +34,7 @@ namespace drl {
 
 		if (_context == GameCommand::CommandContext::CreatingJob) {
 			if (!m_ResourceService.canAfford(prototype.cost)) {
+				std::cout << "Cannot afford to create building" << std::endl << prototype.cost.getResources();
 				return false;
 			}
 		}
@@ -61,7 +63,7 @@ namespace drl {
 		return true;
 	}
 
-	void BuildingPlacementService::placePrototype(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _placeBuilding) {
+	const BuildingInstance& BuildingPlacementService::placePrototype(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _placeBuilding) {
 		BuildingInstance& buildingInstance = m_BuildingData.buildings.emplace_back(m_BuildingPrototypeService.createInstance(_placeBuilding.prototypeId));
 		buildingInstance.coordinates = { _placeBuilding.column, _placeBuilding.level };
 
@@ -78,6 +80,8 @@ namespace drl {
 				m_TerrainAlterationService.placeBuildingOnTile(level, col, true);
 			}
 		}
+
+		return buildingInstance;
 	}
 
 }

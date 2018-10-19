@@ -20,6 +20,8 @@ namespace inf {
 
 		sf::RenderTarget& getRenderTarget(void) noexcept { return m_Window; }
 		const sf::Window& getWindow(void) noexcept { return m_Window; }
+		
+		sf::RenderWindow m_Window;
 
 	private:
 
@@ -31,7 +33,6 @@ namespace inf {
 		bool m_Running;
 		bool m_IsInitialised;
 
-		sf::RenderWindow m_Window;
 		sf::View m_GameView;
 		sf::View m_UiView;
 

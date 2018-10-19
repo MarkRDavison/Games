@@ -10,13 +10,14 @@
 #include "Interfaces/IJobAllocationService.hpp"
 #include "Interfaces/IWorkerCreationService.hpp"
 #include "Interfaces/IShuttleCreationService.hpp"
+#include "Interfaces/ICostService.hpp"
 
 namespace drl {
 	
 	class GameCommandService : public IGameCommandService {
 	public:
-		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService);
-		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, long long _startTick);
+		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, ICostService& _costService);
+		GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, ICostService& _costService, long long _startTick);
 		~GameCommandService(void) override;
 
 		void tick(void) override;
@@ -45,6 +46,7 @@ namespace drl {
 		IWorkerCreationService& m_WorkerCreationService;
 		IWorkerPrototypeService& m_WorkerPrototypeService;
 		IShuttleCreationService& m_ShuttleCreationService;
+		ICostService& m_CostService;
 
 		long long m_CurrentTick;
 	};

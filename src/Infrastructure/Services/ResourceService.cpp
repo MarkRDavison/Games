@@ -124,6 +124,7 @@ namespace inf {
 		auto iter = m_ResourceMap.find(_resourceName);
 		if (iter == m_ResourceMap.end()) {
 			m_ResourceMap[_resourceName].name = _resourceName;
+			m_ResourceIdMap[inf::djb_hash(_resourceName.c_str())] = _resourceName;
 		}
 
 		return m_ResourceMap[_resourceName];

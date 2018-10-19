@@ -24,6 +24,8 @@ namespace drl {
 		bool canCreateBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const;
 		void createBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const;
 
+		void createJobsForPlacedBuilding(const BuildingPrototype& _prototype, const BuildingInstance& _buildingInstance) override;
+
 	private:
 		JobData& m_JobData;
 		ITerrainAlterationService& m_TerrainAlterationService;

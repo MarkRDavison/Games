@@ -40,6 +40,8 @@ namespace drl {
 		WorkerView& m_WorkerView;
 		JobView& m_JobView;
 		ShuttleView& m_ShuttleView;
+
+		int m_ActiveBuilding{ -1 };
 		
 		sf::Vector2f m_CameraOffset;
 	};
