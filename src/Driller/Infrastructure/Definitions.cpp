@@ -4,6 +4,7 @@ namespace drl {
 
 	constexpr const char Definitions::OreResourceName[];
 	constexpr const char Definitions::OreExchangeRateResourceName[];
+	constexpr const char Definitions::ResearchResourceName[];
 	constexpr const char Definitions::MoneyResourceName[];
 
 	constexpr const char Definitions::CurrentWorkerResourceName[];
@@ -11,6 +12,7 @@ namespace drl {
 	constexpr const char Definitions::CurrentBuilderResourceName[];
 	constexpr const char Definitions::CurrentMinerResourceName[];
 	constexpr const char Definitions::CurrentRefinerResourceName[];
+	constexpr const char Definitions::CurrentResearcherResourceName[];
 
 	constexpr const char Definitions::TileSpriteSheetTextureName[];
 
@@ -18,22 +20,26 @@ namespace drl {
 	constexpr const char Definitions::BuildingBuilderPrototypeName[];
 	constexpr const char Definitions::BuildingMinerPrototypeName[];
 	constexpr const char Definitions::BuildingRefinerPrototypeName[];
+	constexpr const char Definitions::BuildingResearcherPrototypeName[];
 
 	constexpr const char Definitions::JobPrototypeName_Dig[];
 	constexpr const char Definitions::JobPrototypeName_BuildBuilding[]; 
 	constexpr const char Definitions::JobPrototypeName_Miner[];
 	constexpr const char Definitions::JobPrototypeName_Refiner[];
+	constexpr const char Definitions::JobPrototypeName_Researcher[];
 
 	constexpr const char Definitions::WorkerPrototypeName_Builder[];
 	constexpr const char Definitions::WorkerPrototypeName_Miner[];
 	constexpr const char Definitions::WorkerPrototypeName_Refiner[];
+	constexpr const char Definitions::WorkerPrototypeName_Researcher[];
 
 	constexpr const char Definitions::ShuttlePrototypeName_Starting[];
 
 	const sf::Vector2u Definitions::BunkBuildingCoordinate		{ 3, 0 };
 	const sf::Vector2u Definitions::BuilderBuildingCoordinate	{ 5, 0 };
 	const sf::Vector2u Definitions::MinerBuildingCoordinate		{ 7, 0 };
-	const sf::Vector2u Definitions::RefinerBuildingCoordinate	{ 10, 0 };
+	const sf::Vector2u Definitions::RefinerBuildingCoordinate	{ 10,0 };
+	const sf::Vector2u Definitions::ResearcherBuildingCoordinate{ 7, 1 };
 
 	const sf::Vector2u Definitions::DigJobCoordinate		{ 1, 1 };
 

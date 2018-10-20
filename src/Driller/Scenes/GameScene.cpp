@@ -68,25 +68,28 @@ namespace drl {
 				return true;
 			}
 			if (_event.key.code == sf::Keyboard::Num1) {
+				m_ActiveBuilding = 0;
+				std::cout << "SelectedBunk as active building" << std::endl;
+				return true;
+			}
+			if (_event.key.code == sf::Keyboard::Num2) {
 				m_ActiveBuilding = 1;
 				std::cout << "Selected Builder Hut as active building" << std::endl;
 				return true;
 			}
-			if (_event.key.code == sf::Keyboard::Num2) {
+			if (_event.key.code == sf::Keyboard::Num3) {
 				m_ActiveBuilding = 2;
 				std::cout << "Selected Miner as active building" << std::endl;
 				return true;
 			}
-			if (_event.key.code == sf::Keyboard::Num3) {
+			if (_event.key.code == sf::Keyboard::Num4) {
 				m_ActiveBuilding = 3;
 				std::cout << "Selected Refiner as active building" << std::endl;
 				return true;
 			}
-			if (_event.key.code == sf::Keyboard::Num4) {
+			if (_event.key.code == sf::Keyboard::Num5) {
 				m_ActiveBuilding = 4;
 				std::cout << "Selected Researcher as active building" << std::endl;
-				std::cout << "Deselected active building" << std::endl;
-				m_ActiveBuilding = -1;
 				return true;
 			}
 		}
@@ -147,6 +150,13 @@ namespace drl {
 						return true;
 					}
 				}
+				else if (m_ActiveBuilding == 0) {
+					auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {2,1}, {0.5f, 0.0f} };
+					e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingBunkPrototypeName);
+					if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+						return true;
+					}
+				}
 				else if (m_ActiveBuilding == 1) {
 					auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {2,1}, {0.5f, 0.0f} };
 					e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingBuilderPrototypeName);
@@ -164,6 +174,13 @@ namespace drl {
 				else if (m_ActiveBuilding == 3) {
 					auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {4,1}, {1.5f, 0.0f} };
 					e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingRefinerPrototypeName);
+					if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
+						return true;
+					}
+				}
+				else if (m_ActiveBuilding == 4) {
+					auto e = drl::GameCommand::CreateJobEvent{ drl::Definitions::JobPrototypeName_BuildBuilding, {col, level}, {5,1}, {2.0f, 0.0f} };
+					e.additionalPrototypeId = inf::djb_hash(drl::Definitions::BuildingResearcherPrototypeName);
 					if (m_GameCommandService.executeGameCommand(drl::GameCommand(e))) {
 						return true;
 					}

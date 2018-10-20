@@ -150,16 +150,17 @@ void setupSceneTransitions(ManagerPackage& _managerPackage, ServicePackage& _ser
 		}
 	});
 
-	_servicePackage.sceneChange.applicationClosed.registerCallback([&](void) {
+	_servicePackage.sceneChange.applicationClosed.registerCallback([&](void) -> void {
 		_managerPackage.app.stop();
 	});
 }
 
 void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {
 	{
-		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Builder), drl::Definitions::CurrentBuilderResourceName);
-		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Miner), drl::Definitions::CurrentMinerResourceName);
-		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Refiner), drl::Definitions::CurrentRefinerResourceName);
+		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Builder),		drl::Definitions::CurrentBuilderResourceName);
+		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Miner),		drl::Definitions::CurrentMinerResourceName);
+		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Refiner),		drl::Definitions::CurrentRefinerResourceName);
+		_servicePackage.workerClass.registerPrototypeToResourceClass(inf::djb_hash(drl::Definitions::WorkerPrototypeName_Researcher),	drl::Definitions::CurrentResearcherResourceName);
 	}
 	{
 		drl::ShuttlePrototype startingShuttlePrototype{};
@@ -184,11 +185,18 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 		_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_Miner, minerPrototype);
 	}
 	{
-		drl::WorkerPrototype RefinerPrototype{ };
-		RefinerPrototype.validJobTypes = {
+		drl::WorkerPrototype refinerPrototype{ };
+		refinerPrototype.validJobTypes = {
 			inf::djb_hash(drl::Definitions::JobPrototypeName_Refiner)
 		};
-		_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_Refiner, RefinerPrototype);
+		_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_Refiner, refinerPrototype);
+	}
+	{
+		drl::WorkerPrototype researcherPrototype{ };
+		researcherPrototype.validJobTypes = {
+			inf::djb_hash(drl::Definitions::JobPrototypeName_Researcher)
+		};
+		_servicePackage.workerPrototype.registerPrototype(drl::Definitions::WorkerPrototypeName_Researcher, researcherPrototype);
 	}
 	{
 		drl::BuildingPrototype bunkPrototype = drl::BuildingPrototype{ {2,1}, drl::Definitions::BunkBuildingCoordinate };
@@ -232,6 +240,29 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 		refinerPrototype.providedWorkerPrototypeAmount = refinerPrototype.providedJobs.size();
 		refinerPrototype.providesJobs = !refinerPrototype.providedJobs.empty();
 		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingRefinerPrototypeName, refinerPrototype);
+	}
+	{
+		drl::BuildingPrototype researcherPrototype = drl::BuildingPrototype{ {5,1}, drl::Definitions::ResearcherBuildingCoordinate };
+		researcherPrototype.providedWorkerPrototypeId = inf::djb_hash(drl::Definitions::WorkerPrototypeName_Researcher);
+		researcherPrototype.cost.resources.emplace_back(drl::Definitions::MoneyResourceName, 200);
+		{
+			drl::BuildingProvidedJob& job = researcherPrototype.providedJobs.emplace_back();
+			job.location = { 0,0 };
+			job.prototypeId = inf::djb_hash(drl::Definitions::JobPrototypeName_Researcher);
+		}
+		{
+			drl::BuildingProvidedJob& job = researcherPrototype.providedJobs.emplace_back();
+			job.location = { 2,0 };
+			job.prototypeId = inf::djb_hash(drl::Definitions::JobPrototypeName_Researcher);
+		}
+		{
+			drl::BuildingProvidedJob& job = researcherPrototype.providedJobs.emplace_back();
+			job.location = { 4,0 };
+			job.prototypeId = inf::djb_hash(drl::Definitions::JobPrototypeName_Researcher);
+		}
+		researcherPrototype.providedWorkerPrototypeAmount = researcherPrototype.providedJobs.size();
+		researcherPrototype.providesJobs = !researcherPrototype.providedJobs.empty();
+		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingResearcherPrototypeName, researcherPrototype);
 	}
 	{
 		drl::JobPrototype digDirtProtoype{};
@@ -283,18 +314,34 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 		};
 		_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_Refiner, refineCompletePrototype);
 	}
+	{
+		drl::JobPrototype researchPrototype{};
+		researchPrototype.workRequired = 12.0f;
+		researchPrototype.repeats = true;
+		_servicePackage.jobPrototype.registerPrototype(drl::Definitions::JobPrototypeName_Researcher, researchPrototype);
+
+		drl::JobCompleteDelegate researchCompletePrototype = [&](const drl::JobInstance& _jobInstance) -> void {
+			inf::ResourceBundle bundle{};
+			bundle.resources.emplace_back(drl::Definitions::ResearchResourceName, _jobInstance.coordinates.y + 1);
+			_servicePackage.resource.receiveResourceBundle(bundle);
+		};
+		_servicePackage.jobCompletion.registerJobCompleteDelegate(drl::Definitions::JobPrototypeName_Researcher, researchCompletePrototype);
+	}
 }
 
 void initialiseResources(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {
 	_servicePackage.resource.setResource(drl::Definitions::MoneyResourceName, 2000);
 	_servicePackage.resource.setResource(drl::Definitions::OreResourceName, 0);
 	_servicePackage.resource.setResource(drl::Definitions::OreExchangeRateResourceName, 0);
+	_servicePackage.resource.setResource(drl::Definitions::ResearchResourceName, 0);
 	_servicePackage.resource.setResource(drl::Definitions::CurrentBuilderResourceName, 0);
 	_servicePackage.resource.setResourceMaximum(drl::Definitions::CurrentBuilderResourceName, 0);
 	_servicePackage.resource.setResource(drl::Definitions::CurrentMinerResourceName, 0);
 	_servicePackage.resource.setResourceMaximum(drl::Definitions::CurrentMinerResourceName, 0);
 	_servicePackage.resource.setResource(drl::Definitions::CurrentRefinerResourceName, 0);
 	_servicePackage.resource.setResourceMaximum(drl::Definitions::CurrentRefinerResourceName, 0);
+	_servicePackage.resource.setResource(drl::Definitions::CurrentResearcherResourceName, 0);
+	_servicePackage.resource.setResourceMaximum(drl::Definitions::CurrentResearcherResourceName, 0);
 }
 
 void runSetupGameCommands(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {
