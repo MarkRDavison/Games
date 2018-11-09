@@ -70,7 +70,8 @@ namespace drl {
 		m_TerrainAlterationService.initialiseTile(_event.coordinates.y, _event.coordinates.x);
 		m_TerrainAlterationService.reserveJobOnTile(_event.coordinates.y, _event.coordinates.x, true);
 
-		JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
+		m_JobData.jobs.push_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
+		JobInstance& instance = m_JobData.jobs.back();
 		instance.coordinates = _event.coordinates;
 		instance.bounds = _event.bounds;
 		instance.jobPerformOffset = _event.jobPerformOffset;
@@ -87,7 +88,8 @@ namespace drl {
 		
 		const BuildingPrototype& prototype = m_BuildingPrototypeService.getPrototype(_event.additionalPrototypeId);
 		m_ResourceService.payResourceBundle(prototype.cost);
-		JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
+		m_JobData.jobs.push_back(m_JobPrototypeService.createInstance(_event.jobTypeId));
+		JobInstance& instance = m_JobData.jobs.back();
 		instance.coordinates = _event.coordinates;
 		instance.bounds = _event.bounds;
 		instance.jobPerformOffset = _event.jobPerformOffset;
@@ -101,7 +103,8 @@ namespace drl {
 		}
 
 		for (const BuildingProvidedJob& providedJob : _prototype.providedJobs) {
-			JobInstance& instance = m_JobData.jobs.emplace_back(m_JobPrototypeService.createInstance(providedJob.prototypeId));
+			m_JobData.jobs.push_back(m_JobPrototypeService.createInstance(providedJob.prototypeId));
+			JobInstance& instance = m_JobData.jobs.back();
 			instance.coordinates = _buildingInstance.coordinates + providedJob.location;
 		}
 	}
