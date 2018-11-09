@@ -177,13 +177,13 @@ namespace drl {
 			return false;
 		}
 
-		const int level = static_cast<int>(std::floorf(mousePosition.y));
+		const int level = static_cast<int>(::std::floor(mousePosition.y));
 		int col;
 
 		if (std::abs(mousePosition.x) <= Definitions::TileSize / 2.0f) {
 			col = 0;
 		} else {
-			col = static_cast<int>(std::floorf(std::abs(mousePosition.x) + Definitions::TileSize / 2.0f)) * (mousePosition.x > 0.0f ? +1 : -1);
+			col = static_cast<int>(::std::floor(std::abs(mousePosition.x) + Definitions::TileSize / 2.0f)) * (mousePosition.x > 0.0f ? +1 : -1);
 		}
 
 		if (col == 0) {
