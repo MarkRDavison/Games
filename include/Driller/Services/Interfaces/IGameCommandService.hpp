@@ -7,13 +7,15 @@ namespace drl {
 
 	class IGameCommandService {
 	public:
-		virtual ~IGameCommandService(void) = 0 {}
+		virtual ~IGameCommandService(void) = 0;
 
 		virtual void tick(void) = 0;
 		virtual long long getCurrentTick(void) const = 0;
 
 		virtual bool executeGameCommand(const GameCommand& _command) = 0;
 	};
+
+	inline IGameCommandService::~IGameCommandService(void) = default;
 	
 }
 

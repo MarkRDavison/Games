@@ -5,13 +5,15 @@ namespace drl {
 	
 	class ICostService {
 	protected:
-		virtual ~ICostService(void) = 0 {}
+		virtual ~ICostService(void) = 0;
 
 	public:
 		virtual int getDigShaftCost(int _level) const = 0;
 		virtual float getBuildingMultiplierCost(int _level, int _column) const = 0;
 		virtual float getDigTileTimeMultiplierCost(int _level, int _column) const = 0;
 	};
+
+	inline ICostService::~ICostService(void) = default;
 
 }
 

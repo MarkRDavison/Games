@@ -8,7 +8,7 @@ namespace drl {
 
 	class IResearchService {
 	protected:
-		virtual ~IResearchService(void) = 0 {}
+		virtual ~IResearchService(void) = 0;
 
 	public:
 		virtual void registerResearchCategory(const std::string& _researchCategoryName) = 0;
@@ -26,6 +26,8 @@ namespace drl {
 		virtual void research(const std::string& _researchCategoryName) = 0;
 		virtual void research(const ResearchId& _researchCategory) = 0;
 	};
+
+	inline IResearchService::~IResearchService(void) = default;
 
 }
 

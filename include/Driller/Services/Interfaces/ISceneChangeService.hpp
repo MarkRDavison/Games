@@ -9,7 +9,7 @@ namespace drl {
 
 	class ISceneChangeService {
 	public:
-		virtual ~ISceneChangeService(void) = 0 {}
+		virtual ~ISceneChangeService(void) = 0;
 
 		virtual Definitions::GameSceneState getSceneState(void) const = 0;
 		virtual void setSceneState(Definitions::GameSceneState _sceneState) = 0;
@@ -18,6 +18,8 @@ namespace drl {
 		inf::Signal<inf::SceneManager&, Definitions::GameSceneState, Definitions::GameSceneState> sceneStateChanged;
 		inf::Signal<> applicationClosed;
 	};
+
+	inline ISceneChangeService::~ISceneChangeService(void) = default;
 	
 }
 

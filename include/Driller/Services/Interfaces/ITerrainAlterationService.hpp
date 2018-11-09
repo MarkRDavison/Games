@@ -7,7 +7,7 @@ namespace drl {
 	
 	class ITerrainAlterationService {
 	public:
-		virtual ~ITerrainAlterationService(void) = 0 {}
+		virtual ~ITerrainAlterationService(void) = 0;
 
 		virtual bool digShaft(int _level) = 0;
 		virtual bool digTile(int _level, int _x) = 0;
@@ -22,6 +22,8 @@ namespace drl {
 
 		virtual const TerrainTile& getTile(int _level, int _column) const = 0;
 	};
+
+	inline ITerrainAlterationService::~ITerrainAlterationService(void) = default;
 
 }
 

@@ -8,7 +8,7 @@ namespace drl {
 	
 	class IJobCompletionService {
 	public:
-		virtual ~IJobCompletionService(void) = 0 {}
+		virtual ~IJobCompletionService(void) = 0;
 
 		virtual void handleJobCompleted(JobInstance& _jobInstance) = 0;
 		virtual void cleanupCompletedJobs(void) = 0;
@@ -22,6 +22,8 @@ namespace drl {
 		virtual JobCompleteDelegate& getJobCompleteDelegate(const std::string& _prototypeId) = 0;
 		virtual JobCompleteDelegate& getJobCompleteDelegate(const JobPrototypeId& _prototypeId) = 0;
 	};
+
+	inline IJobCompletionService::~IJobCompletionService(void) = default;
 }
 
 #endif // INCLUDED_DRILLER_SERVICES_INTERFACES_I_JOB_COMPLETION_SERVICE_HPP_

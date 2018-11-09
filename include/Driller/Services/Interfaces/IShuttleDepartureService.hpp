@@ -8,7 +8,7 @@ namespace drl {
 	
 	class IShuttleDepartureService {
 	public:
-		virtual ~IShuttleDepartureService(void) = 0 {}
+		virtual ~IShuttleDepartureService(void) = 0;
 
 		virtual void update(float _delta) = 0;
 
@@ -24,6 +24,8 @@ namespace drl {
 		virtual void setShuttleOnRun(bool _onRun) = 0;
 		virtual bool getShuttleOnRun(void) const = 0;
 	};
+
+	inline IShuttleDepartureService::~IShuttleDepartureService(void) = default;
 
 }
 

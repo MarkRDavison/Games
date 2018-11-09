@@ -5,10 +5,12 @@ namespace drl {
 	
 	class IShuttleUpdateService {
 	public:
-		virtual ~IShuttleUpdateService(void) = 0 {}
+		virtual ~IShuttleUpdateService(void) = 0;
 
 		virtual void update(float _delta) = 0;
 	};
+
+	inline IShuttleUpdateService::~IShuttleUpdateService(void) = default;
 
 }
 

@@ -9,13 +9,15 @@ namespace drl {
 	
 	class IJobCreationService {
 	public:
-		virtual ~IJobCreationService(void) = 0 {}
+		virtual ~IJobCreationService(void) = 0;
 
 		virtual bool canCreateJob(const GameCommand::CreateJobEvent& _event) = 0;
 		virtual void createJob(const GameCommand::CreateJobEvent& _event) = 0;
 
 		virtual void createJobsForPlacedBuilding(const BuildingPrototype& _prototype, const BuildingInstance& _buildingInstance) = 0;
 	};
+
+	inline IJobCreationService::~IJobCreationService(void) = default;
 
 }
 

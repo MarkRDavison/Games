@@ -7,11 +7,13 @@ namespace drl {
 	
 	class IShuttleCompletionService {
 	public:
-		virtual ~IShuttleCompletionService(void) = 0 {}
+		virtual ~IShuttleCompletionService(void) = 0;
 
 		virtual void handleShuttleCompleted(ShuttleInstance& _shuttle) = 0;
 		virtual void cleanupCompletedShuttles(void) = 0;
 	};
+
+	inline IShuttleCompletionService::~IShuttleCompletionService(void) = default;
 
 }
 

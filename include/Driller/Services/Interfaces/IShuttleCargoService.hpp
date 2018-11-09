@@ -7,12 +7,14 @@ namespace drl {
 	
 	class IShuttleCargoService {
 	protected:
-		virtual ~IShuttleCargoService(void) = 0 {}
+		virtual ~IShuttleCargoService(void) = 0;
 
 	public:
 		virtual void loadShuttleWithCargo(ShuttleInstance& _shuttle) = 0;
 
 	};
+
+	inline IShuttleCargoService::~IShuttleCargoService(void) = default;
 
 }
 

@@ -7,7 +7,7 @@ namespace drl {
 	
 	class IWorkerClassService {
 	public:
-		virtual ~IWorkerClassService(void) = 0 {}
+		virtual ~IWorkerClassService(void) = 0;
 
 		virtual void registerPrototypeToResourceClass(const WorkerPrototypeId& _prototypeId, const std::string& _resource) = 0;
 		virtual bool isPrototypeRegistered(const WorkerPrototypeId& _prototypeId) = 0;
@@ -19,6 +19,8 @@ namespace drl {
 		virtual void decreaseClassMaximum(const WorkerPrototypeId& _prototypeId, int _amount) = 0;
 		virtual void decreaseClass(const WorkerPrototypeId& _prototypeId, int _amount) = 0;
 	};
+
+	inline IWorkerClassService::~IWorkerClassService(void) = default;
 
 }
 

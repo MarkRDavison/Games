@@ -7,10 +7,12 @@ namespace drl {
 	
 	class IIdentificationService {
 	public:
-		virtual ~IIdentificationService(void) = 0 {}
+		virtual ~IIdentificationService(void) = 0;
 
 		virtual EntityId generateId(void) = 0;
 	};
+
+	inline IIdentificationService::~IIdentificationService(void) = default;
 
 }
 

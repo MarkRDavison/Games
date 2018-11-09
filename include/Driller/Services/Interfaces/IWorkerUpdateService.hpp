@@ -5,10 +5,12 @@ namespace drl {
 	
 	class IWorkerUpdateService {
 	public:
-		virtual ~IWorkerUpdateService(void) = 0 {}
+		virtual ~IWorkerUpdateService(void) = 0;
 
 		virtual void update(float _delta) = 0;
 	};
+
+	inline IWorkerUpdateService::~IWorkerUpdateService(void) = default;
 
 }
 

@@ -6,10 +6,12 @@ namespace drl {
 	
 	class IWorkerRecruitmentService {
 	public:
-		virtual ~IWorkerRecruitmentService(void) = 0 {}
+		virtual ~IWorkerRecruitmentService(void) = 0;
 
 		virtual void recruitWorkers(const ShuttleInstance& _shuttle) = 0;
 	};
+
+	inline IWorkerRecruitmentService::~IWorkerRecruitmentService(void) = default;
 
 }
 

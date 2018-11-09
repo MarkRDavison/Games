@@ -7,11 +7,13 @@ namespace drl {
 	
 	class IShuttleCreationService {
 	public:
-		virtual ~IShuttleCreationService(void) = 0 {}
+		virtual ~IShuttleCreationService(void) = 0;
 
 		virtual bool canCreateShuttle(const GameCommand::CreateShuttleEvent& _event) = 0;
 		virtual void createShuttle(const GameCommand::CreateShuttleEvent& _event) = 0;
 	};
+
+	inline IShuttleCreationService::~IShuttleCreationService(void) = default;
 
 }
 

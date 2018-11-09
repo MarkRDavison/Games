@@ -7,13 +7,15 @@ namespace drl {
 
 	class INeedProviderLocationService {
 	protected:
-		virtual ~INeedProviderLocationService(void) = 0 {}
+		virtual ~INeedProviderLocationService(void) = 0;
 
 	public:
 		virtual bool isNeedProviderAvailable(std::size_t _needId) const = 0;
 		virtual EntityId getNeedProvider(std::size_t _needId, const sf::Vector2f& _currentPosition) const = 0;
 
 	};
+
+	inline INeedProviderLocationService::~INeedProviderLocationService(void) = default;
 
 }
 

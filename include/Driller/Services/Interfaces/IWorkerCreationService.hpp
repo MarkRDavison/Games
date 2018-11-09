@@ -7,11 +7,13 @@ namespace drl {
 	
 	class IWorkerCreationService {
 	public:
-		virtual ~IWorkerCreationService(void) = 0 {}
+		virtual ~IWorkerCreationService(void) = 0;
 
 		virtual bool canCreateWorker(const GameCommand::CreateWorkerEvent& _event) = 0;
 		virtual void createWorker(const GameCommand::CreateWorkerEvent& _event) = 0;
 	};
+
+	inline IWorkerCreationService::~IWorkerCreationService(void) = default;
 
 }
 

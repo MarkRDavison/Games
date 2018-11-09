@@ -8,7 +8,7 @@ namespace drl {
 	
 	class IJobAllocationService {
 	public:
-		virtual ~IJobAllocationService(void) = 0 {}
+		virtual ~IJobAllocationService(void) = 0;
 
 		virtual void resetJobAllocations(void) = 0;
 		virtual void allocateJobs(void) = 0;
@@ -17,6 +17,8 @@ namespace drl {
 		virtual bool canWorkerPerformJobType(const WorkerInstance& _workerInstance, const JobInstance& _jobInstance) = 0;
 		virtual bool canWorkerAccessJob(const WorkerInstance& _workerInstance, const JobInstance& _jobInstance) = 0;
 	};
+
+	inline IJobAllocationService::~IJobAllocationService(void) = default;
 
 }
 
