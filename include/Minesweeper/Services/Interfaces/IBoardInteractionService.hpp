@@ -11,7 +11,7 @@ namespace swp {
 
 	class IBoardInteractionService {
 	public:
-		virtual ~IBoardInteractionService(void) = 0 {}
+		virtual ~IBoardInteractionService(void) = 0;
 
 		virtual bool convertEventToBoardInteractionEvent(GameBoard& _gameBoard, const sf::Event& _event, BoardInteractionEvent& _boardInteractionEvent) = 0;
 		virtual void handleBoardInteractionEvent(GameBoard& _gameBoard, const BoardInteractionEvent& _boardInteractionEvent) = 0;
@@ -22,6 +22,8 @@ namespace swp {
 		virtual bool isDisabled(void) = 0;
 		virtual void setEnabled(bool _enabled) = 0;
 	};
+
+	inline IBoardInteractionService::~IBoardInteractionService(void) = default;
 
 }
 

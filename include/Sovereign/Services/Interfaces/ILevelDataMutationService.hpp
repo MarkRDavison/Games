@@ -5,11 +5,13 @@ namespace sov {
 	
 	class ILevelDataMutationService {
 	protected:
-		virtual ~ILevelDataMutationService(void) = 0 {}
+		virtual ~ILevelDataMutationService(void) = 0;
 
 	public:
 
 	};
+
+	inline ILevelDataMutationService::~ILevelDataMutationService(void) = default;
 
 }
 

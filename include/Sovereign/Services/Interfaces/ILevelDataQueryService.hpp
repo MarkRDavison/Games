@@ -7,13 +7,15 @@ namespace sov {
 
 	class ILevelDataQueryService {
 	protected:
-		virtual ~ILevelDataQueryService(void) = 0 {}
+		virtual ~ILevelDataQueryService(void) = 0;
 
 	public:
 		virtual bool doesLevelChunkExist(int _x, int _y) const = 0;
 		
 		virtual const LevelChunkCell& getLevelChunkCellForLevelChunk(int _chunkX, int _chunkY, unsigned _cellX, unsigned _cellY) const = 0;
 	};
+
+	inline ILevelDataQueryService::~ILevelDataQueryService(void) = default;
 
 }
 

@@ -7,10 +7,12 @@ namespace pol {
 
 	class IWorldUpdateService {
 	public:
-		virtual ~IWorldUpdateService(void) = 0 {}
+		virtual ~IWorldUpdateService(void) = 0;
 
 		virtual void update(float _delta, WorldData& _worldData) = 0;
 	};
+
+	inline IWorldUpdateService::~IWorldUpdateService(void) = default;
 
 }
 

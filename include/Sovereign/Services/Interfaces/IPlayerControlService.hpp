@@ -7,12 +7,14 @@ namespace sov {
 
 	class IPlayerControlService {
 	protected:
-		virtual ~IPlayerControlService(void) = 0 {}
+		virtual ~IPlayerControlService(void) = 0;
 
 	public:
 		virtual bool handleEvent(const sf::Event& _event) const = 0;
 		virtual bool handleKeyEvent(const sf::Event& _keyEvent) const = 0;
 	};
+
+	inline IPlayerControlService::~IPlayerControlService(void) = default;
 	
 }
 

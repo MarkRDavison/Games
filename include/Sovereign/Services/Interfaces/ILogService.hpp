@@ -8,12 +8,14 @@ namespace sov {
 	
 	class ILogService {
 	protected:
-		virtual ~ILogService(void) = 0 {}
+		virtual ~ILogService(void) = 0;
 			   
 	public:
 		virtual void log(LogLevel _level, const std::string& _message) = 0;
 
 	};
+
+	inline ILogService::~ILogService(void) = default;
 
 }
 

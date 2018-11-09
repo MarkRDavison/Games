@@ -5,12 +5,14 @@ namespace sov {
 	
 	class ICollisionResponseService {
 	protected:
-		virtual ~ICollisionResponseService(void) = 0 {}
+		virtual ~ICollisionResponseService(void) = 0;
 
 	public:
 		virtual float getResolvedMovementFromCollision(float _collisionIntersectionOverlap, float _originalMovement) = 0;
 
 	};
+
+	inline ICollisionResponseService::~ICollisionResponseService(void) = default;
 
 }
 

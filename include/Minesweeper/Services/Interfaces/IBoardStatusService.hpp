@@ -9,7 +9,7 @@ namespace swp {
 	
 	class IBoardStatusService {
 	public:
-		virtual ~IBoardStatusService(void) = 0 {}
+		virtual ~IBoardStatusService(void) = 0;
 
 		virtual void initialize(const sf::Vector2u& _size, unsigned _numberOfMines) = 0;
 
@@ -30,6 +30,8 @@ namespace swp {
 		std::function<void(void)> onPress;
 		std::function<void(void)> onRelease;
 	};
+
+	inline IBoardStatusService::~IBoardStatusService(void) = default;
 
 }
 

@@ -8,10 +8,12 @@ namespace swp {
 
 	class IBoardInitializationService {
 	public:
-		virtual ~IBoardInitializationService(void) = 0 {}
+		virtual ~IBoardInitializationService(void) = 0;
 
 		virtual void initializeBoard(GameBoard& _gameBoard, const sf::Vector2i& _startingCell) = 0;
 	};
+
+	inline IBoardInitializationService::~IBoardInitializationService(void) = default;
 
 }
 

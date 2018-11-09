@@ -7,7 +7,7 @@ namespace drl {
 	
 	class GameObject {
 	public:
-		virtual ~GameObject(void) = 0 {}
+		virtual ~GameObject(void) = 0;
 
 		virtual void update(float _delta) = 0;
 		virtual bool handleEvent(const sf::Event & _event) { return false; };
@@ -19,6 +19,8 @@ namespace drl {
 	protected:
 		bool m_Alive{ true };
 	};
+
+	inline GameObject::~GameObject(void) = default;
 
 }
 

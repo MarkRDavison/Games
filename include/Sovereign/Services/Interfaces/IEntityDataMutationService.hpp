@@ -7,7 +7,7 @@ namespace sov {
 	
 	class IEntityDataMutationService {
 	protected:
-		virtual ~IEntityDataMutationService(void) = 0 {}
+		virtual ~IEntityDataMutationService(void) = 0;
 
 	public:
 		virtual void refreshEntities(void) = 0;
@@ -18,6 +18,8 @@ namespace sov {
 		virtual bool mineEntity(EntityId _id, float _delta) = 0;
 		virtual bool mineEntity(MoveableEntity _entity, float _delta) = 0;
 	};
+
+	inline IEntityDataMutationService::~IEntityDataMutationService(void) = default;
 
 }
 

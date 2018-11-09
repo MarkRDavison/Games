@@ -9,13 +9,15 @@ namespace sov {
 	
 	class ICollisionDetectionService {
 	protected:
-		virtual ~ICollisionDetectionService(void) = 0 {}
+		virtual ~ICollisionDetectionService(void) = 0;
 
 	public:
 		virtual EntityContainedCell getCellsContainingEntity(const MoveableEntity& _moveableEntity) = 0;
 		virtual bool detectTileCollisionOccured(const EntityContainedCell& _entityContainedCells) = 0;
 		virtual bool detectTileCollisionOccured(const EntityContainedCell& _entityContainedCells, sf::FloatRect& _intersectionBounds) = 0;
 	};
+
+	inline ICollisionDetectionService::~ICollisionDetectionService(void) = default;
 
 }
 

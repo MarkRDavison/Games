@@ -10,7 +10,7 @@ namespace inf {
 
 	class IConfigurationManager {
 	public:
-		virtual ~IConfigurationManager(void) = 0 {}
+		virtual ~IConfigurationManager(void) = 0;
 
 		virtual void loadCustomConfigurations(LuaManager& _luaManager) = 0;
 
@@ -18,6 +18,8 @@ namespace inf {
 		virtual std::string getTitle(void) const = 0;
 		virtual float getGameViewScale(void) const = 0;
 	};
+
+	inline IConfigurationManager::~IConfigurationManager(void) = default;
 
 }
 

@@ -9,7 +9,7 @@ namespace pol {
 
 	class IWorldInteractionService {
 	public:
-		virtual ~IWorldInteractionService(void) = 0 {}
+		virtual ~IWorldInteractionService(void) = 0;
 
 		virtual bool handleEvent(const sf::Event& _event, WorldData& _worldData) = 0;
 
@@ -20,6 +20,8 @@ namespace pol {
 		virtual bool getLengthWithinSnapMargin(const WorldData& _worldData, const sf::Vector2i& _eventCoordinates) const = 0;
 		virtual Definitions::PlaceBuildingResult canPlacePrototypeatSegmentIndex(const WorldData& _worldData, const BuildingData& _prototype, int _segmentIndex) = 0;
 	};
+
+	inline IWorldInteractionService::~IWorldInteractionService(void) = default;
 
 }
 

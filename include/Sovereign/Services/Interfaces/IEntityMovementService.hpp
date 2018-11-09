@@ -6,12 +6,14 @@ namespace sov {
 	
 	class IEntityMovementService {
 	protected:
-		virtual ~IEntityMovementService(void) = 0 {}
+		virtual ~IEntityMovementService(void) = 0;
 
 	public:
 		virtual void updateAllMoveableEntities(float _delta) = 0;
 		virtual void updateMoveableEntity(MoveableEntity& _moveableEntity, float _delta) const = 0;
 	};
+
+	inline IEntityMovementService::~IEntityMovementService(void) = default;
 
 }
 
