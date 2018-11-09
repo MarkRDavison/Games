@@ -63,7 +63,8 @@ namespace drl {
 	}
 
 	const BuildingInstance& BuildingPlacementService::placePrototype(const GameCommand::CommandContext _context, const GameCommand::PlaceBuildingEvent& _placeBuilding) {
-		BuildingInstance& buildingInstance = m_BuildingData.buildings.emplace_back(m_BuildingPrototypeService.createInstance(_placeBuilding.prototypeId));
+		auto i = m_BuildingPrototypeService.createInstance(_placeBuilding.prototypeId);
+		BuildingInstance& buildingInstance = m_BuildingData.buildings.emplace_back(i);
 		buildingInstance.coordinates = { _placeBuilding.column, _placeBuilding.level };
 
 		if (buildingInstance.providedWorkerPrototypeId != 0u) {
