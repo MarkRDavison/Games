@@ -1,7 +1,7 @@
 config = {
 	resolution = {
-		x = 1200,
-		y = 720
+		x = 1440,
+		y = 900
 	},
 	title = "Driller - Pre Alpha",
 	gameViewScale = 64.0,

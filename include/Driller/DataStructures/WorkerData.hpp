@@ -7,6 +7,8 @@
 namespace drl {
 
 	struct WorkerData {
+		float workerMovementSpeed{ Definitions::BaseWorkerMovementSpeed };
+		float workerWorkSpeed{ Definitions::BaseWorkerWorkSpeed };
 		std::vector<WorkerInstance> workers;
 	};
 

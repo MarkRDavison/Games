@@ -21,6 +21,10 @@ namespace drl {
 			building.textureCoords = p.textureCoords;
 			building.providedWorkerPrototypeId = p.providedWorkerPrototypeId;
 			building.providedWorkerPrototypeAmount = p.providedWorkerPrototypeAmount;
+			building.providesNeeds = p.providesNeeds;
+			building.providedNeeds = p.providedNeeds;
+			building.providedNeedId = p.providedNeedId;
+			building.providedNeedRate = p.providedNeedRate;
 			return building;
 		}
 		return BuildingInstance{};

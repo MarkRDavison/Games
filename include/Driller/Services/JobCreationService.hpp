@@ -2,6 +2,7 @@
 #define INCLUDED_DRILLER_SERVICES_JOB_CREATION_SERVICE_HPP_
 
 #include <Driller/DataStructures/JobData.hpp>
+#include <Driller/Services/Interfaces/ICostService.hpp>
 #include <Driller/Services/Interfaces/IJobCreationService.hpp>
 #include <Driller/Services/Interfaces/ITerrainAlterationService.hpp>
 #include <Driller/Services/Interfaces/IPrototypeService.hpp>
@@ -12,7 +13,7 @@ namespace drl {
 	
 	class JobCreationService : public IJobCreationService {
 	public:
-		JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, inf::IResourceService& _resourceService);
+		JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, ICostService& _costService, inf::IResourceService& _resourceService);
 		~JobCreationService(void) override;
 
 		bool canCreateJob(const GameCommand::CreateJobEvent& _event) override;
@@ -32,6 +33,7 @@ namespace drl {
 		IJobPrototypeService& m_JobPrototypeService;
 		IBuildingPlacementService& m_BuildingPlacementService;
 		IBuildingPrototypeService& m_BuildingPrototypeService;
+		ICostService& m_CostService;
 		inf::IResourceService& m_ResourceService;
 	};
 

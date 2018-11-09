@@ -3,11 +3,11 @@
 
 namespace drl {
 
-	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, ICostService& _costService) :
-		GameCommandService(_resourceService, _terrainAlterationService, _buildingPlacementService, _buildingPrototypeService, _jobCreationService, _jobPrototypeService, _jobAllocationService, _workerCreationService, _workerPrototypeService, _shuttleCreationService, _costService, 0ll) {
+	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, ICostService& _costService, IResearchService& _researchService) :
+		GameCommandService(_resourceService, _terrainAlterationService, _buildingPlacementService, _buildingPrototypeService, _jobCreationService, _jobPrototypeService, _jobAllocationService, _workerCreationService, _workerPrototypeService, _shuttleCreationService, _costService, _researchService, 0ll) {
 		
 	}
-	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, ICostService& _costService, long long _startTick) :
+	GameCommandService::GameCommandService(inf::IResourceService& _resourceService, ITerrainAlterationService& _terrainAlterationService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, IJobCreationService& _jobCreationService, IJobPrototypeService& _jobPrototypeService, IJobAllocationService& _jobAllocationService, IWorkerCreationService& _workerCreationService, IWorkerPrototypeService& _workerPrototypeService, IShuttleCreationService& _shuttleCreationService, ICostService& _costService, IResearchService& _researchService, long long _startTick) :
 		m_ResourceService(_resourceService),
 		m_TerrainAlterationService(_terrainAlterationService),
 		m_BuildingPlacementService(_buildingPlacementService),
@@ -19,6 +19,7 @@ namespace drl {
 		m_WorkerPrototypeService(_workerPrototypeService),
 		m_ShuttleCreationService(_shuttleCreationService),
 		m_CostService(_costService),	
+		m_ResearchService(_researchService),
 		m_CurrentTick(_startTick) {
 		
 	}
@@ -51,6 +52,8 @@ namespace drl {
 			return handleCreateWorkerCommand(_command.commandContext, _command.createWorker);
 		case GameCommand::CreateShuttle:
 			return handleCreateShuttleCommand(_command.commandContext, _command.createShuttle);
+		case GameCommand::CompleteResearch:
+			return handleCompleteResearchCommand(_command.commandContext, _command.completeResearch);
 		default:
 			return false;
 		}
@@ -131,6 +134,23 @@ namespace drl {
 		}
 
 		m_ShuttleCreationService.createShuttle(_event);
+		return true;
+	}
+
+	bool GameCommandService::handleCompleteResearchCommand(const GameCommand::CommandContext _context, const GameCommand::CompleteResearchEvent& _event) const {
+		if (!m_ResearchService.isResearchOutstanding(_event.researchId)) {
+			return false;
+		}
+
+		const ResearchInstance& ri = m_ResearchService.getOutstandingResearchInstance(_event.researchId);
+		if (!m_ResourceService.canAfford(ri.cost)) {
+			std::cout << "Cannot afford research" << std::endl << ri.cost.getResources();
+			return false;
+		}
+
+		m_ResourceService.payResourceBundle(ri.cost);
+		m_ResearchService.research(_event.researchId);
+
 		return true;
 	}
 }

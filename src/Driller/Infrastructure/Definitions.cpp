@@ -21,6 +21,8 @@ namespace drl {
 	constexpr const char Definitions::BuildingMinerPrototypeName[];
 	constexpr const char Definitions::BuildingRefinerPrototypeName[];
 	constexpr const char Definitions::BuildingResearcherPrototypeName[];
+	constexpr const char Definitions::BuildingRecreationPrototypeName[];
+	constexpr const char Definitions::BuildingDiningPrototypeName[];
 
 	constexpr const char Definitions::JobPrototypeName_Dig[];
 	constexpr const char Definitions::JobPrototypeName_BuildBuilding[]; 
@@ -35,11 +37,20 @@ namespace drl {
 
 	constexpr const char Definitions::ShuttlePrototypeName_Starting[];
 
+	constexpr const char Definitions::ResearchCategory_WorkerMovementSpeed[];
+	constexpr const char Definitions::ResearchCategory_WorkerWorkSpeed[];
+
+	constexpr const char Definitions::NeedCategory_Sleep[];
+	constexpr const char Definitions::NeedCategory_Nutrition[];
+	constexpr const char Definitions::NeedCategory_Fun[];
+
 	const sf::Vector2u Definitions::BunkBuildingCoordinate		{ 3, 0 };
 	const sf::Vector2u Definitions::BuilderBuildingCoordinate	{ 5, 0 };
 	const sf::Vector2u Definitions::MinerBuildingCoordinate		{ 7, 0 };
 	const sf::Vector2u Definitions::RefinerBuildingCoordinate	{ 10,0 };
 	const sf::Vector2u Definitions::ResearcherBuildingCoordinate{ 7, 1 };
+	const sf::Vector2u Definitions::RecreationBuildingCoordinate{ 4, 1 };
+	const sf::Vector2u Definitions::DiningBuildingCoordinate	{ 5, 2 };
 
 	const sf::Vector2u Definitions::DigJobCoordinate		{ 1, 1 };
 

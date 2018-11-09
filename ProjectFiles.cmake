@@ -531,11 +531,16 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingInstance.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingPrototype.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingProvidedJob.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/BuildingProvidedNeed.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobCompleteDelegate.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobData.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobInstance.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/JobPrototype.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/GameCommand.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/NeedInstance.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/ResearchCategory.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/ResearchData.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/ResearchInstance.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/ShuttleData.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/ShuttleInstance.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/DataStructures/ShuttlePrototype.hpp
@@ -564,8 +569,10 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IJobCreationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IJobCompletionService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IMarketService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/INeedProviderLocationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IPrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/ISceneChangeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IResearchService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IShuttleCargoService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IShuttleCompletionService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/Interfaces/IShuttleCreationService.hpp
@@ -587,8 +594,10 @@ SET(DRILLER_HEADER_FILES ${DRILLER_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/JobCreationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/JobPrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/MarketService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/NeedProviderLocationService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/PrototypeService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/SceneChangeService.hpp
+	${CMAKE_SOURCE_DIR}/include/Driller/Services/ResearchService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/ShuttleCargoService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/ShuttleCompletionService.hpp
 	${CMAKE_SOURCE_DIR}/include/Driller/Services/ShuttleCreationService.hpp
@@ -632,7 +641,9 @@ SET(DRILLER_SOURCE_FILES ${DRILLER_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobCreationService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/JobPrototypeService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/MarketService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/NeedProviderLocationService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/SceneChangeService.cpp
+	${CMAKE_SOURCE_DIR}/src/Driller/Services/ResearchService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/ShuttleCargoService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/ShuttleCompletionService.cpp
 	${CMAKE_SOURCE_DIR}/src/Driller/Services/ShuttleCreationService.cpp
@@ -662,7 +673,9 @@ SET(DRILLER_TEST_HEADER_FILES ${DRILLER_TEST_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/JobCompletionServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/JobCreationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/MarketServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/NeedProviderLocationServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/PrototypeServiceMock.hpp
+	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ResearchServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ShuttleCargoServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ShuttleCompletionServiceMock.hpp
 	${CMAKE_SOURCE_DIR}/test/include/Mocks/Driller/Services/ShuttleCreationServiceMock.hpp
@@ -686,7 +699,9 @@ SET(DRILLER_TEST_SOURCE_FILES ${DRILLER_TEST_SOURCE_FILES}
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobCompletionServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/JobCreationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/MarketServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/NeedProviderLocationServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/SceneChangeServiceTests.cpp
+	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ResearchServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ShuttleCargoServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ShuttleCompletionServiceTests.cpp
 	${CMAKE_SOURCE_DIR}/test/src/Driller/Services/ShuttleCreationServiceTests.cpp
@@ -700,7 +715,6 @@ SET(DRILLER_TEST_SOURCE_FILES ${DRILLER_TEST_SOURCE_FILES}
 )
 
 # Sovereign
-
 SET(SOVEREIGN_HEADER_FILES ${SOVEREIGN_HEADER_FILES}
 	${CMAKE_SOURCE_DIR}/include/Sovereign/Core/Definitions.hpp
 	${CMAKE_SOURCE_DIR}/include/Sovereign/Core/Game.hpp

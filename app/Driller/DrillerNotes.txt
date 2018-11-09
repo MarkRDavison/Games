@@ -16,9 +16,6 @@ Tiles can reveal things when mined
 	-	Enhance rooms (mining x 2)
 	-	Haunted room (needs decline x 2)
 
-Create std::function enhanced for testing, with is invoked method
-	-	Times (Once, twice never, X etc...)
-
 Services should be stateless?
 	-	E.g. ShuttleDepartureService -> Shouldn't have member variables, instead have ShuttleDepartureData, and take reference to it
 
@@ -28,3 +25,7 @@ WorkerRecruitmentService
 EconomyService
 	-	Over time different resources are worth different amounts, go down if you saturate the market etc
 	-	
+
+~~~~~~~~~~ Done ~~~~~~~~~~
+Create std::function enhanced for testing, with is invoked method
+	-	Times (Once, twice never, X etc...)

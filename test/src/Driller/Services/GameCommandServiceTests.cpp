@@ -11,6 +11,7 @@
 #include <Mocks/Driller/Services/WorkerCreationServiceMock.hpp>
 #include <Mocks/Driller/Services/ShuttleCreationServiceMock.hpp>
 #include <Mocks/Driller/Services/CostServiceMock.hpp>
+#include <Mocks/Driller/Services/ResearchServiceMock.hpp>
 
 namespace drl {
 	namespace GameCommandServiceTests {
@@ -19,7 +20,7 @@ namespace drl {
 
 			GameCommandServicePackage() : GameCommandServicePackage(0ll) {}
 			GameCommandServicePackage(long long _startTick) :
-				service(resourceService, terrainAlterationService, buildingPlacementService, buildingPrototypeService, jobCreationService, jobPrototypeServiceMock, jobAllocationServiceMock, workerCreationServiceMock, workerPrototypeServiceMock, shuttleCreationServiceMock, costServiceMock, _startTick) {
+				service(resourceService, terrainAlterationService, buildingPlacementService, buildingPrototypeService, jobCreationService, jobPrototypeServiceMock, jobAllocationServiceMock, workerCreationServiceMock, workerPrototypeServiceMock, shuttleCreationServiceMock, costServiceMock, researchServiceMock, _startTick) {
 
 			}
 			
@@ -34,6 +35,7 @@ namespace drl {
 			WorkerPrototypeServiceMock workerPrototypeServiceMock;
 			ShuttleCreationServiceMock shuttleCreationServiceMock;
 			CostServiceMock costServiceMock;
+			ResearchServiceMock researchServiceMock;
 			GameCommandService service;
 		};
 

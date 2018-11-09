@@ -5,12 +5,13 @@
 
 namespace drl {
 
-	JobCreationService::JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, inf::IResourceService& _resourceService) :
+	JobCreationService::JobCreationService(JobData& _jobData, ITerrainAlterationService& _terrainAlterationService, IJobPrototypeService& _jobPrototypeService, IBuildingPlacementService& _buildingPlacementService, IBuildingPrototypeService& _buildingPrototypeService, ICostService& _costService, inf::IResourceService& _resourceService) :
 		m_JobData(_jobData),
 		m_TerrainAlterationService(_terrainAlterationService),
 		m_JobPrototypeService(_jobPrototypeService),
 		m_BuildingPlacementService(_buildingPlacementService),
 		m_BuildingPrototypeService(_buildingPrototypeService),
+		m_CostService(_costService),
 		m_ResourceService(_resourceService) {
 		
 	}
@@ -74,6 +75,7 @@ namespace drl {
 		instance.bounds = _event.bounds;
 		instance.jobPerformOffset = _event.jobPerformOffset;
 		instance.prototypeId = _event.jobTypeId;
+		instance.workRequired *= m_CostService.getDigTileTimeMultiplierCost(_event.coordinates.y, _event.coordinates.x);
 	}
 
 	bool JobCreationService::canCreateBuildBuildingJob(const GameCommand::CreateJobEvent& _event) const {

@@ -27,7 +27,13 @@ namespace drl {
 		bool handleEvent(const sf::Event & _event) override;
 		void draw(sf::RenderTarget & _target, sf::RenderStates _states, float _alpha) const override;
 		
-		bool handleMouseButton(sf::Mouse::Button _button, const int _x, const int _y);
+		bool handleMouseButton(sf::Mouse::Button _button, const int _x, const int _y) const;
+
+		sf::Vector2f convertEventCoordinatesToLocalGameCoordinates(const sf::Vector2i& _coordinates) const;
+
+		void zoomViewAt(const sf::Vector2i& _pixel, float _zoom);
+
+		void resizeView(void);
 
 	private:
 		inf::IConfigurationManager& m_Config;
@@ -43,7 +49,13 @@ namespace drl {
 
 		int m_ActiveBuilding{ -1 };
 		
-		sf::Vector2f m_CameraOffset;
+		sf::View m_View;
+
+		sf::Vector2f m_PanningAnchor;
+
+		bool m_Panning{ false };
+		float m_Zoom{ 1.0f };
+		const float m_ZoomSensitivity{ 1.25f };
 	};
 
 }

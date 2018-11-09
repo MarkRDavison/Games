@@ -40,6 +40,8 @@
 #include <Driller/Services/WorkerRecruitmentService.hpp>
 #include <Driller/Services/ShuttleCargoService.hpp>
 #include <Driller/Services/CostService.hpp>
+#include <Driller/Services/ResearchService.hpp>
+#include <Driller/Services/NeedProviderLocationService.hpp>
 
 struct ManagerPackage {
 
@@ -71,14 +73,15 @@ struct ServicePackage {
 		terrainAlteration(terrainData),
 		buildingPrototype(identificationService),
 		buildingPlacement(buildingData, terrainAlteration, buildingPrototype, workerClass, shuttleDeparture, resource),
+		needProviderLocationService(buildingData),
 		jobPrototype(identificationService),
-		jobCreation(jobData, terrainAlteration, jobPrototype, buildingPlacement, buildingPrototype, resource),
+		jobCreation(jobData, terrainAlteration, jobPrototype, buildingPlacement, buildingPrototype, cost, resource),
 		jobAllocation(workerData, jobData, terrainAlteration),
 		jobCompletion(jobData, terrainAlteration),
 		workerClass(resource),
 		workerCreation(workerData, workerPrototype, workerClass),
 		workerPrototype(identificationService),
-		workerUpdate(workerData, jobData, jobCompletion),
+		workerUpdate(workerData, buildingData, jobData, jobCompletion, needProviderLocationService),
 		workerRecruitment(workerCreation, shuttleDeparture),
 		shuttlePrototype(identificationService),
 		shuttleCreation(shuttleData, shuttlePrototype),
@@ -86,7 +89,8 @@ struct ServicePackage {
 		shuttleCompletion(shuttleData, market, shuttleDeparture),
 		shuttleCargo(resource),
 		shuttleUpdate(shuttleData, shuttleCompletion, shuttleCargo, workerRecruitment),
-		gameCommand(resource, terrainAlteration, buildingPlacement, buildingPrototype, jobCreation, jobPrototype, jobAllocation, workerCreation, workerPrototype, shuttleCreation, cost),
+		research(researchData),
+		gameCommand(resource, terrainAlteration, buildingPlacement, buildingPrototype, jobCreation, jobPrototype, jobAllocation, workerCreation, workerPrototype, shuttleCreation, cost, research),
 		game(gameCommand, jobAllocation, jobCompletion, workerUpdate, shuttleDeparture, shuttleUpdate, shuttleCompletion, terrainData, buildingData, jobData, workerData) {
 	}
 
@@ -95,6 +99,7 @@ struct ServicePackage {
 	drl::JobData jobData;
 	drl::WorkerData workerData;
 	drl::ShuttleData shuttleData;
+	drl::ResearchData researchData;
 	drl::TerrainView terrainView;
 	drl::BuildingView buildingView;
 	drl::JobView jobView;
@@ -107,6 +112,7 @@ struct ServicePackage {
 	drl::TerrainAlterationService terrainAlteration;
 	drl::BuildingPrototypeService buildingPrototype;
 	drl::BuildingPlacementService buildingPlacement;
+	drl::NeedProviderLocationService needProviderLocationService;
 	drl::IdentificationService identificationService;
 	drl::JobPrototypeService jobPrototype;
 	drl::JobCreationService jobCreation;
@@ -124,6 +130,7 @@ struct ServicePackage {
 	drl::ShuttleCargoService shuttleCargo;
 	drl::ShuttleUpdateService shuttleUpdate;
 	drl::CostService cost;
+	drl::ResearchService research;
 	drl::GameCommandService gameCommand;
 	drl::Game game;
 };
@@ -164,7 +171,7 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 	}
 	{
 		drl::ShuttlePrototype startingShuttlePrototype{};
-		startingShuttlePrototype.capacity = 5;
+		startingShuttlePrototype.capacity = 25;
 		startingShuttlePrototype.loadingTime = 5.0f;
 		_servicePackage.shuttlePrototype.registerPrototype(drl::Definitions::ShuttlePrototypeName_Starting, startingShuttlePrototype);
 		_servicePackage.shuttleDeparture.registerShuttle(inf::djb_hash(drl::Definitions::ShuttlePrototypeName_Starting), 10.0f);
@@ -201,7 +208,58 @@ void registerPrototypes(ManagerPackage& _managerPackage, ServicePackage& _servic
 	{
 		drl::BuildingPrototype bunkPrototype = drl::BuildingPrototype{ {2,1}, drl::Definitions::BunkBuildingCoordinate };
 		bunkPrototype.cost.resources.emplace_back(drl::Definitions::MoneyResourceName, 60);
+		bunkPrototype.providedNeedId = inf::djb_hash(drl::Definitions::NeedCategory_Sleep);
+		bunkPrototype.providedNeedRate = 16.0f;
+		bunkPrototype.providesNeeds = true;
+		{
+			drl::BuildingProvidedNeed& need = bunkPrototype.providedNeeds.emplace_back();
+			need.offset = { 0.0f, 0.0f };
+		}
+		{
+			drl::BuildingProvidedNeed& need = bunkPrototype.providedNeeds.emplace_back();
+			need.offset = { 1.0f, 0.0f };
+		}
 		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingBunkPrototypeName, bunkPrototype);
+	}
+	{
+		drl::BuildingPrototype recreationPrototype = drl::BuildingPrototype{ {3,1}, drl::Definitions::RecreationBuildingCoordinate };
+		recreationPrototype.cost.resources.emplace_back(drl::Definitions::MoneyResourceName, 60);
+		recreationPrototype.providedNeedId = inf::djb_hash(drl::Definitions::NeedCategory_Fun);
+		recreationPrototype.providedNeedRate = 32.0f;
+		recreationPrototype.providesNeeds = true;
+		{
+			drl::BuildingProvidedNeed& need = recreationPrototype.providedNeeds.emplace_back();
+			need.offset = { 0.0f, 0.0f };
+		}
+		{
+			drl::BuildingProvidedNeed& need = recreationPrototype.providedNeeds.emplace_back();
+			need.offset = { 1.0f, 0.0f };
+		}
+		{
+			drl::BuildingProvidedNeed& need = recreationPrototype.providedNeeds.emplace_back();
+			need.offset = { 2.0f, 0.0f };
+		}
+		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingRecreationPrototypeName, recreationPrototype);
+	}
+	{
+		drl::BuildingPrototype diningPrototype = drl::BuildingPrototype{ {3,1}, drl::Definitions::DiningBuildingCoordinate };
+		diningPrototype.cost.resources.emplace_back(drl::Definitions::MoneyResourceName, 60);
+		diningPrototype.providedNeedId = inf::djb_hash(drl::Definitions::NeedCategory_Nutrition);
+		diningPrototype.providedNeedRate = 24.0f;
+		diningPrototype.providesNeeds = true;
+		{
+			drl::BuildingProvidedNeed& need = diningPrototype.providedNeeds.emplace_back();
+			need.offset = { 0.0f, 0.0f };
+		}
+		{
+			drl::BuildingProvidedNeed& need = diningPrototype.providedNeeds.emplace_back();
+			need.offset = { 1.0f, 0.0f };
+		}
+		{
+			drl::BuildingProvidedNeed& need = diningPrototype.providedNeeds.emplace_back();
+			need.offset = { 2.0f, 0.0f };
+		}
+		_servicePackage.buildingPrototype.registerPrototype(drl::Definitions::BuildingDiningPrototypeName, diningPrototype);
 	}
 	{
 		drl::BuildingPrototype builderPrototype = drl::BuildingPrototype{ {2,1}, drl::Definitions::BuilderBuildingCoordinate };
@@ -351,6 +409,35 @@ void runSetupGameCommands(ManagerPackage& _managerPackage, ServicePackage& _serv
 	_servicePackage.gameCommand.executeGameCommand(drl::GameCommand(drl::GameCommand::PlaceBuildingEvent{ drl::Definitions::BuildingBuilderPrototypeName, 0, +1 }));
 }
 
+void initialiseResearch(ManagerPackage& _managerPackage, ServicePackage& _servicePackage) {
+	{
+		_servicePackage.research.registerResearchCategory(drl::Definitions::ResearchCategory_WorkerMovementSpeed);
+
+		for (unsigned i = 1; i <= 10; ++i) {
+			drl::ResearchInstance ri{};
+			ri.cost.resources.emplace_back(drl::Definitions::ResearchResourceName, 50 + 50 * i * i * i * i * i);
+			ri.level = i;
+			ri.callback = [&](std::size_t _id, unsigned _level) -> void {
+				_servicePackage.workerData.workerMovementSpeed *= 1.1f;
+			};
+			_servicePackage.research.registerResearchInstance(drl::Definitions::ResearchCategory_WorkerMovementSpeed, ri);
+		}
+	}
+	{
+		_servicePackage.research.registerResearchCategory(drl::Definitions::ResearchCategory_WorkerWorkSpeed);
+
+		for (unsigned i = 1; i <= 10; ++i) {
+			drl::ResearchInstance ri{};
+			ri.cost.resources.emplace_back(drl::Definitions::ResearchResourceName, 50 + 50 * i * i * i * i * i);
+			ri.level = i;
+			ri.callback = [&](std::size_t _id, unsigned _level) -> void {
+				_servicePackage.workerData.workerWorkSpeed *= 1.1f;
+			};
+			_servicePackage.research.registerResearchInstance(drl::Definitions::ResearchCategory_WorkerWorkSpeed, ri);
+		}
+	}
+}
+
 int main(int _argc, char **_argv) {
 	ManagerPackage managerPackage;
 	ServicePackage servicePackage(managerPackage);
@@ -358,14 +445,16 @@ int main(int _argc, char **_argv) {
 	managerPackage.config.loadConfiguration("./data/scripts/Driller/config.lua");
 
 	managerPackage.app.initialise(managerPackage.config.getResolution(), managerPackage.config.getTitle(), managerPackage.config.getGameViewScale());
-	managerPackage.inputManager.m_GetWindowSizeCallback = [&managerPackage]() { return sf::Vector2i(managerPackage.app.getWindow().getSize()); };
-	managerPackage.inputManager.m_GetMousePositionCallback = [&managerPackage]() { return sf::Mouse::getPosition(managerPackage.app.getWindow()); };
+	managerPackage.inputManager.m_GetWindowSizeCallback = [&managerPackage](void) -> sf::Vector2i { return sf::Vector2i(managerPackage.app.getWindow().getSize()); };
+	managerPackage.inputManager.m_GetMousePositionCallback = [&managerPackage](void) -> sf::Vector2i { return sf::Mouse::getPosition(managerPackage.app.getWindow()); };
+	managerPackage.inputManager.m_MapPixelToCoordsCallback = [&managerPackage](const sf::Vector2i& _pixel, const sf::View& _view) ->sf::Vector2f {return managerPackage.app.m_Window.mapPixelToCoords(_pixel, _view); };
 
 	managerPackage.textureManager.loadTexture("./data/textures/Driller/tile_sprite_sheet.png", drl::Definitions::TileSpriteSheetTextureName);
 
 	setupSceneTransitions(managerPackage, servicePackage);
 	registerPrototypes(managerPackage, servicePackage);
 	initialiseResources(managerPackage, servicePackage);
+	initialiseResearch(managerPackage, servicePackage);
 	runSetupGameCommands(managerPackage, servicePackage);
 
 	servicePackage.sceneChange.setSceneState(drl::Definitions::GameSceneState::Gameplay);

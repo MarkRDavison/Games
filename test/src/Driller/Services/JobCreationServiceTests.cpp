@@ -1,11 +1,12 @@
 #include <catch/catch.hpp>
 #include <catch/CatchToString.hpp>
+#include <Driller/DataStructures/JobData.hpp>
 #include <Driller/Infrastructure/Definitions.hpp>
 #include <Driller/Services/JobCreationService.hpp>
 #include <Mocks/Driller/Services/TerrainAlterationServiceMock.hpp>
 #include <Mocks/Driller/Services/PrototypeServiceMock.hpp>
-#include <Driller/DataStructures/JobData.hpp>
 #include <Mocks/Driller/Services/BuildingPlacementServiceMock.hpp>
+#include <Mocks/Driller/Services/CostServiceMock.hpp>
 #include <Mocks/Infrastructure/Services/ResourceServiceMock.hpp>
 
 namespace drl {
@@ -13,8 +14,9 @@ namespace drl {
 
 		struct ServicePackage {
 			ServicePackage() :
-				service(jobData, terrainAlterationService, jobPrototypeService, buildingPlacementService, buildingPrototypeService, resourceService) {
-				
+				service(jobData, terrainAlterationService, jobPrototypeService, buildingPlacementService, buildingPrototypeService, costService, resourceService) {
+
+				costService.getDigTileTimeMultiplierCostCallback.registerCallback([&](int _level, int _column) -> float { return 1.0f; });
 			}
 
 			JobData jobData;
@@ -22,6 +24,7 @@ namespace drl {
 			JobPrototypeServiceMock jobPrototypeService;
 			BuildingPlacementServiceMock buildingPlacementService;
 			BuildingPrototypeServiceMock buildingPrototypeService;
+			CostServiceMock costService;
 			inf::ResourceServiceMock resourceService;
 			JobCreationService service;
 		};
@@ -130,6 +133,39 @@ namespace drl {
 			REQUIRE(event.coordinates == instance.coordinates);
 			REQUIRE(event.bounds == instance.bounds);
 			REQUIRE(event.jobPerformOffset == instance.jobPerformOffset);
+		}
+
+		TEST_CASE("createJob for digging tile uses the dig tile job time multiplier", "[Driller][Services][JobCreationService]") {
+			ServicePackage package{};
+
+			TerrainTile tile{};
+			tile.dugOut = false;
+			tile.jobReserved = true;
+
+			const float Base = 2.0f;
+			const float Multiplier = 5.0f;
+
+			package.jobPrototypeService.getPrototypeIdCallback = [](const std::string& _prototypeName) { return inf::djb_hash(Definitions::JobPrototypeName_Dig); };
+			package.terrainAlterationService.defaultTile = TerrainTile(tile);
+			package.terrainAlterationService.doesTileExistCallback = [&](int, int) { return true; };
+			package.costService.getDigTileTimeMultiplierCostCallback.registerCallback([&](int _level, int _column) -> float {
+				return Multiplier;
+			});
+
+			const GameCommand::CreateJobEvent event{ Definitions::JobPrototypeName_Dig, {1, 0}, {1, 1}, {0.0f, 0.0f} };
+
+			package.jobPrototypeService.createInstanceByIdCallback = [&](const JobPrototypeId& _id) {
+				JobInstance instance{};
+				instance.workRequired = Base;
+				return instance;
+			};
+
+			package.service.createJob(event);
+
+			REQUIRE(1 == package.jobData.jobs.size());
+			JobInstance& instance = package.jobData.jobs[0];
+
+			REQUIRE(Base * Multiplier == instance.workRequired);
 		}
 
 

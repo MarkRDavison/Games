@@ -2,6 +2,7 @@
 #define INCLUDED_DRILLER_DATA_STRUCTURES_BUILDING_INSTANCE_HPP_
 
 #include <Driller/DataStructures/WorkerPrototype.hpp>
+#include <Driller/DataStructures/BuildingProvidedNeed.hpp>
 #include <Driller/Infrastructure/Definitions.hpp>
 #include <SFML/System/Vector2.hpp>
 
@@ -16,6 +17,10 @@ namespace drl {
 		
 		WorkerPrototypeId providedWorkerPrototypeId;
 		int providedWorkerPrototypeAmount;
+		bool providesNeeds{ false };
+		std::vector<BuildingProvidedNeed> providedNeeds;
+		std::size_t providedNeedId{ 0u };
+		float providedNeedRate{ 60.0f };
 	};
 
 }

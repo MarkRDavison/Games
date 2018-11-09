@@ -87,6 +87,16 @@ namespace drl {
 			std::size_t prototypeId{ 0u };
 		};
 
+		struct CompleteResearchEvent {
+			CompleteResearchEvent(void) {}
+			CompleteResearchEvent(const std::string& _categoryName) :
+				CompleteResearchEvent(_categoryName.c_str()) {}
+			CompleteResearchEvent(const char * _categoryName) :
+				researchId(inf::djb_hash(_categoryName)) {}
+
+			std::size_t researchId{ 0u };
+		};
+
 		enum class CommandContext {
 			CreatingJob,
 			CreatingEntity,
@@ -102,6 +112,7 @@ namespace drl {
 			ResetJobAllocations,
 			CreateWorker,
 			CreateShuttle,
+			CompleteResearch,
 
 			Count
 		} type;
@@ -115,6 +126,7 @@ namespace drl {
 			ResetJobAllocationsEvent resetJobAllocations;
 			CreateWorkerEvent createWorker;
 			CreateShuttleEvent createShuttle;
+			CompleteResearchEvent completeResearch;
 		};
 
 
@@ -162,6 +174,12 @@ namespace drl {
 		explicit GameCommand(const CreateShuttleEvent& _createShuttle) :
 			type(EventType::CreateShuttle),
 			createShuttle(_createShuttle) {
+
+		}
+
+		explicit GameCommand(const CompleteResearchEvent& _completeResearch) :
+			type(EventType::CompleteResearch),
+			completeResearch(_completeResearch) {
 
 		}
 	};

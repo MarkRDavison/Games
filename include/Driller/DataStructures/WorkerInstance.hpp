@@ -3,9 +3,9 @@
 
 #include <Driller/Infrastructure/Definitions.hpp>
 #include <Driller/DataStructures/JobPrototype.hpp>
+#include <Driller/DataStructures/NeedInstance.hpp>
 #include <Driller/DataStructures/WorkerPrototype.hpp>
 #include <Infrastructure/DataStructures/Path.hpp>
-#include <SFML/System/Vector2.hpp>
 #include <vector>
 
 namespace drl {
@@ -15,7 +15,9 @@ namespace drl {
 		enum class WorkerState {
 			Idle,
 			MovingToJob,
-			WorkingJob
+			WorkingJob,
+			MovingToNeed,
+			RestoringNeed
 		};
 
 		EntityId Id;
@@ -34,6 +36,9 @@ namespace drl {
 		struct WorkerPathfindingInstance {
 			inf::Path path;
 		} path;
+
+		NeedInstance needs;
+		EntityId restoringNeedProviderId{ 0u };
 	};
 
 }

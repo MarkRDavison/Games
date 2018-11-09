@@ -3,13 +3,13 @@
 
 #include <Driller/DataStructures/WorkerPrototype.hpp>
 #include <Driller/DataStructures/BuildingProvidedJob.hpp>
+#include <Driller/DataStructures/BuildingProvidedNeed.hpp>
 
 #include <Infrastructure/DataStructures/ResourceBundle.hpp>
 
 #include <SFML/System/Vector2.hpp>
 
 #include <cstdlib>
-
 
 namespace drl {
 
@@ -25,7 +25,11 @@ namespace drl {
 		bool providesJobs{ false };
 		bool providesNeeds{ false };
 
+		std::size_t providedNeedId{ 0u };
+		float providedNeedRate{ 60.0f };
+
 		std::vector<BuildingProvidedJob> providedJobs;
+		std::vector<BuildingProvidedNeed> providedNeeds;
 	};
 
 }

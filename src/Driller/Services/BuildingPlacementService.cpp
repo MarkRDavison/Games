@@ -34,7 +34,6 @@ namespace drl {
 
 		if (_context == GameCommand::CommandContext::CreatingJob) {
 			if (!m_ResourceService.canAfford(prototype.cost)) {
-				std::cout << "Cannot afford to create building" << std::endl << prototype.cost.getResources();
 				return false;
 			}
 		}
