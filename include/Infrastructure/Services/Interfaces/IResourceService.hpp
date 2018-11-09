@@ -9,7 +9,7 @@ namespace inf {
 	
 	class IResourceService {
 	public:
-		virtual ~IResourceService(void) = 0 { }
+		virtual ~IResourceService(void) = 0;
 
 		virtual void updateResource(const std::string& _resourceName, int _amount) = 0;
 		virtual void updateResourceMax(const std::string& _resourceName, int _amount) = 0;
@@ -29,6 +29,8 @@ namespace inf {
 
 		static constexpr const int DefaultResourceMaximum = -1;
 	};
+
+	inline IResourceService::~IResourceService(void) = default;
 
 }
 
