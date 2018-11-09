@@ -2,6 +2,7 @@
 #define INCLUDED_DRILLER_DATA_STRUCTURES_TERRAIN_DATA_HPP_
 
 #include <Driller/DataStructures/TerrainRow.hpp>
+#include <exception>
 #include <cmath>
 
 namespace drl {
