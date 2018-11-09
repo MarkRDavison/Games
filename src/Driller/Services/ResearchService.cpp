@@ -29,7 +29,7 @@ namespace drl {
 		registerResearchInstance(inf::djb_hash(_researchCategoryName.c_str()), _researchInstance);
 	}
 	void ResearchService::registerResearchInstance(const ResearchId& _researchCategory, const ResearchInstance& _researchInstance) {
-		auto& categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
+		auto categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
 		assert(categoryIterator != m_ResearchData.categories.end());
 
 		ResearchCategory& category = *categoryIterator;
@@ -40,7 +40,7 @@ namespace drl {
 		return isResearchOutstanding(inf::djb_hash(_researchCategoryName.c_str()));
 	}
 	bool ResearchService::isResearchOutstanding(const ResearchId& _researchCategory) const {
-		auto& categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
+		auto categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
 		if (categoryIterator == m_ResearchData.categories.end()) {
 			return false;
 		}
@@ -55,7 +55,7 @@ namespace drl {
 	}
 	const ResearchInstance& ResearchService::getOutstandingResearchInstance(const ResearchId& _researchCategory) const {
 		assert(isResearchOutstanding(_researchCategory));
-		auto& categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
+		auto categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
 
 		const ResearchCategory& category = *categoryIterator;
 
@@ -67,7 +67,7 @@ namespace drl {
 	}
 	void ResearchService::research(const ResearchId& _researchCategory) {
 		assert(isResearchOutstanding(_researchCategory));
-		auto& categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
+		auto categoryIterator = std::find_if(m_ResearchData.categories.begin(), m_ResearchData.categories.end(), [&](const ResearchCategory& _category) -> bool { return _researchCategory == _category.categoryId; });
 
 		ResearchCategory& category = *categoryIterator;
 
