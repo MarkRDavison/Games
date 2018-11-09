@@ -2,6 +2,7 @@
 #include <Utility/Colour.hpp>
 #include <Driller/DataStructures/BuildingPrototype.hpp>
 #include <iostream>
+#include <cmath>
 
 namespace drl {
 	GameScene::GameScene(inf::IConfigurationManager& _config, inf::InputManager& _inputManager, ISceneChangeService& _sceneChangeService, IGameCommandService& _gameCommandService, Game& _game, TerrainView& _terrainView, BuildingView& _buildingView, JobView& _jobView, WorkerView& _workerView, ShuttleView& _shuttleView) :

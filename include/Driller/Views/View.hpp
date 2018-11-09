@@ -7,11 +7,14 @@ namespace drl {
 
 	class View {
 	public:
-		virtual ~View(void) = 0 { }
+		virtual ~View(void) = 0;
 
 		virtual void update(float _delta) = 0;
 		virtual void draw(sf::RenderTarget & _target, sf::RenderStates _states, float _alpha) const = 0;
 	};
+
+	inline View::~View(void) = default;
+
 	
 }
 
