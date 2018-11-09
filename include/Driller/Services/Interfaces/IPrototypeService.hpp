@@ -33,15 +33,17 @@ namespace drl {
 	};
 	
 	using IBuildingPrototypeService = IPrototypeService<BuildingPrototype, BuildingInstance, BuildingPrototypeId>;
-	inline IPrototypeService<BuildingPrototype, BuildingInstance, BuildingPrototypeId>::~IPrototypeService<BuildingPrototype, BuildingInstance, BuildingPrototypeId>(void) = default;
-
 	using IJobPrototypeService = IPrototypeService<JobPrototype, JobInstance, JobPrototypeId>;
-	inline IPrototypeService<JobPrototype, JobInstance, JobPrototypeId>::~IPrototypeService<JobPrototype, JobInstance, JobPrototypeId>(void) = default;
-
 	using IShuttlePrototypeService = IPrototypeService<ShuttlePrototype, ShuttleInstance, ShuttlePrototypeId>;
-	inline IPrototypeService<ShuttlePrototype, ShuttleInstance, ShuttlePrototypeId>::~IPrototypeService<ShuttlePrototype, ShuttleInstance, ShuttlePrototypeId>(void) = default;
-
 	using IWorkerPrototypeService = IPrototypeService<WorkerPrototype, WorkerInstance, WorkerPrototypeId>;
+
+	template <>
+	inline IPrototypeService<BuildingPrototype, BuildingInstance, BuildingPrototypeId>::~IPrototypeService<BuildingPrototype, BuildingInstance, BuildingPrototypeId>(void) = default;
+	template <>
+	inline IPrototypeService<JobPrototype, JobInstance, JobPrototypeId>::~IPrototypeService<JobPrototype, JobInstance, JobPrototypeId>(void) = default;
+	template <>
+	inline IPrototypeService<ShuttlePrototype, ShuttleInstance, ShuttlePrototypeId>::~IPrototypeService<ShuttlePrototype, ShuttleInstance, ShuttlePrototypeId>(void) = default;
+	template <>
 	inline IPrototypeService<WorkerPrototype, WorkerInstance, WorkerPrototypeId>::~IPrototypeService<WorkerPrototype, WorkerInstance, WorkerPrototypeId>(void) = default;
 }
 
