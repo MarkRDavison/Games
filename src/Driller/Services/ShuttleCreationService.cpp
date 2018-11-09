@@ -16,7 +16,8 @@ namespace drl {
 		return m_ShuttlePrototypeService.isPrototypeRegistered(_event.prototypeId) && !doesShuttlePrototypeExistAsInstance(_event.prototypeId);
 	}
 	void ShuttleCreationService::createShuttle(const GameCommand::CreateShuttleEvent& _event) {
-		ShuttleInstance& instance = m_ShuttleData.shuttles.emplace_back(m_ShuttlePrototypeService.createInstance(_event.prototypeId));
+		m_ShuttleData.shuttles.push_back(m_ShuttlePrototypeService.createInstance(_event.prototypeId));
+		ShuttleInstance& instance = m_ShuttleData.shuttles.back();
 	}
 
 	bool ShuttleCreationService::doesShuttlePrototypeExistAsInstance(const ShuttlePrototypeId& _prototypeId) const {
